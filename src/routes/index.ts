@@ -1,25 +1,25 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Home from "../components/Home.vue";
-import Tos from "../components/Tos.vue";
-import Cookies from "../components/Cookies.vue";
-import Privacy from "../components/Privacy.vue";
-import Redirect from "../components/Redirect.vue";
-import NotFound from "../components/NotFound.vue";
+import HomeView from "../views/HomeView.vue";
+import TosView from "../views/TosView.vue";
+import CookiesView from "../views/CookiesView.vue";
+import PrivacyView from "../views/PrivacyView.vue";
+import RedirectView from "../views/RedirectView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 
 const routes = [
-  { path: "/", component: Home },
-  { path: "/terms-and-conditions", component: Tos },
-  { path: "/cookies-policy", component: Cookies },
-  { path: "/privacy-policy", component: Privacy },
+  { path: "/", component: HomeView },
+  { path: "/terms-and-conditions", component: TosView },
+  { path: "/cookies-policy", component: CookiesView },
+  { path: "/privacy-policy", component: PrivacyView },
   {
     path: "/discord",
-    component: Redirect,
+    component: RedirectView,
     beforeEnter() {
       location.href = "https://github.com";
     },
   },
-  { path: "/:pathMatch(.*)*", component: NotFound },
+  { path: "/:pathMatch(.*)*", component: NotFoundView },
 ];
 
 const router = createRouter({

@@ -46,7 +46,12 @@ const year = new Date().getFullYear();
           <RouterLink to="/cookies-policy">Çerezlerin Kullanımı</RouterLink>
         </li>
         <li>
-          <RouterLink to="/terms-and-conditions">Kullanım Şartları</RouterLink>
+          <RouterLink to="/terms-and-conditions"
+            >Şartlar ve Koşullar</RouterLink
+          >
+        </li>
+        <li>
+          <RouterLink to="/contact">İletişim</RouterLink>
         </li>
       </ul>
     </div>

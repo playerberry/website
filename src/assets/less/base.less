@@ -1,0 +1,23 @@
+::selection {
+  background-color: @global-selection-background;
+  color: @global-selection-color;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1d1d1e;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #4b4b4b;
+  &:hover {
+    background: #525252;
+  }
+}

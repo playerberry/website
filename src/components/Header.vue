@@ -14,7 +14,13 @@ import { RouterLink } from "vue-router";
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav">
             <li>
-              <RouterLink to="/">Stage</RouterLink>
+              <RouterLink to="/">Hakkımızda</RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/">Projeler</RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/">Blog</RouterLink>
             </li>
           </ul>
         </div>
