@@ -2,10 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/playerberry.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TEST</title>
+    <title>PlayerBerry - 404</title>
   </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Roboto Mono", monospace;
+      height: 100vh;
+      background-color: #1d1d1e;
+      color: #fcfcfc;
+    }
+    h1 {
+      font-size: 4em;
+    }
+    a {
+      color: #0096df;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+  </style>
   <body>
-    <h1>olamadı</h1>
+    <div>
+      <h1>404</h1>
+      <p>Ulaşmaya çalıştığınız sayfa artık yok ya da hiç var olmadı.</p>
+      <a href="javascript:history.back()">Dön bebeğim.</a>
+    </div>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
   </body>
 </html>
