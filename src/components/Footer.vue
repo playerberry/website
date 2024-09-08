@@ -43,7 +43,7 @@ const year = new Date().getFullYear();
           <RouterLink to="/privacy-policy">Gizlilik Politikası</RouterLink>
         </li>
         <li>
-          <RouterLink to="/cookies-policy">Çerezlerin Kullanımı</RouterLink>
+          <RouterLink to="/cookies-policy">Çerez Politikası</RouterLink>
         </li>
         <li>
           <RouterLink to="/terms-and-conditions"
