@@ -8,16 +8,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #1d1d1e;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  background-color: @global-background;
+  -webkit-border-radius: @global-border-radius;
+  border-radius: @global-border-radius;
 }
 
 ::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: #4b4b4b;
+  -webkit-border-radius: @global-border-radius;
+  border-radius: @global-border-radius;
+  background: @global-scroll-background-color;
   &:hover {
-    background: #525252;
+    background: @global-scroll-hover-background-color;
   }
 }
