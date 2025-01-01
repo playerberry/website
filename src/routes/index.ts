@@ -7,7 +7,7 @@ import DiscordView from "../views/redirects/DiscordView.vue";
 import FacebookView from "../views/redirects/FacebookView.vue";
 import InstagramView from "../views/redirects/InstagramView.vue";
 import KickView from "../views/redirects/KickView.vue";
-import TickTockView from "../views/redirects/TickTockView.vue";
+import TiktokView from "../views/redirects/TiktokView.vue";
 import TwitchView from "../views/redirects/TwitchView.vue";
 import TwitterView from "../views/redirects/TwitterView.vue";
 import YoutubeView from "../views/redirects/YoutubeView.vue";
@@ -88,8 +88,8 @@ const routes = [
         },
       },
       {
-        path: "ticktock",
-        component: TickTockView,
+        path: "tiktok",
+        component: TiktokView,
         meta: { requiresAuth: false },
         beforeEnter() {
           location.href = "https://github.com";

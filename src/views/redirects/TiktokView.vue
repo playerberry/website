@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>TickTock'a yönlendiriliyorsunuz...</h1>
+  <h1>Tiktok'a yönlendiriliyorsunuz...</h1>
 </template>
