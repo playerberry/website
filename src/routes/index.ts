@@ -35,11 +35,11 @@ const routes = [
         component: DiscordView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.open("https://www.github.com/", "_blank");
         },
       },
       {
-        path: "instagram",
+        path: "/instagram",
         component: InstagramView,
         meta: { requiresAuth: false },
         beforeEnter() {
@@ -47,7 +47,7 @@ const routes = [
         },
       },
       {
-        path: "twitch",
+        path: "/twitch",
         component: TwitchView,
         meta: { requiresAuth: false },
         beforeEnter() {
@@ -55,7 +55,7 @@ const routes = [
         },
       },
       {
-        path: "kick",
+        path: "/kick",
         component: KickView,
         meta: { requiresAuth: false },
         beforeEnter() {
@@ -63,7 +63,7 @@ const routes = [
         },
       },
       {
-        path: "youtube",
+        path: "/youtube",
         component: YoutubeView,
         meta: { requiresAuth: false },
         beforeEnter() {
@@ -71,7 +71,7 @@ const routes = [
         },
       },
       {
-        path: "twitter",
+        path: "/twitter",
         component: TwitterView,
         meta: { requiresAuth: false },
         alias: "/x",
@@ -80,7 +80,7 @@ const routes = [
         },
       },
       {
-        path: "facebook",
+        path: "/facebook",
         component: FacebookView,
         meta: { requiresAuth: false },
         beforeEnter() {
@@ -88,7 +88,7 @@ const routes = [
         },
       },
       {
-        path: "tiktok",
+        path: "/tiktok",
         component: TiktokView,
         meta: { requiresAuth: false },
         beforeEnter() {
