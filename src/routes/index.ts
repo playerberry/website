@@ -31,7 +31,7 @@ const routes = [
     meta: { requiresAuth: false },
     children: [
       {
-        path: "discord",
+        path: "/discord",
         component: DiscordView,
         meta: { requiresAuth: false },
         beforeEnter() {
