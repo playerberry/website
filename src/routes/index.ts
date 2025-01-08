@@ -31,12 +31,12 @@ const routes = [
     meta: { requiresAuth: false },
     children: [
       {
-        path: "/discord",
+        path: "discord",
         component: DiscordView,
         meta: { requiresAuth: false },
         beforeEnter() {
           // Put the full page URL including the protocol http(s) below
-          window.location.replace("https://google.com");
+          window.location.href = "https://google.com";
         },
       },
       {
@@ -97,6 +97,14 @@ const routes = [
         },
       },
     ],
+  },
+  {
+    path: "/links",
+    component: LinkView,
+    meta: { requiresAuth: false },
+    beforEnter() {
+      window.location.replace("https://github.com");
+    },
   },
   {
     path: "/terms-and-conditions",
