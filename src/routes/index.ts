@@ -35,8 +35,8 @@ const routes = [
         component: DiscordView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          console.log("test");
-          //window.location.href = "https://github.com";
+          // Put the full page URL including the protocol http(s) below
+          window.location.replace("https://google.com");
         },
       },
       {

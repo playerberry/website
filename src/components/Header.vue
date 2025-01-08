@@ -43,7 +43,7 @@ import { RouterLink } from "vue-router";
           <RouterLink class="uk-text-large" to="/">Projeler</RouterLink>
         </li>
         <li>
-          <RouterLink class="uk-text-large" to="/">Projeler</RouterLink>
+          <RouterLink class="uk-text-large" to="/">Blog</RouterLink>
         </li>
       </ul>
     </div>
