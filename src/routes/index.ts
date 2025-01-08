@@ -31,68 +31,68 @@ const routes = [
     meta: { requiresAuth: false },
     children: [
       {
-        path: "/discord",
+        path: "discord",
         component: DiscordView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          window.open("https://www.github.com/", "_blank");
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/instagram",
+        path: "instagram",
         component: InstagramView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/twitch",
+        path: "twitch",
         component: TwitchView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/kick",
+        path: "kick",
         component: KickView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/youtube",
+        path: "youtube",
         component: YoutubeView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/twitter",
+        path: "twitter",
         component: TwitterView,
         meta: { requiresAuth: false },
-        alias: "/x",
+        alias: "x",
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/facebook",
+        path: "facebook",
         component: FacebookView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
       {
-        path: "/tiktok",
+        path: "tiktok",
         component: TiktokView,
         meta: { requiresAuth: false },
         beforeEnter() {
-          location.href = "https://github.com";
+          window.location.href = "https://github.com";
         },
       },
     ],
