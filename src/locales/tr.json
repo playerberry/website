@@ -1,0 +1,12 @@
+{
+  "menu": {
+    "aboutus": "Hakkımızda",
+    "store": "Mağaza",
+    "login": "Giriş"
+  },
+  "hero": {
+    "title": "Ohannes!",
+    "description": "Çok ilginçtir tabii ama mesela siteye girildiği anda en çok dikkat çeken şey, üstteki yanar dönerli yazı ve alttaki maviş buton oluyor. Bunun sebebi de tasarım ile insanların ilgi ve odağını bir yere çekebiliyor oluşumuz. İşte tam olarak bu yüzden aslında internet sitelerinde çok da fazla kendi isteğimize göre hareket etmiyor ve manipüle oluşumuz ortaya çıkıyor. Evet hayat çok ilginç sevgili ziyaretçi, mesela insan sevdiği birinin kokusunu çok özleyebiliyor.",
+    "button": "Derdini Sikeyim"
+  }
+}

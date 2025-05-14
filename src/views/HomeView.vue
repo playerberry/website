@@ -6,21 +6,15 @@
       <div class="uk-height-large">
         <div class="uk-text-center">
           <h1 class="uk-heading-large uk-text-bold super-text">
-            Havadisler Var!
+            {{ $t("hero.title") }}
           </h1>
           <p class="uk-text-lead uk-margin-large-top">
-            Çok ilginçtir tabii ama mesela siteye girildiği anda en çok dikkat
-            çeken şey, üstteki yanar dönerli yazı ve alttaki maviş buton oluyor.
-            Bunun sebebi de tasarım ile insanların ilgi ve odağını bir yere
-            çekebiliyor oluşumuz. İşte tam olarak bu yüzden aslında internet
-            sitelerinde çok da fazla kendi isteğimize göre hareket etmiyor ve
-            manipüle oluşumuz ortaya çıkıyor. Evet hayat çok ilginç sevgili
-            ziyaretçi, mesela insan sevdiği birinin kokusunu çok özleyebiliyor.
+            {{ $t("hero.description") }}
           </p>
           <a
             class="uk-button uk-button-primary uk-button-large uk-margin-large-top"
             href="#"
-            >Mağaza'ya Git</a
+            >{{ $t("hero.button") }}</a
           >
         </div>
       </div>

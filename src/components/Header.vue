@@ -14,13 +14,13 @@ import { RouterLink } from "vue-router";
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav uk-visible@s">
             <li>
-              <RouterLink to="/">Hakkımızda</RouterLink>
+              <RouterLink to="/">{{ $t("menu.aboutus") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">Mağaza</RouterLink>
+              <RouterLink to="/">{{ $t("menu.store") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">Üye Ol</RouterLink>
+              <RouterLink to="/">{{ $t("menu.login") }}</RouterLink>
             </li>
           </ul>
           <a
@@ -37,13 +37,19 @@ import { RouterLink } from "vue-router";
     <div class="uk-offcanvas-bar">
       <ul class="uk-nav">
         <li>
-          <RouterLink class="uk-text-large" to="/">Hakkımızda</RouterLink>
+          <RouterLink class="uk-text-large" to="/">{{
+            $t("menu.aboutus")
+          }}</RouterLink>
         </li>
         <li>
-          <RouterLink class="uk-text-large" to="/">Mağaza</RouterLink>
+          <RouterLink class="uk-text-large" to="/">{{
+            $t("menu.store")
+          }}</RouterLink>
         </li>
         <li>
-          <RouterLink class="uk-text-large" to="/">Üye Ol</RouterLink>
+          <RouterLink class="uk-text-large" to="/">{{
+            $t("menu.login")
+          }}</RouterLink>
         </li>
       </ul>
     </div>
