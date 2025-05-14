@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import sentences from "../assets/js/random.ts";
-const sentence = sentences[Math.round((sentences.length - 1) * Math.random())];
+import sentence from "../assets/js/random.ts";
+const randomizedFunny = sentence();
 const year = new Date().getFullYear();
 </script>
 
@@ -58,8 +58,12 @@ const year = new Date().getFullYear();
     <div class="copyright uk-margin">
       <p>
         Bu sitenin yapımında hiçbir
-        <span class="sentence">{{ sentence }}</span> zarar görmemiştir.
-        <br />Tüm hakları saklıdır &copy; {{ year }}
+        <a
+          :href="'https://www.google.com/search?q=' + randomizedFunny"
+          target="_blank"
+          ><span class="sentence">{{ randomizedFunny }}</span></a
+        >
+        zarar görmemiştir. <br />Tüm hakları saklıdır &copy; {{ year }}
       </p>
     </div>
   </div>

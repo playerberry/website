@@ -16,9 +16,44 @@
 @global-selection-background: darken(@global-background, 10%);
 @global-selection-color: @global-color;
 
+@global-card-background: darken(@global-background, 2%);
+@global-card-hover: darken(@global-background, 4%);
+
 @global-scroll-background-color: darken(@global-color, 70%);
 @global-scroll-hover-background-color: darken(@global-color, 60%);
 
 @global-navbar-nav-item-color: darken(@global-color, 20%);
 @global-navbar-nav-item-hover-color: @global-color;
 @global-navbar-nav-item-onclick-color: @global-color;
+
+@bc-highlighted-color: linear-gradient(
+  -45deg,
+  #ffa63d,
+  #ff3d77,
+  #338aff,
+  #3cf0c5
+);
+
+@keyframes supertext {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.super-text {
+  font-weight: 600;
+  background: @bc-highlighted-color;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 600%;
+  animation: supertext 16s linear infinite;
+}

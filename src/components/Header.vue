@@ -17,10 +17,10 @@ import { RouterLink } from "vue-router";
               <RouterLink to="/">Hakkımızda</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">Projeler</RouterLink>
+              <RouterLink to="/">Mağaza</RouterLink>
             </li>
             <li>
-              <RouterLink to="/">Blog</RouterLink>
+              <RouterLink to="/">Üye Ol</RouterLink>
             </li>
           </ul>
           <a
@@ -40,10 +40,10 @@ import { RouterLink } from "vue-router";
           <RouterLink class="uk-text-large" to="/">Hakkımızda</RouterLink>
         </li>
         <li>
-          <RouterLink class="uk-text-large" to="/">Projeler</RouterLink>
+          <RouterLink class="uk-text-large" to="/">Mağaza</RouterLink>
         </li>
         <li>
-          <RouterLink class="uk-text-large" to="/">Blog</RouterLink>
+          <RouterLink class="uk-text-large" to="/">Üye Ol</RouterLink>
         </li>
       </ul>
     </div>
