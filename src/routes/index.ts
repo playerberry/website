@@ -16,6 +16,7 @@ import TosView from "../views/TosView.vue";
 import CookiesView from "../views/CookiesView.vue";
 import PrivacyView from "../views/PrivacyView.vue";
 import ContactView from "../views/ContactView.vue";
+import AboutUsView from "../views/AboutUsView.vue";
 
 import NotFoundView from "../views/NotFoundView.vue";
 
@@ -124,6 +125,11 @@ const routes = [
   {
     path: "/contact",
     component: ContactView,
+    meta: { requiresAuth: false },
+  },
+  {
+    path: "/about-us",
+    component: AboutUsView,
     meta: { requiresAuth: false },
   },
   { path: "/:pathMatch(.*)*", component: NotFoundView },

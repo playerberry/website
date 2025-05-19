@@ -3,7 +3,7 @@
 <template>
   <div class="uk-margin-large-top">
     <div class="uk-container">
-      <h1>Gizlilik Politikası</h1>
+      <h1>Hakkımızda</h1>
       <p>Son Güncelleme: 08 Eylül 2024</p>
       <p>
         Bu Gizlilik Politikası, Hizmeti kullanırken kişisel bilgilerinizi

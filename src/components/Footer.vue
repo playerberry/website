@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
 </script>
 
 <template>
-  <div class="uk-text-center footer uk-margin-xlarge-top">
+  <div class="uk-text-center footer uk-margin-large-top">
     <div class="links">
       <ul>
         <li>
@@ -40,30 +40,40 @@ const year = new Date().getFullYear();
     <div class="policies uk-margin-top">
       <ul>
         <li>
-          <RouterLink to="/privacy-policy">Gizlilik Politikası</RouterLink>
+          <RouterLink to="/about-us">{{ $t("footer.about") }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/cookies-policy">Çerez Politikası</RouterLink>
+          <RouterLink to="/privacy-policy">{{
+            $t("footer.privacy")
+          }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/terms-and-conditions"
-            >Şartlar ve Koşullar</RouterLink
-          >
+          <RouterLink to="/cookies-policy">{{
+            $t("footer.cookies")
+          }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/contact">İletişim</RouterLink>
+          <RouterLink to="/terms-and-conditions">{{
+            $t("footer.terms")
+          }}</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/contact">{{ $t("footer.contact") }}</RouterLink>
         </li>
       </ul>
     </div>
     <div class="copyright uk-margin">
       <p>
-        Bu sitenin yapımında hiçbir
+        {{ $t("footer.randomized.part0") }}
         <a
           :href="'https://www.google.com/search?q=' + randomizedFunny"
           target="_blank"
           ><span class="sentence">{{ randomizedFunny }}</span></a
         >
-        zarar görmemiştir. <br />Tüm hakları saklıdır &copy; {{ year }}
+        {{ $t("footer.randomized.part1") }} <br />{{
+          $t("footer.rights")
+        }}
+        &copy; {{ year }}
       </p>
     </div>
   </div>

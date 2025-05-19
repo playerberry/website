@@ -20,40 +20,35 @@
       </div>
     </div>
     <div class="uk-section uk-margin-large-top">
-      <div class="uk-column-1-3@m uk-column-1-2@s uk-column-1-1">
-        <div class="uk-card uk-card-default uk-card-body">
-          <h3 class="uk-card-title">Lorem ipsum dolor sit amet</h3>
+      <div class="uk-column-1-3@m uk-column-1-2@s uk-column-1-1 uk-margin-top">
+        <div
+          class="uk-card uk-card-default uk-card-body uk-text-center uk-margin-large-bottom"
+        >
+          <h3 class="uk-card-title">{{ $t("cards.1.title") }}</h3>
+          <i class="fa-solid fa-code fa-2xl uk-padding"></i>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatibus, cumque, voluptates, quia quisquam voluptatibus cumque
-            voluptates quia quisquam voluptatibus cumque voluptates quia
-            quisquam voluptatibus cumque voluptates quia quisquam voluptatibus
-            cumque voluptates quia quisquam voluptatibus cumque voluptates quia
+            {{ $t("cards.1.description") }}
           </p>
         </div>
-        <div class="uk-card uk-card-default uk-card-body">
-          <h3 class="uk-card-title">Lorem ipsum dolor sit amet</h3>
+        <div
+          class="uk-card uk-card-default uk-card-body uk-text-center uk-margin-large-bottom"
+        >
+          <h3 class="uk-card-title">{{ $t("cards.2.title") }}</h3>
+          <i class="fa-solid fa-palette fa-2xl uk-padding"></i>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatibus, cumque, voluptates, quia quisquam voluptatibus cumque
-            voluptates quia quisquam voluptatibus cumque voluptates quia
-            quisquam voluptatibus cumque voluptates quia quisquam voluptatibus
-            cumque voluptates quia quisquam voluptatibus cumque voluptates quia
+            {{ $t("cards.2.description") }}
           </p>
         </div>
-        <div class="uk-card uk-card-default uk-card-body">
-          <h3 class="uk-card-title">Lorem ipsum dolor sit amet</h3>
+        <div class="uk-card uk-card-default uk-card-body uk-text-center">
+          <h3 class="uk-card-title">{{ $t("cards.3.title") }}</h3>
+          <i class="fa-solid fa-gear fa-2xl uk-padding"></i>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatibus, cumque, voluptates, quia quisquam voluptatibus cumque
-            voluptates quia quisquam voluptatibus cumque voluptates quia
-            quisquam voluptatibus cumque voluptates quia quisquam voluptatibus
-            cumque voluptates quia quisquam voluptatibus cumque voluptates quia
+            {{ $t("cards.3.description") }}
           </p>
         </div>
       </div>
     </div>
-    <div class="uk-margin-large-top">
+    <div>
       <div class="uk-section">
         <p>
           <a href="https://google.com" target="_blank">Lorem ipsum dolor</a> sit

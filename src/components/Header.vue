@@ -14,9 +14,6 @@ import { RouterLink } from "vue-router";
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav uk-visible@s">
             <li>
-              <RouterLink to="/">{{ $t("menu.aboutus") }}</RouterLink>
-            </li>
-            <li>
               <RouterLink to="/">{{ $t("menu.store") }}</RouterLink>
             </li>
             <li>
