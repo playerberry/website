@@ -35,11 +35,6 @@ import { RouterLink } from "vue-router";
       <ul class="uk-nav">
         <li>
           <RouterLink class="uk-text-large" to="/">{{
-            $t("menu.aboutus")
-          }}</RouterLink>
-        </li>
-        <li>
-          <RouterLink class="uk-text-large" to="/">{{
             $t("menu.store")
           }}</RouterLink>
         </li>

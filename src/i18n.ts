@@ -5,6 +5,7 @@ import tr from "./locales/tr.json";
 const i18n = createI18n({
   locale: "tr",
   fallbackLocale: "en",
+  legacy: false,
   messages: {
     en,
     tr,
