@@ -1,49 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="tr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/playerberry.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/e0433cd9e3.js"
-      crossorigin="anonymous"
-    ></script>
+    <meta
+      name="description"
+      content="PlayerBerry — web, mobil ve bulutta uçtan uca dijital ürünler üreten yazılım stüdyosu."
+    />
+    <meta name="author" content="PlayerBerry" />
+    <meta name="theme-color" content="#0a0a10" />
+    <link rel="canonical" href="https://playerberry.com/" />
 
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PlayerBerry" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:title" content="PlayerBerry — Yazılım Stüdyosu" />
+    <meta
+      property="og:description"
+      content="Web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren bir yazılım stüdyosu."
+    />
+    <meta property="og:url" content="https://playerberry.com/" />
+    <meta property="og:image" content="https://playerberry.com/playerberry.svg" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PlayerBerry — Yazılım Stüdyosu" />
+    <meta
+      name="twitter:description"
+      content="Web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren bir yazılım stüdyosu."
+    />
+    <meta name="twitter:image" content="https://playerberry.com/playerberry.svg" />
+
+    <!-- RSS feeds -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="PlayerBerry Blog (Türkçe)"
+      href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="PlayerBerry Blog (English)"
+      href="/rss-en.xml"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <title>PlayerBerry</title>
-    <!-- GitHub Pages SPA redirect handler: restores the original URL encoded by 404.html -->
     <script>
+      // GitHub Pages SPA fallback: restore the deep link captured by 404.html
+      // before the router boots.
       (function () {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-      (function () {
-        var l = window.location;
-        if (l.search[1] === "/") {
-          var decoded =
-            l.search
-              .slice(1)
-              .split("&")
-              .map(function (s) {
-                return s.replace(/~and~/g, "&");
-              })
-              .join("?");
-          window.history.replaceState(
-            null,
-            null,
-            l.pathname.slice(0, -1) + decoded + l.hash
-          );
+        var redirect = sessionStorage.getItem("pb:redirect");
+        sessionStorage.removeItem("pb:redirect");
+        if (redirect && redirect !== location.pathname + location.search + location.hash) {
+          history.replaceState(null, "", redirect);
         }
       })();
     </script>
-    <script type="module" crossorigin src="/assets/index-V0Z8XzLn.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Jh5Inms4.css">
+    <script type="module" crossorigin src="/assets/index-Ddc6RPIv.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DbackxFg.css">
   </head>
   <body>
     <div id="app"></div>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.11/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.11/dist/js/uikit-icons.min.js"></script>
   </body>
 </html>

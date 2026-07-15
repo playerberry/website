@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PlayerBerry — Blog</title>
+    <link>https://playerberry.com/blog</link>
+    <atom:link href="https://playerberry.com/rss-en.xml" rel="self" type="application/rss+xml" />
+    <description>Architecture decisions, design notes and lessons from the field.</description>
+    <language>en</language>
+    <lastBuildDate>Wed, 15 Jul 2026 22:19:47 GMT</lastBuildDate>
+    <item>
+      <title>Swift Concurrency: Goodbye Callback Hell with async/await</title>
+      <link>https://playerberry.com/blog/swift-concurrency</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency</guid>
+      <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Nested completion handlers turn into an unreadable wall. Swift's async/await lets asynchronous code read like a straight story.]]></description>
+      <content:encoded><![CDATA[<p>The old way of writing asynchronous code starts with good intentions and ends in disaster: a network call, another call inside it, and one more inside that... Each step adds a closure layer and the code becomes a staircase drifting to the right. We fondly call it 'callback hell'.</p>
+<h2>The Old World: Nested Callbacks</h2>
+<p>Even a simple flow — fetch a user, then their avatar — turns into this. Error handling repeats at every layer and the real logic drowns in the noise:</p>
+<pre><code>func loadProfile(id: String,
+                 completion: @escaping (Result&lt;Profile, Error&gt;) -&gt; Void) {
+    fetchUser(id) { result in
+        switch result {
+        case .success(let user):
+            fetchAvatar(user.avatarURL) { avatarResult in
+                switch avatarResult {
+                case .success(let avatar):
+                    completion(.success(Profile(user: user, avatar: avatar)))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        case .failure(let error):
+            completion(.failure(error))
+        }
+    }
+}</code></pre>
+<p>Even at two levels of nesting the eye loses track. By four levels, whoever is reading the code gives up.</p>
+<h2>async/await: Asynchronous Code That Reads Straight</h2>
+<p>Swift's async/await reads the same logic as flat as synchronous code. <code>await</code> means 'wait here, but don't block the thread'; error handling is done with an ordinary <code>try</code>:</p>
+<pre><code>func loadProfile(id: String) async throws -&gt; Profile {
+    let user = try await fetchUser(id)
+    let avatar = try await fetchAvatar(user.avatarURL)
+    return Profile(user: user, avatar: avatar)
+}</code></pre>
+<p>The same work, in a third of the lines and on a single reading line. We no longer unwrap a <code>Result</code> by hand; we let the error bubble up with <code>throws</code>.</p>
+<h2>Parallelism: async let</h2>
+<p>But awaiting everything in sequence is sometimes wasteful: why wait for three independent requests one after another? <code>async let</code> starts the work at once and only waits at the point where we actually need the results:</p>
+<pre><code>func loadDashboard(for id: String) async throws -&gt; Dashboard {
+    async let profile = fetchProfile(id)
+    async let feed = fetchFeed(id)
+    async let badges = fetchBadges(id)
+
+    return try await Dashboard(profile: profile,
+                               feed: feed,
+                               badges: badges)
+}</code></pre>
+<p>The three requests run in parallel; total time drops to the slowest request, not the sum of all three. A near one-line change for a real speed win.</p>
+<h2>Shared State and Actors</h2>
+<p>The real danger of concurrency is multiple tasks mutating the same data at once (a data race). Swift solves this with <code>actor</code>: only one task can touch an actor's state at a time, and the compiler guarantees it for you:</p>
+<pre><code>actor ImageCache {
+    private var store: [URL: Image] = [:]
+
+    func image(for url: URL) -&gt; Image? {
+        store[url]
+    }
+
+    func insert(_ image: Image, for url: URL) {
+        store[url] = image
+    }
+}
+
+// Usage — every access to the actor is awaited:
+let cache = ImageCache()
+await cache.insert(avatar, for: url)
+let hit = await cache.image(for: url)</code></pre>
+<blockquote><p>async/await doesn't make code shorter; it makes it readable. The biggest win isn't in the line count but in the head of whoever reads that code six months later.</p></blockquote>
+<p>In the end, asynchronous code in modern Swift is no longer something to fear. We traded callback staircases for a flat narrative, and fragile locks for compiler-guaranteed actors. The code is both safer and, finally, readable.</p>]]></content:encoded>
+      <category>Swift</category>
+      <category>Concurrency</category>
+    </item>
+    <item>
+      <title>Modern C++: Stop Managing Memory by Hand</title>
+      <link>https://playerberry.com/blog/modern-cpp-bellek</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek</guid>
+      <pubDate>Sun, 12 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Every `new` is a promise, every `delete` a debt — and debts get forgotten. Modern C++ frees memory for you, at exactly the right time.]]></description>
+      <content:encoded><![CDATA[<p>C++'s power and its curse come from the same place: you command memory directly. But that power means a single forgotten <code>delete</code> can turn into an hours-long leak hunt. The good news: in modern C++ you almost never need to manage memory by hand anymore.</p>
+<h2>The Cost of Doing It by Hand</h2>
+<p>Look at the classic trap. The function below looks innocent, but a single early <code>return</code> ruins everything:</p>
+<pre><code>void process() {
+    Widget* w = new Widget();
+
+    if (!w-&gt;init()) {
+        return;            // leak! delete was never called
+    }
+
+    w-&gt;run();
+    delete w;
+}</code></pre>
+<p>When <code>init()</code> fails, <code>delete</code> is never called and the <code>Widget</code> is orphaned in memory. It gets worse with exceptions: if <code>run()</code> throws, you leak again.</p>
+<h2>RAII: Resource Acquisition Is Initialization</h2>
+<p>The name is odd but the idea is simple: tie the resource to an object's lifetime. When the object leaves scope, its destructor is called automatically and releases the resource. This is RAII, and it is C++'s most powerful idea:</p>
+<pre><code>class FileHandle {
+public:
+    explicit FileHandle(const char* path)
+        : file_(std::fopen(path, &quot;r&quot;)) {}
+
+    ~FileHandle() {
+        if (file_) std::fclose(file_);
+    }
+
+    // Forbid copying: two objects must not close the same file.
+    FileHandle(const FileHandle&amp;) = delete;
+    FileHandle&amp; operator=(const FileHandle&amp;) = delete;
+
+    std::FILE* get() const { return file_; }
+
+private:
+    std::FILE* file_;
+};</code></pre>
+<p>However the <code>FileHandle</code> object is destroyed — normal exit, an early <code>return</code>, or an exception — the destructor runs and the file is closed. By deleting the copy operations (<code>= delete</code>) we also stop two objects from closing the same file.</p>
+<h2>Smart Pointers</h2>
+<p>The standard library packages RAII for pointers: <code>unique_ptr</code> manages sole ownership, <code>shared_ptr</code> shared ownership. You stop writing <code>new</code>/<code>delete</code> entirely:</p>
+<pre><code>#include &lt;memory&gt;
+
+auto w = std::make_unique&lt;Widget&gt;();
+if (!w-&gt;init()) {
+    return;               // no leak — w is destroyed automatically
+}
+w-&gt;run();
+
+// Shared ownership: freed when the last owner is gone.
+std::shared_ptr&lt;Config&gt; config = std::make_shared&lt;Config&gt;();
+useConfig(config);</code></pre>
+<p>An object created with <code>make_unique</code> is deleted automatically when the pointer leaves scope — early <code>return</code> or exception included. <code>shared_ptr</code> releases the object when its last owner is gone, keeping the reference count for you.</p>
+<blockquote><p>The rule in modern C++ is clear: if you're writing raw <code>new</code> and <code>delete</code>, you're probably doing it wrong. Tie memory to an object's lifetime and let the compiler handle the rest.</p></blockquote>
+<p>Memory safety in C++ isn't a dream, it's a habit. With RAII and smart pointers you eliminate most leaks and double-frees at compile time — without giving up the language's raw power.</p>]]></content:encoded>
+      <category>C++</category>
+      <category>Memory</category>
+    </item>
+    <item>
+      <title>Pointers in C: Feared but Misunderstood</title>
+      <link>https://playerberry.com/blog/c-isaretciler</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Pointers are C's most feared topic, yet they rest on a single idea: holding an address instead of a value. Let's take it apart, step by step.]]></description>
+      <content:encoded><![CDATA[<p>The wall beginners hit in C is almost always the same one: pointers. Yet a pointer is not complex magic but a one-sentence idea — holding not a variable's value, but that value's address in memory. Everything else follows from that.</p>
+<h2>What Is a Pointer?</h2>
+<p><code>&amp;</code> gives a variable's address, <code>*</code> reaches the value at an address. They are the inverse of each other:</p>
+<pre><code>int x = 42;
+int *p = &amp;x;          // p holds the address of x
+
+printf(&quot;%d\n&quot;, *p);   // 42 — the value p points to
+*p = 7;               // x is now 7, because p points to it</code></pre>
+<p><code>p</code> knows where <code>x</code> lives. With <code>*p</code> we read or write the value at that address; <code>*p = 7</code> is exactly the same as changing <code>x</code> directly. That is precisely the secret behind functions that change values 'by reference'.</p>
+<h2>Arrays and Pointers</h2>
+<p>C's most surprising fact: an array name, in most contexts, 'decays' to the address of its first element. So arrays and pointers are far closer relatives than they look:</p>
+<pre><code>int nums[3] = {10, 20, 30};
+int *p = nums;        // the array name decays to the first element's address
+
+printf(&quot;%d\n&quot;, *(p + 2));   // 30 — identical to nums[2]
+printf(&quot;%d\n&quot;, p[2]);       // 30 — bracket syntax works on pointers too</code></pre>
+<p><code>p[2]</code> and <code>*(p + 2)</code> are exactly the same thing; the bracket syntax is just shorthand. Pointer arithmetic accounts for element size automatically, so <code>p + 2</code> moves two <code>int</code>s forward — not two bytes.</p>
+<h2>Signalling Intent with const</h2>
+<p>The cheapest way to make pointers safe is <code>const</code>. Passing a <code>const</code> pointer to a function is a promise — 'I won't change this' — and the compiler enforces it:</p>
+<pre><code>void printName(const char *name) {
+    // trying to write through name is a compile error
+    printf(&quot;Hello, %s\n&quot;, name);
+}</code></pre>
+<p>This little keyword both gives the caller a guarantee and protects you from your own mistakes: try to change the data by accident and the code won't compile.</p>
+<blockquote><p>Pointers aren't scary; uncertainty is. Once you know exactly what a pointer points to, and how far, you hold C's most powerful tool.</p></blockquote>
+<p>Once you understand pointers, the rest of C falls into place: arrays, strings, dynamic memory and data structures are all built on the same basic idea. Not a topic to fear — the heart of C.</p>]]></content:encoded>
+      <category>C</category>
+      <category>Systems</category>
+    </item>
+    <item>
+      <title>Adding an LLM to Your Product: The Gap Between Demo and Product</title>
+      <link>https://playerberry.com/blog/llm-urun-entegrasyonu</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu</guid>
+      <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Building a working demo takes a week; turning it into a product you can trust takes six months. Here is where that difference hides.]]></description>
+      <content:encoded><![CDATA[<p>The first time you run a language-model demo you get a magical moment: a few lines of code, an API key, and a system that answers like a human. The trouble is that this magic is the most deceptive trap on the road to a real product. A demo shows the happy path; a product has to live with every unhappy path there is.</p>
+<h2>Making Peace with Uncertainty</h2>
+<p>In traditional software the same input always produces the same output. With LLMs there is no such guarantee; ask the same question twice and you may get two different, sometimes contradictory, answers. So we build our architecture not around 'the right answer' but around 'the range of acceptable answers'. We validate output against a schema and automatically retry responses that don't fit the expected shape.</p>
+<p>Lowering the temperature reduces uncertainty but also dulls creativity. The art is deciding how much predictability you want in each part of the product. For a legal summary we use values near zero; for a marketing copy suggestion, something higher.</p>
+<h2>Context Is Everything</h2>
+<p>Model quality usually comes not from the model itself but from the context you give it. In a RAG (retrieval-augmented generation) architecture the real engineering is finding the right document at the right moment and handing it to the model. A poor retrieval layer makes even the strongest model useless; a good one pushes a mid-sized model beyond expectations.</p>
+<p>Cramming the context window full is tempting but expensive, and it scatters the model's attention. 'More context is better' is the wrong intuition; 'more relevant context is better' is the right one. Two relevant paragraphs always beat ten irrelevant ones.</p>
+<h2>Taking Evaluation Seriously</h2>
+<p>In classic tests a function either passes or fails. How do you test an LLM-based feature? For every important flow we keep an 'eval set': hundreds of examples drawn from real user questions, labelled with the expected behaviour. Every time we change a prompt or a model, we rerun the set and check for regressions.</p>
+<blockquote><p>A good eval set is the unit test of LLM products. Without it, every change is a gamble and every deploy is a prayer.</p></blockquote>
+<h2>The Reality of Cost and Latency</h2>
+<p>In a demo nobody thinks about token cost. In a product every request is real money and real seconds. A routing layer that sends easy questions to a small, cheap model and only hard ones to a large model often cuts the bill in half. Streaming responses radically improves perceived speed: if the user sees the first word in 300 milliseconds, the wait disappears even when the full answer takes three seconds.</p>
+<p>In the end, adding an LLM is not an 'API call' task but a product-engineering discipline. The magic starts in the demo; trust is built when you tame uncertainty, context, evaluation and cost one by one.</p>]]></content:encoded>
+      <category>AI</category>
+      <category>Product</category>
+    </item>
+    <item>
+      <title>Core Web Vitals: How Users Actually Feel Speed</title>
+      <link>https://playerberry.com/blog/core-web-vitals</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals</guid>
+      <pubDate>Fri, 03 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Speed isn't a number, it's a feeling. Google's three metrics really measure a user's patience — here is how we actually improve them.]]></description>
+      <content:encoded><![CDATA[<p>A site being 'fast' has less to do with how quickly the server responds and more with how quickly the user can get things done. Core Web Vitals tries to measure exactly that: is it loading, is it responding, is it jumping around? Three metrics quantify three of a user's most frustrating moments.</p>
+<h2>LCP: 'When did the page arrive?'</h2>
+<p>Largest Contentful Paint measures the moment the biggest piece of content hits the screen — usually a cover image or heading. For the user, that is the 'the page is here' feeling. The most common culprit is late-loading images. Preloading the cover image, using modern formats (AVIF/WebP) and sizing it to the screen improves LCP by whole seconds on most projects.</p>
+<p>Another hidden culprit is render-blocking fonts. Sites that hide text until the font loads show a blank screen for far too long. With <code>font-display: swap</code> you can show text in a system font first and swap to the brand font later, noticeably improving perceived speed.</p>
+<h2>INP: 'I clicked, why is nothing happening?'</h2>
+<p>Interaction to Next Paint measures how long the interface takes to respond after a user interaction. The real enemy here is heavy JavaScript that locks the main thread. While the browser is busy with a single long task, clicks queue up and the interface feels frozen.</p>
+<p>The fix is to break the work up: split long computations into small chunks, defer code you don't really need, and move work into Web Workers where you can. When the user presses a button, having the screen say something instantly — even just a loading indicator — beats a silent freeze every time.</p>
+<h2>CLS: 'I was about to click and it moved!'</h2>
+<p>Cumulative Layout Shift measures how much content jumps around while the page loads. Everyone has felt it: you're reading an article, a late ad loads at the top, and the whole text slides down. The main cause is images and embeds whose size wasn't declared up front.</p>
+<p>The cure is simple but requires discipline: give every image and embed a width/height or aspect ratio, and reserve space for dynamic content ahead of time. Preventing layout shift is one of the cheapest yet most noticeable improvements you can make.</p>
+<blockquote><p>Performance isn't a one-off task, it's a budget. Every new feature spends from it; stop measuring and the debt quietly piles up.</p></blockquote>
+<p>We track these three metrics not just in lab tests but with real user data (RUM). Because a site that runs flawlessly on your fast machine can be a completely different experience on a three-year-old phone over a weak connection. Real performance is what your slowest user sees.</p>]]></content:encoded>
+      <category>Performance</category>
+      <category>UX</category>
+    </item>
+    <item>
+      <title>Modelling 'Invalid States Impossible' with TypeScript</title>
+      <link>https://playerberry.com/blog/typescript-tip-guvenligi</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi</guid>
+      <pubDate>Sat, 27 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[The best bug isn't the one you catch at runtime — it's the one the compiler never let you write. Using the type system as a design tool.]]></description>
+      <content:encoded><![CDATA[<p>Most teams see TypeScript as 'adding types to JavaScript'. We use it as a design tool: the goal isn't to slap labels on variables but to make invalid states unrepresentable from the start. Code the compiler rejects can never reach production.</p>
+<h2>The Boolean Swamp</h2>
+<p>When you give a component three separate fields — <code>isLoading</code>, <code>isError</code>, <code>data</code> — the type system offers you eight possible combinations, yet only three or four of them make sense. A state where both <code>isLoading</code> and <code>isError</code> are <code>true</code> is nonsensical, but the type system allows it. These 'impossible' states are exactly where real bugs are born.</p>
+<p>The solution is discriminated union types. You split the state into distinct shapes, each carrying its own fields:</p>
+<pre><code>type State =
+  | { status: 'loading' }
+  | { status: 'error'; error: Error }
+  | { status: 'success'; data: User };</code></pre>
+<p>In this model you can only access <code>data</code> in the <code>success</code> case; the compiler rejects code that tries to read the data in an error state while you're still writing it.</p>
+<h2>Primitive Obsession</h2>
+<p>A user id is a <code>string</code>, an email is a <code>string</code>, an amount is a <code>number</code>... When they're all the same type, nothing stops you from accidentally passing a user id where an email is expected. Branded types close that gap:</p>
+<pre><code>type UserId = string &amp; { readonly brand: unique symbol };
+
+// You can't pass a plain string here — the compiler rejects it.
+function loadUser(id: UserId) { /* ... */ }</code></pre>
+<p>Now you can't pass an ordinary string to a function that expects a <code>UserId</code>; mixing up an id and an email becomes a compile error.</p>
+<p>This technique is a lifesaver especially for values whose mix-up is costly: money, dates and units of measure. The famous Mars Climate Orbiter crash came from mixing metric and imperial units; a good type system could have turned that into a compile error.</p>
+<h2>Validate at the Boundaries</h2>
+<p>Type safety only holds inside your own code. JSON from an API, input from a form, or a value read from <code>localStorage</code> may not actually be a <code>User</code> even if you write <code>as User</code>. <code>as</code> is an expression of hope, not a guarantee. At the system's boundaries we run runtime validation (with a schema validator, for example) and bind the validated data to the type. That way our inner code can be written trusting that the data really is what it claims to be.</p>
+<blockquote><p>Treat the type system as a thinking tool, not a safety net. Well-modelled types reveal the gaps in your design before you write a single line of code.</p></blockquote>
+<p>In the end, in a well-typed codebase the fear of refactoring disappears. Change one field and every broken spot lights up red; before you write a test, the compiler hands you a to-do list. This is one of the rare places where speed and confidence rise at the same time.</p>]]></content:encoded>
+      <category>TypeScript</category>
+      <category>Architecture</category>
+    </item>
+    <item>
+      <title>Accessibility Is Not an Afterthought</title>
+      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan</guid>
+      <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Accessibility isn't a compliance checkbox — it is good design itself. From keyboard to screen reader, how do you build genuinely inclusive interfaces?]]></description>
+      <content:encoded><![CDATA[<p>On most projects accessibility is left for last: 'let's make it work first, then make it accessible.' But accessibility added afterwards is both more expensive and worse. Accessibility considered from the start usually produces a better product for everyone.</p>
+<h2>Keyboard: A World Without a Mouse</h2>
+<p>The fastest accessibility test is to set the mouse aside and try to navigate the site with only Tab, Enter and the arrow keys. Is the focus order sensible? Can you reach every button? Can you leave a menu you opened with Escape? Is there a visible focus ring? An interface that fails this test is broken not only for disabled users but for anyone who works keyboard-first.</p>
+<p>The most common mistake is putting a click handler on a <code>&lt;div&gt;</code> and using it as a button. It looks the same, but it can't be focused with the keyboard, doesn't respond to Enter, and doesn't tell a screen reader it's a 'button'. Using the right HTML element is worth more than hundreds of lines of ARIA patching.</p>
+<h2>Screen Readers: Navigating Without Seeing</h2>
+<p>A screen-reader user doesn't scan the page with their eyes; they listen to the structure by jumping between headings, landmarks and links. So a meaningful heading hierarchy and correct HTML5 landmarks (<code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code>) aren't just a 'clean code' matter — they're a real navigation tool.</p>
+<p>Writing meaningful alternative text for images is a craft too. 'image1.jpg' is worthless; 'a chart' is inadequate; 'line chart showing revenue rising 20% last quarter' actually carries information. Alt text isn't about describing the image — it's about conveying the information it holds.</p>
+<h2>Colour and Motion</h2>
+<p>Conveying information with colour alone is a common trap: when you say 'the red areas are errors', colour-blind users see nothing. Colour should always be accompanied by an icon, a label or a pattern. Contrast ratios aren't negotiable either; that stylish light-grey text is unreadable in sunlight or with weak eyesight.</p>
+<p>For users sensitive to motion, honouring the <code>prefers-reduced-motion</code> preference isn't a courtesy but a requirement. Large transition animations can cause real physical discomfort for some people; offering a calm experience to those who opt in is as easy as a single CSS media query.</p>
+<blockquote><p>Captions were invented for the deaf, but we all use them on a noisy train. When you design for the narrowest condition, the product gets clearer for everyone.</p></blockquote>
+<p>For us accessibility isn't a checklist, it's a habit. We test every component with the keyboard, choose every colour by its contrast, write the text for every image. This isn't extra work for a minority; it's the natural result of a sturdier, more thoughtful product for everyone.</p>]]></content:encoded>
+      <category>Accessibility</category>
+      <category>Frontend</category>
+    </item>
+    <item>
+      <title>Performance Tips for Vue 3.5 Reactivity</title>
+      <link>https://playerberry.com/blog/vue-3-5-performans</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans</guid>
+      <pubDate>Thu, 18 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[The new reactivity core drastically cuts memory usage. Three practical techniques that matter on large lists.]]></description>
+      <content:encoded><![CDATA[<p>Vue 3.5 practically rewrote the internals of its reactivity system: dependency tracking now runs on a doubly-linked list and memory usage dropped significantly compared to the previous release. This matters most for tables with thousands of rows and dashboards that update in real time. But the infrastructure improvement is not automatic magic; benefiting from it still requires deliberate decisions.</p>
+<h2>Drop Deep Tracking</h2>
+<p>By default Vue makes every level of an object reactive. Often you don't need that: tracking each element of a 5,000-point data array for a chart just burns memory and CPU. With <code>shallowRef</code> and <code>shallowReactive</code> you track only the top level, and when you swap the data out as a whole you eliminate Vue's needless deep traversal entirely.</p>
+<p>The rule in practice: if you're 'replacing, not mutating' the data, you don't need deep reactivity. On large, mostly read-only datasets shallow reactivity is often the single biggest win.</p>
+<h2>Split Computed Values Deliberately</h2>
+<p>Computing ten different things inside one giant <code>computed</code> is tempting but dangerous: when a single dependency changes, everything recomputes. Splitting computed values into small, single-responsibility pieces lets Vue recompute only the part that actually changed. Small computeds are both faster and more readable.</p>
+<h2>Use v-memo in the Right Place</h2>
+<p><code>v-memo</code> tells Vue not to re-render specific rows of a list as long as their dependencies haven't changed. Used correctly it works miracles on large tables; used wrongly it produces subtle bugs, because you've told Vue 'don't update this row'. Our rule: v-memo only goes on multi-row, rarely-changing lists that are a measured bottleneck — never 'just in case'.</p>
+<blockquote><p>Don't optimize without measuring — but once you measure, refactor without fear. Guesswork optimization creates more problems than it solves.</p></blockquote>
+<p>On one analytics dashboard where we combined all three techniques, first paint time was cut in half and scrolling became visibly smoother. There is no magic switch, but a team that understands how reactivity works can ship a product twice as smooth on the same hardware.</p>]]></content:encoded>
+      <category>Vue</category>
+      <category>Performance</category>
+    </item>
+    <item>
+      <title>Building a Design System from Scratch: Tokens to Components</title>
+      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak</guid>
+      <pubDate>Sat, 02 May 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Don't start with a color palette. A good design system standardizes decisions first, values second.]]></description>
+      <content:encoded><![CDATA[<p>Most teams start a design system by picking colors; we start with decisions: how many variants does a button need, when does a card get a shadow, when is the danger color allowed? Values are the output of those decisions, not the input. Systems that start with color look pretty but fall apart on the first real feature.</p>
+<h2>A Three-Layer Token Architecture</h2>
+<p>We split the token layer in three. At the bottom are raw values: meaning-free constants like <code>berry-500</code> and <code>space-4</code>. In the middle are semantic roles: <code>surface</code>, <code>border</code>, <code>danger</code> — what a value is for. At the top are component tokens: specific uses like <code>button-primary-bg</code>. A component never looks at a raw value, only at a semantic role.</p>
+<p>That separation feels like extra abstraction at first; its payoff shows up when you change themes. A dark theme, a branded light theme or a high-contrast theme all compile from a single component codebase, just by swapping the semantic layer. The moment you write a raw <code>#ff3d77</code> inside a component, you lose that flexibility.</p>
+<h2>Components Encode Decisions</h2>
+<p>A good component encodes not just the look but the decision. A <code>Button</code> component should offer meaningful variants — 'primary, secondary, danger' — not 'blue button, red button'. So when a designer says 'this action is dangerous', the developer picks the right variant, and what colour that is becomes the system's problem, not the page's.</p>
+<p>We keep the number of variants deliberately small. Every new variant is a new surface to maintain, test and keep consistent. Variants added 'just in case' are the fastest-rotting part of a system.</p>
+<h2>Keeping the System Alive</h2>
+<p>To keep the system alive we set one hard rule: no value enters the code that doesn't exist in the design, and no component enters the design that doesn't exist in code. Both sides feed from the same source. The rule sounds boring, but it is the only thing that keeps 'special case' CSS from slowly strangling the system.</p>
+<blockquote><p>A design system isn't a product, it's an agreement. The moment the rules loosen, the system turns first into a style guide, then into a graveyard of files.</p></blockquote>
+<p>With that discipline our system has grown for six months without a single line of one-off CSS. A new page is no longer writing CSS from scratch but arranging existing components — one of those rare cases where speed comes without sacrificing consistency.</p>]]></content:encoded>
+      <category>Design Systems</category>
+      <category>Less</category>
+    </item>
+    <item>
+      <title>Interfaces That Feel Native with SwiftUI</title>
+      <link>https://playerberry.com/blog/swiftui-ile-native</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native</guid>
+      <pubDate>Fri, 27 Mar 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[What cross-platform tools can't capture are animation curves and touch details. Here's how we handle them in SwiftUI.]]></description>
+      <content:encoded><![CDATA[<p>What makes an app 'feel native' mostly hides in three things: the curve of transition animations, the timing of haptic feedback and the scroll physics of lists. SwiftUI borrows all three from the platform itself — it doesn't imitate them. These fine details are exactly what cross-platform tools struggle most to capture.</p>
+<h2>Native Feel Hides in the Details</h2>
+<p>If a transition's duration is right but its curve is wrong, the user feels 'something is artificial' without being able to say why. iOS's own spring animations have been fine-tuned for years; using them instead of reinventing them is a free layer of quality. The same goes for haptics: a small vibration at the right moment gives the sense that an action 'really happened'.</p>
+<h2>A Three-Layer Interface Architecture</h2>
+<p>In our projects we split the interface into three layers: pure view components, state-owning containers and navigation. Pure views know no business logic; they only draw the data handed to them. Thanks to that separation we can preview a view on its own, without running the whole app:</p>
+<pre><code>struct AvatarView: View {
+    let user: User
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Circle()
+                .fill(.pink.gradient)
+                .frame(width: 44, height: 44)
+            Text(user.name)
+                .font(.headline)
+        }
+    }
+}</code></pre>
+<p>SwiftUI's preview system becomes a superpower in this architecture. View previews work almost like living design documentation; we look at the same screen as the designer and speak the same language. The 'should this spacing be 4 or 8?' debate happens instantly, without running the code and waiting.</p>
+<h2>When to Drop Down to UIKit</h2>
+<p>SwiftUI has matured, but it isn't the right tool for everything. For highly complex places that need millimetre control — text editors or camera interfaces — we still drop down to UIKit and bridge it into SwiftUI. The craft is knowing where to draw that line: dogmatically insisting 'everything in SwiftUI' sometimes makes a simple job harder.</p>
+<blockquote><p>The question is no longer 'is it possible?' but 'what is the cleanest way?'. With the right architecture, even a one-person team can ship an App Store quality product in weeks.</p></blockquote>
+<p>Here is where SwiftUI has arrived: you get the platform's native feel almost for free, then add your own product decisions on top. For a team that respects the details, that means apps that are both fast to build and genuinely good to use.</p>]]></content:encoded>
+      <category>Swift</category>
+      <category>iOS</category>
+    </item>
+    <item>
+      <title>Monorepo Architecture: One Repo, Many Products</title>
+      <link>https://playerberry.com/blog/monorepo-mimarisi</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi</guid>
+      <pubDate>Tue, 10 Feb 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[What do you gain when the API, web, mobile and the design system live in one repository — and where should you be careful?]]></description>
+      <content:encoded><![CDATA[<p>Every team with more than one product hits the same question: separate repositories or a single one? We keep everything that shares a contract in one repo: API schemas, design tokens and the applications consuming them. When a contract changes, whatever breaks shows up in the same pull request — not as a mysterious bug that explodes in another repo three days later.</p>
+<h2>Why a Single Repo?</h2>
+<p>A monorepo's biggest promise is the 'atomic change'. When you rename an API field, you can update the web and mobile apps that use it in the same commit. In separate repos this turns into a version-bump dance, pull requests waiting on each other, and 'which version is compatible with which' tables. In a single repo the main branch is always internally consistent.</p>
+<p>Shared code is the second big win. Instead of copying a date-formatting function or a validation schema three times, we keep it in one place; a fix is made once and applies everywhere.</p>
+<h2>It Collapses Without Layer Discipline</h2>
+<p>The secret is layer discipline: shared packages know nothing about runtime details, and applications never reach into the internals of shared packages. The moment that boundary blurs, a monorepo stops being a convenience and becomes a giant ball of dependencies; everything depends on everything and nothing can be tested in isolation.</p>
+<p>That's why keeping the dependency direction one-way is non-negotiable: apps may depend on packages, packages never on apps. A lint rule that enforces this automatically saves hundreds of hours of debugging over the long run.</p>
+<h2>Tooling at Scale</h2>
+<p>As the repo grows, rebuilding and retesting everything every time becomes unbearable. Our recipe is simple: pnpm workspaces link the packages, and Turborepo reruns only what changed and what depends on it. Thanks to cached tasks, we don't even build an unchanged package a second time.</p>
+<blockquote><p>As the repo grows, add automation, not rules. Every rule you expect people to remember is eventually forgotten; every rule the tools enforce is permanent.</p></blockquote>
+<p>A monorepo isn't a magic solution; applied wrong it can turn into one big mess. But for products that share a contract, with the right layer discipline and tooling, it's one of the strongest structures for keeping a team both fast and consistent at once.</p>]]></content:encoded>
+      <category>Architecture</category>
+      <category>Tooling</category>
+    </item>
+  </channel>
+</rss>
