@@ -63,7 +63,7 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
             ></a>
           </div>
         </div>
-        <div class="uk-width-1-3 uk-width-1-5@m">
+        <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
           <h4 class="pb-footer-heading">{{ $t("footer.nav") }}</h4>
           <ul class="pb-footer-links">
             <li>
@@ -85,7 +85,7 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
             </li>
           </ul>
         </div>
-        <div class="uk-width-1-3 uk-width-1-5@m">
+        <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
           <h4 class="pb-footer-heading">{{ $t("footer.legal") }}</h4>
           <ul class="pb-footer-links">
             <li>
@@ -105,7 +105,7 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
             </li>
           </ul>
         </div>
-        <div class="uk-width-1-3 uk-width-1-5@m">
+        <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
           <h4 class="pb-footer-heading">{{ $t("footer.contact") }}</h4>
           <ul class="pb-footer-links">
             <li>
