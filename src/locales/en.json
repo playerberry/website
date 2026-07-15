@@ -1,0 +1,450 @@
+{
+  "menu": {
+    "home": "Home",
+    "projects": "Projects",
+    "blog": "Blog",
+    "store": "Store",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Open for new projects",
+    "titleTop": "Not ordinary software —",
+    "titleHighlight": "epic experiences.",
+    "description": "PlayerBerry is a software studio designing and building end-to-end digital products across web, mobile and cloud. We take your idea, turn it into a product, and grow it together.",
+    "ctaPrimary": "Explore Our Work",
+    "ctaSecondary": "Get in Touch",
+    "stats": {
+      "years": { "value": "8+", "label": "Years of experience" },
+      "projects": { "value": "40+", "label": "Projects shipped" },
+      "clients": { "value": "25+", "label": "Happy clients" },
+      "uptime": { "value": "99.9%", "label": "Uptime" }
+    }
+  },
+  "home": {
+    "services": {
+      "eyebrow": "// what we do",
+      "title": "End-to-end product development",
+      "lead": "From idea to launch — design, engineering and infrastructure under one roof.",
+      "items": {
+        "web": {
+          "title": "Web Applications",
+          "description": "Scalable, fast and accessible web applications built with Vue and TypeScript."
+        },
+        "mobile": {
+          "title": "Mobile Applications",
+          "description": "Truly native, App Store quality iOS experiences crafted with Swift and SwiftUI."
+        },
+        "design": {
+          "title": "UI/UX Design",
+          "description": "Design systems, prototypes and user-centered interfaces that set your product apart."
+        },
+        "devops": {
+          "title": "Cloud & DevOps",
+          "description": "Docker, CI/CD and cloud infrastructure to ship your product safely and keep it running."
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "// how we work",
+      "title": "From idea to product in four steps",
+      "lead": "The same discipline on every project: clear scope, fast feedback, measurable results.",
+      "steps": {
+        "discover": {
+          "title": "Discovery",
+          "description": "We clarify the problem, the audience and the success criteria together."
+        },
+        "design": {
+          "title": "Design",
+          "description": "Flows, prototypes and a design system — you see the product before code is written."
+        },
+        "build": {
+          "title": "Development",
+          "description": "Short sprints, continuous previews and testing; a working release every week."
+        },
+        "launch": {
+          "title": "Launch & Support",
+          "description": "We ship, monitor and grow. We leave when the product settles, not when the work stops."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "// projects",
+      "title": "Selected work",
+      "lead": "A slice of production products across different industries.",
+      "viewAll": "All projects"
+    },
+    "journal": {
+      "eyebrow": "// blog",
+      "title": "Latest from the blog",
+      "lead": "We write down what we learn: architecture decisions, design notes, field experience.",
+      "viewAll": "All posts"
+    },
+    "cta": {
+      "title": "Have a project in mind?",
+      "description": "Let's talk it through over a coffee — we'll shape the scope and roadmap together.",
+      "button": "Get a Quote"
+    }
+  },
+  "projects": {
+    "eyebrow": "// portfolio",
+    "title": "Projects",
+    "lead": "Hand-picked work that is live in production, touching real users.",
+    "categories": {
+      "all": "All",
+      "web": "Web",
+      "mobile": "Mobile",
+      "design": "Design",
+      "devops": "DevOps"
+    },
+    "items": {
+      "nova": {
+        "title": "Nova Analytics",
+        "description": "Real-time analytics dashboard for SaaS teams. Turns complex data into insight within seconds."
+      },
+      "pulse": {
+        "title": "Pulse Fit",
+        "description": "Workout tracking app with Apple Watch integration and full HealthKit synchronization."
+      },
+      "atlas": {
+        "title": "Atlas Commerce",
+        "description": "High-traffic e-commerce platform with Stripe payments and advanced catalog management."
+      },
+      "echo": {
+        "title": "Echo Chat",
+        "description": "Real-time messaging infrastructure with millisecond latency; WebSocket and Redis fan-out."
+      },
+      "forge": {
+        "title": "Forge CI",
+        "description": "Lightweight self-hosted CI/CD orchestrator with container-based isolated builds."
+      },
+      "orbit": {
+        "title": "Orbit DS",
+        "description": "Scalable, design-token driven design system for a multi-brand product family."
+      }
+    }
+  },
+  "blog": {
+    "eyebrow": "// journal",
+    "title": "Blog",
+    "lead": "Architecture decisions, design notes and lessons from the field.",
+    "readingTime": "{minutes} min read",
+    "back": "All posts",
+    "copy": "Copy",
+    "copied": "Copied",
+    "posts": {
+      "swift-concurrency": {
+        "title": "Swift Concurrency: Goodbye Callback Hell with async/await",
+        "excerpt": "Nested completion handlers turn into an unreadable wall. Swift's async/await lets asynchronous code read like a straight story.",
+        "body": [
+          "The old way of writing asynchronous code starts with good intentions and ends in disaster: a network call, another call inside it, and one more inside that... Each step adds a closure layer and the code becomes a staircase drifting to the right. We fondly call it 'callback hell'.",
+          "## The Old World: Nested Callbacks",
+          "Even a simple flow — fetch a user, then their avatar — turns into this. Error handling repeats at every layer and the real logic drowns in the noise:",
+          "```swift\nfunc loadProfile(id: String,\n                 completion: @escaping (Result<Profile, Error>) -> Void) {\n    fetchUser(id) { result in\n        switch result {\n        case .success(let user):\n            fetchAvatar(user.avatarURL) { avatarResult in\n                switch avatarResult {\n                case .success(let avatar):\n                    completion(.success(Profile(user: user, avatar: avatar)))\n                case .failure(let error):\n                    completion(.failure(error))\n                }\n            }\n        case .failure(let error):\n            completion(.failure(error))\n        }\n    }\n}\n```",
+          "Even at two levels of nesting the eye loses track. By four levels, whoever is reading the code gives up.",
+          "## async/await: Asynchronous Code That Reads Straight",
+          "Swift's async/await reads the same logic as flat as synchronous code. `await` means 'wait here, but don't block the thread'; error handling is done with an ordinary `try`:",
+          "```swift\nfunc loadProfile(id: String) async throws -> Profile {\n    let user = try await fetchUser(id)\n    let avatar = try await fetchAvatar(user.avatarURL)\n    return Profile(user: user, avatar: avatar)\n}\n```",
+          "The same work, in a third of the lines and on a single reading line. We no longer unwrap a `Result` by hand; we let the error bubble up with `throws`.",
+          "## Parallelism: async let",
+          "But awaiting everything in sequence is sometimes wasteful: why wait for three independent requests one after another? `async let` starts the work at once and only waits at the point where we actually need the results:",
+          "```swift\nfunc loadDashboard(for id: String) async throws -> Dashboard {\n    async let profile = fetchProfile(id)\n    async let feed = fetchFeed(id)\n    async let badges = fetchBadges(id)\n\n    return try await Dashboard(profile: profile,\n                               feed: feed,\n                               badges: badges)\n}\n```",
+          "The three requests run in parallel; total time drops to the slowest request, not the sum of all three. A near one-line change for a real speed win.",
+          "## Shared State and Actors",
+          "The real danger of concurrency is multiple tasks mutating the same data at once (a data race). Swift solves this with `actor`: only one task can touch an actor's state at a time, and the compiler guarantees it for you:",
+          "```swift\nactor ImageCache {\n    private var store: [URL: Image] = [:]\n\n    func image(for url: URL) -> Image? {\n        store[url]\n    }\n\n    func insert(_ image: Image, for url: URL) {\n        store[url] = image\n    }\n}\n\n// Usage — every access to the actor is awaited:\nlet cache = ImageCache()\nawait cache.insert(avatar, for: url)\nlet hit = await cache.image(for: url)\n```",
+          "> async/await doesn't make code shorter; it makes it readable. The biggest win isn't in the line count but in the head of whoever reads that code six months later.",
+          "In the end, asynchronous code in modern Swift is no longer something to fear. We traded callback staircases for a flat narrative, and fragile locks for compiler-guaranteed actors. The code is both safer and, finally, readable."
+        ]
+      },
+      "modern-cpp-bellek": {
+        "title": "Modern C++: Stop Managing Memory by Hand",
+        "excerpt": "Every `new` is a promise, every `delete` a debt — and debts get forgotten. Modern C++ frees memory for you, at exactly the right time.",
+        "body": [
+          "C++'s power and its curse come from the same place: you command memory directly. But that power means a single forgotten `delete` can turn into an hours-long leak hunt. The good news: in modern C++ you almost never need to manage memory by hand anymore.",
+          "## The Cost of Doing It by Hand",
+          "Look at the classic trap. The function below looks innocent, but a single early `return` ruins everything:",
+          "```cpp\nvoid process() {\n    Widget* w = new Widget();\n\n    if (!w->init()) {\n        return;            // leak! delete was never called\n    }\n\n    w->run();\n    delete w;\n}\n```",
+          "When `init()` fails, `delete` is never called and the `Widget` is orphaned in memory. It gets worse with exceptions: if `run()` throws, you leak again.",
+          "## RAII: Resource Acquisition Is Initialization",
+          "The name is odd but the idea is simple: tie the resource to an object's lifetime. When the object leaves scope, its destructor is called automatically and releases the resource. This is RAII, and it is C++'s most powerful idea:",
+          "```cpp\nclass FileHandle {\npublic:\n    explicit FileHandle(const char* path)\n        : file_(std::fopen(path, \"r\")) {}\n\n    ~FileHandle() {\n        if (file_) std::fclose(file_);\n    }\n\n    // Forbid copying: two objects must not close the same file.\n    FileHandle(const FileHandle&) = delete;\n    FileHandle& operator=(const FileHandle&) = delete;\n\n    std::FILE* get() const { return file_; }\n\nprivate:\n    std::FILE* file_;\n};\n```",
+          "However the `FileHandle` object is destroyed — normal exit, an early `return`, or an exception — the destructor runs and the file is closed. By deleting the copy operations (`= delete`) we also stop two objects from closing the same file.",
+          "## Smart Pointers",
+          "The standard library packages RAII for pointers: `unique_ptr` manages sole ownership, `shared_ptr` shared ownership. You stop writing `new`/`delete` entirely:",
+          "```cpp\n#include <memory>\n\nauto w = std::make_unique<Widget>();\nif (!w->init()) {\n    return;               // no leak — w is destroyed automatically\n}\nw->run();\n\n// Shared ownership: freed when the last owner is gone.\nstd::shared_ptr<Config> config = std::make_shared<Config>();\nuseConfig(config);\n```",
+          "An object created with `make_unique` is deleted automatically when the pointer leaves scope — early `return` or exception included. `shared_ptr` releases the object when its last owner is gone, keeping the reference count for you.",
+          "> The rule in modern C++ is clear: if you're writing raw `new` and `delete`, you're probably doing it wrong. Tie memory to an object's lifetime and let the compiler handle the rest.",
+          "Memory safety in C++ isn't a dream, it's a habit. With RAII and smart pointers you eliminate most leaks and double-frees at compile time — without giving up the language's raw power."
+        ]
+      },
+      "c-isaretciler": {
+        "title": "Pointers in C: Feared but Misunderstood",
+        "excerpt": "Pointers are C's most feared topic, yet they rest on a single idea: holding an address instead of a value. Let's take it apart, step by step.",
+        "body": [
+          "The wall beginners hit in C is almost always the same one: pointers. Yet a pointer is not complex magic but a one-sentence idea — holding not a variable's value, but that value's address in memory. Everything else follows from that.",
+          "## What Is a Pointer?",
+          "`&` gives a variable's address, `*` reaches the value at an address. They are the inverse of each other:",
+          "```c\nint x = 42;\nint *p = &x;          // p holds the address of x\n\nprintf(\"%d\\n\", *p);   // 42 — the value p points to\n*p = 7;               // x is now 7, because p points to it\n```",
+          "`p` knows where `x` lives. With `*p` we read or write the value at that address; `*p = 7` is exactly the same as changing `x` directly. That is precisely the secret behind functions that change values 'by reference'.",
+          "## Arrays and Pointers",
+          "C's most surprising fact: an array name, in most contexts, 'decays' to the address of its first element. So arrays and pointers are far closer relatives than they look:",
+          "```c\nint nums[3] = {10, 20, 30};\nint *p = nums;        // the array name decays to the first element's address\n\nprintf(\"%d\\n\", *(p + 2));   // 30 — identical to nums[2]\nprintf(\"%d\\n\", p[2]);       // 30 — bracket syntax works on pointers too\n```",
+          "`p[2]` and `*(p + 2)` are exactly the same thing; the bracket syntax is just shorthand. Pointer arithmetic accounts for element size automatically, so `p + 2` moves two `int`s forward — not two bytes.",
+          "## Signalling Intent with const",
+          "The cheapest way to make pointers safe is `const`. Passing a `const` pointer to a function is a promise — 'I won't change this' — and the compiler enforces it:",
+          "```c\nvoid printName(const char *name) {\n    // trying to write through name is a compile error\n    printf(\"Hello, %s\\n\", name);\n}\n```",
+          "This little keyword both gives the caller a guarantee and protects you from your own mistakes: try to change the data by accident and the code won't compile.",
+          "> Pointers aren't scary; uncertainty is. Once you know exactly what a pointer points to, and how far, you hold C's most powerful tool.",
+          "Once you understand pointers, the rest of C falls into place: arrays, strings, dynamic memory and data structures are all built on the same basic idea. Not a topic to fear — the heart of C."
+        ]
+      },
+      "llm-urun-entegrasyonu": {
+        "title": "Adding an LLM to Your Product: The Gap Between Demo and Product",
+        "excerpt": "Building a working demo takes a week; turning it into a product you can trust takes six months. Here is where that difference hides.",
+        "body": [
+          "The first time you run a language-model demo you get a magical moment: a few lines of code, an API key, and a system that answers like a human. The trouble is that this magic is the most deceptive trap on the road to a real product. A demo shows the happy path; a product has to live with every unhappy path there is.",
+          "## Making Peace with Uncertainty",
+          "In traditional software the same input always produces the same output. With LLMs there is no such guarantee; ask the same question twice and you may get two different, sometimes contradictory, answers. So we build our architecture not around 'the right answer' but around 'the range of acceptable answers'. We validate output against a schema and automatically retry responses that don't fit the expected shape.",
+          "Lowering the temperature reduces uncertainty but also dulls creativity. The art is deciding how much predictability you want in each part of the product. For a legal summary we use values near zero; for a marketing copy suggestion, something higher.",
+          "## Context Is Everything",
+          "Model quality usually comes not from the model itself but from the context you give it. In a RAG (retrieval-augmented generation) architecture the real engineering is finding the right document at the right moment and handing it to the model. A poor retrieval layer makes even the strongest model useless; a good one pushes a mid-sized model beyond expectations.",
+          "Cramming the context window full is tempting but expensive, and it scatters the model's attention. 'More context is better' is the wrong intuition; 'more relevant context is better' is the right one. Two relevant paragraphs always beat ten irrelevant ones.",
+          "## Taking Evaluation Seriously",
+          "In classic tests a function either passes or fails. How do you test an LLM-based feature? For every important flow we keep an 'eval set': hundreds of examples drawn from real user questions, labelled with the expected behaviour. Every time we change a prompt or a model, we rerun the set and check for regressions.",
+          "> A good eval set is the unit test of LLM products. Without it, every change is a gamble and every deploy is a prayer.",
+          "## The Reality of Cost and Latency",
+          "In a demo nobody thinks about token cost. In a product every request is real money and real seconds. A routing layer that sends easy questions to a small, cheap model and only hard ones to a large model often cuts the bill in half. Streaming responses radically improves perceived speed: if the user sees the first word in 300 milliseconds, the wait disappears even when the full answer takes three seconds.",
+          "In the end, adding an LLM is not an 'API call' task but a product-engineering discipline. The magic starts in the demo; trust is built when you tame uncertainty, context, evaluation and cost one by one."
+        ]
+      },
+      "core-web-vitals": {
+        "title": "Core Web Vitals: How Users Actually Feel Speed",
+        "excerpt": "Speed isn't a number, it's a feeling. Google's three metrics really measure a user's patience — here is how we actually improve them.",
+        "body": [
+          "A site being 'fast' has less to do with how quickly the server responds and more with how quickly the user can get things done. Core Web Vitals tries to measure exactly that: is it loading, is it responding, is it jumping around? Three metrics quantify three of a user's most frustrating moments.",
+          "## LCP: 'When did the page arrive?'",
+          "Largest Contentful Paint measures the moment the biggest piece of content hits the screen — usually a cover image or heading. For the user, that is the 'the page is here' feeling. The most common culprit is late-loading images. Preloading the cover image, using modern formats (AVIF/WebP) and sizing it to the screen improves LCP by whole seconds on most projects.",
+          "Another hidden culprit is render-blocking fonts. Sites that hide text until the font loads show a blank screen for far too long. With `font-display: swap` you can show text in a system font first and swap to the brand font later, noticeably improving perceived speed.",
+          "## INP: 'I clicked, why is nothing happening?'",
+          "Interaction to Next Paint measures how long the interface takes to respond after a user interaction. The real enemy here is heavy JavaScript that locks the main thread. While the browser is busy with a single long task, clicks queue up and the interface feels frozen.",
+          "The fix is to break the work up: split long computations into small chunks, defer code you don't really need, and move work into Web Workers where you can. When the user presses a button, having the screen say something instantly — even just a loading indicator — beats a silent freeze every time.",
+          "## CLS: 'I was about to click and it moved!'",
+          "Cumulative Layout Shift measures how much content jumps around while the page loads. Everyone has felt it: you're reading an article, a late ad loads at the top, and the whole text slides down. The main cause is images and embeds whose size wasn't declared up front.",
+          "The cure is simple but requires discipline: give every image and embed a width/height or aspect ratio, and reserve space for dynamic content ahead of time. Preventing layout shift is one of the cheapest yet most noticeable improvements you can make.",
+          "> Performance isn't a one-off task, it's a budget. Every new feature spends from it; stop measuring and the debt quietly piles up.",
+          "We track these three metrics not just in lab tests but with real user data (RUM). Because a site that runs flawlessly on your fast machine can be a completely different experience on a three-year-old phone over a weak connection. Real performance is what your slowest user sees."
+        ]
+      },
+      "typescript-tip-guvenligi": {
+        "title": "Modelling 'Invalid States Impossible' with TypeScript",
+        "excerpt": "The best bug isn't the one you catch at runtime — it's the one the compiler never let you write. Using the type system as a design tool.",
+        "body": [
+          "Most teams see TypeScript as 'adding types to JavaScript'. We use it as a design tool: the goal isn't to slap labels on variables but to make invalid states unrepresentable from the start. Code the compiler rejects can never reach production.",
+          "## The Boolean Swamp",
+          "When you give a component three separate fields — `isLoading`, `isError`, `data` — the type system offers you eight possible combinations, yet only three or four of them make sense. A state where both `isLoading` and `isError` are `true` is nonsensical, but the type system allows it. These 'impossible' states are exactly where real bugs are born.",
+          "The solution is discriminated union types. You split the state into distinct shapes, each carrying its own fields:",
+          "```ts\ntype State =\n  | { status: 'loading' }\n  | { status: 'error'; error: Error }\n  | { status: 'success'; data: User };\n```",
+          "In this model you can only access `data` in the `success` case; the compiler rejects code that tries to read the data in an error state while you're still writing it.",
+          "## Primitive Obsession",
+          "A user id is a `string`, an email is a `string`, an amount is a `number`... When they're all the same type, nothing stops you from accidentally passing a user id where an email is expected. Branded types close that gap:",
+          "```ts\ntype UserId = string & { readonly brand: unique symbol };\n\n// You can't pass a plain string here — the compiler rejects it.\nfunction loadUser(id: UserId) { /* ... */ }\n```",
+          "Now you can't pass an ordinary string to a function that expects a `UserId`; mixing up an id and an email becomes a compile error.",
+          "This technique is a lifesaver especially for values whose mix-up is costly: money, dates and units of measure. The famous Mars Climate Orbiter crash came from mixing metric and imperial units; a good type system could have turned that into a compile error.",
+          "## Validate at the Boundaries",
+          "Type safety only holds inside your own code. JSON from an API, input from a form, or a value read from `localStorage` may not actually be a `User` even if you write `as User`. `as` is an expression of hope, not a guarantee. At the system's boundaries we run runtime validation (with a schema validator, for example) and bind the validated data to the type. That way our inner code can be written trusting that the data really is what it claims to be.",
+          "> Treat the type system as a thinking tool, not a safety net. Well-modelled types reveal the gaps in your design before you write a single line of code.",
+          "In the end, in a well-typed codebase the fear of refactoring disappears. Change one field and every broken spot lights up red; before you write a test, the compiler hands you a to-do list. This is one of the rare places where speed and confidence rise at the same time."
+        ]
+      },
+      "erisilebilirlik-varsayilan": {
+        "title": "Accessibility Is Not an Afterthought",
+        "excerpt": "Accessibility isn't a compliance checkbox — it is good design itself. From keyboard to screen reader, how do you build genuinely inclusive interfaces?",
+        "body": [
+          "On most projects accessibility is left for last: 'let's make it work first, then make it accessible.' But accessibility added afterwards is both more expensive and worse. Accessibility considered from the start usually produces a better product for everyone.",
+          "## Keyboard: A World Without a Mouse",
+          "The fastest accessibility test is to set the mouse aside and try to navigate the site with only Tab, Enter and the arrow keys. Is the focus order sensible? Can you reach every button? Can you leave a menu you opened with Escape? Is there a visible focus ring? An interface that fails this test is broken not only for disabled users but for anyone who works keyboard-first.",
+          "The most common mistake is putting a click handler on a `<div>` and using it as a button. It looks the same, but it can't be focused with the keyboard, doesn't respond to Enter, and doesn't tell a screen reader it's a 'button'. Using the right HTML element is worth more than hundreds of lines of ARIA patching.",
+          "## Screen Readers: Navigating Without Seeing",
+          "A screen-reader user doesn't scan the page with their eyes; they listen to the structure by jumping between headings, landmarks and links. So a meaningful heading hierarchy and correct HTML5 landmarks (`<nav>`, `<main>`, `<header>`) aren't just a 'clean code' matter — they're a real navigation tool.",
+          "Writing meaningful alternative text for images is a craft too. 'image1.jpg' is worthless; 'a chart' is inadequate; 'line chart showing revenue rising 20% last quarter' actually carries information. Alt text isn't about describing the image — it's about conveying the information it holds.",
+          "## Colour and Motion",
+          "Conveying information with colour alone is a common trap: when you say 'the red areas are errors', colour-blind users see nothing. Colour should always be accompanied by an icon, a label or a pattern. Contrast ratios aren't negotiable either; that stylish light-grey text is unreadable in sunlight or with weak eyesight.",
+          "For users sensitive to motion, honouring the `prefers-reduced-motion` preference isn't a courtesy but a requirement. Large transition animations can cause real physical discomfort for some people; offering a calm experience to those who opt in is as easy as a single CSS media query.",
+          "> Captions were invented for the deaf, but we all use them on a noisy train. When you design for the narrowest condition, the product gets clearer for everyone.",
+          "For us accessibility isn't a checklist, it's a habit. We test every component with the keyboard, choose every colour by its contrast, write the text for every image. This isn't extra work for a minority; it's the natural result of a sturdier, more thoughtful product for everyone."
+        ]
+      },
+      "vue-3-5-performans": {
+        "title": "Performance Tips for Vue 3.5 Reactivity",
+        "excerpt": "The new reactivity core drastically cuts memory usage. Three practical techniques that matter on large lists.",
+        "body": [
+          "Vue 3.5 practically rewrote the internals of its reactivity system: dependency tracking now runs on a doubly-linked list and memory usage dropped significantly compared to the previous release. This matters most for tables with thousands of rows and dashboards that update in real time. But the infrastructure improvement is not automatic magic; benefiting from it still requires deliberate decisions.",
+          "## Drop Deep Tracking",
+          "By default Vue makes every level of an object reactive. Often you don't need that: tracking each element of a 5,000-point data array for a chart just burns memory and CPU. With `shallowRef` and `shallowReactive` you track only the top level, and when you swap the data out as a whole you eliminate Vue's needless deep traversal entirely.",
+          "The rule in practice: if you're 'replacing, not mutating' the data, you don't need deep reactivity. On large, mostly read-only datasets shallow reactivity is often the single biggest win.",
+          "## Split Computed Values Deliberately",
+          "Computing ten different things inside one giant `computed` is tempting but dangerous: when a single dependency changes, everything recomputes. Splitting computed values into small, single-responsibility pieces lets Vue recompute only the part that actually changed. Small computeds are both faster and more readable.",
+          "## Use v-memo in the Right Place",
+          "`v-memo` tells Vue not to re-render specific rows of a list as long as their dependencies haven't changed. Used correctly it works miracles on large tables; used wrongly it produces subtle bugs, because you've told Vue 'don't update this row'. Our rule: v-memo only goes on multi-row, rarely-changing lists that are a measured bottleneck — never 'just in case'.",
+          "> Don't optimize without measuring — but once you measure, refactor without fear. Guesswork optimization creates more problems than it solves.",
+          "On one analytics dashboard where we combined all three techniques, first paint time was cut in half and scrolling became visibly smoother. There is no magic switch, but a team that understands how reactivity works can ship a product twice as smooth on the same hardware."
+        ]
+      },
+      "tasarim-sistemi-kurmak": {
+        "title": "Building a Design System from Scratch: Tokens to Components",
+        "excerpt": "Don't start with a color palette. A good design system standardizes decisions first, values second.",
+        "body": [
+          "Most teams start a design system by picking colors; we start with decisions: how many variants does a button need, when does a card get a shadow, when is the danger color allowed? Values are the output of those decisions, not the input. Systems that start with color look pretty but fall apart on the first real feature.",
+          "## A Three-Layer Token Architecture",
+          "We split the token layer in three. At the bottom are raw values: meaning-free constants like `berry-500` and `space-4`. In the middle are semantic roles: `surface`, `border`, `danger` — what a value is for. At the top are component tokens: specific uses like `button-primary-bg`. A component never looks at a raw value, only at a semantic role.",
+          "That separation feels like extra abstraction at first; its payoff shows up when you change themes. A dark theme, a branded light theme or a high-contrast theme all compile from a single component codebase, just by swapping the semantic layer. The moment you write a raw `#ff3d77` inside a component, you lose that flexibility.",
+          "## Components Encode Decisions",
+          "A good component encodes not just the look but the decision. A `Button` component should offer meaningful variants — 'primary, secondary, danger' — not 'blue button, red button'. So when a designer says 'this action is dangerous', the developer picks the right variant, and what colour that is becomes the system's problem, not the page's.",
+          "We keep the number of variants deliberately small. Every new variant is a new surface to maintain, test and keep consistent. Variants added 'just in case' are the fastest-rotting part of a system.",
+          "## Keeping the System Alive",
+          "To keep the system alive we set one hard rule: no value enters the code that doesn't exist in the design, and no component enters the design that doesn't exist in code. Both sides feed from the same source. The rule sounds boring, but it is the only thing that keeps 'special case' CSS from slowly strangling the system.",
+          "> A design system isn't a product, it's an agreement. The moment the rules loosen, the system turns first into a style guide, then into a graveyard of files.",
+          "With that discipline our system has grown for six months without a single line of one-off CSS. A new page is no longer writing CSS from scratch but arranging existing components — one of those rare cases where speed comes without sacrificing consistency."
+        ]
+      },
+      "swiftui-ile-native": {
+        "title": "Interfaces That Feel Native with SwiftUI",
+        "excerpt": "What cross-platform tools can't capture are animation curves and touch details. Here's how we handle them in SwiftUI.",
+        "body": [
+          "What makes an app 'feel native' mostly hides in three things: the curve of transition animations, the timing of haptic feedback and the scroll physics of lists. SwiftUI borrows all three from the platform itself — it doesn't imitate them. These fine details are exactly what cross-platform tools struggle most to capture.",
+          "## Native Feel Hides in the Details",
+          "If a transition's duration is right but its curve is wrong, the user feels 'something is artificial' without being able to say why. iOS's own spring animations have been fine-tuned for years; using them instead of reinventing them is a free layer of quality. The same goes for haptics: a small vibration at the right moment gives the sense that an action 'really happened'.",
+          "## A Three-Layer Interface Architecture",
+          "In our projects we split the interface into three layers: pure view components, state-owning containers and navigation. Pure views know no business logic; they only draw the data handed to them. Thanks to that separation we can preview a view on its own, without running the whole app:",
+          "```swift\nstruct AvatarView: View {\n    let user: User\n\n    var body: some View {\n        HStack(spacing: 12) {\n            Circle()\n                .fill(.pink.gradient)\n                .frame(width: 44, height: 44)\n            Text(user.name)\n                .font(.headline)\n        }\n    }\n}\n```",
+          "SwiftUI's preview system becomes a superpower in this architecture. View previews work almost like living design documentation; we look at the same screen as the designer and speak the same language. The 'should this spacing be 4 or 8?' debate happens instantly, without running the code and waiting.",
+          "## When to Drop Down to UIKit",
+          "SwiftUI has matured, but it isn't the right tool for everything. For highly complex places that need millimetre control — text editors or camera interfaces — we still drop down to UIKit and bridge it into SwiftUI. The craft is knowing where to draw that line: dogmatically insisting 'everything in SwiftUI' sometimes makes a simple job harder.",
+          "> The question is no longer 'is it possible?' but 'what is the cleanest way?'. With the right architecture, even a one-person team can ship an App Store quality product in weeks.",
+          "Here is where SwiftUI has arrived: you get the platform's native feel almost for free, then add your own product decisions on top. For a team that respects the details, that means apps that are both fast to build and genuinely good to use."
+        ]
+      },
+      "monorepo-mimarisi": {
+        "title": "Monorepo Architecture: One Repo, Many Products",
+        "excerpt": "What do you gain when the API, web, mobile and the design system live in one repository — and where should you be careful?",
+        "body": [
+          "Every team with more than one product hits the same question: separate repositories or a single one? We keep everything that shares a contract in one repo: API schemas, design tokens and the applications consuming them. When a contract changes, whatever breaks shows up in the same pull request — not as a mysterious bug that explodes in another repo three days later.",
+          "## Why a Single Repo?",
+          "A monorepo's biggest promise is the 'atomic change'. When you rename an API field, you can update the web and mobile apps that use it in the same commit. In separate repos this turns into a version-bump dance, pull requests waiting on each other, and 'which version is compatible with which' tables. In a single repo the main branch is always internally consistent.",
+          "Shared code is the second big win. Instead of copying a date-formatting function or a validation schema three times, we keep it in one place; a fix is made once and applies everywhere.",
+          "## It Collapses Without Layer Discipline",
+          "The secret is layer discipline: shared packages know nothing about runtime details, and applications never reach into the internals of shared packages. The moment that boundary blurs, a monorepo stops being a convenience and becomes a giant ball of dependencies; everything depends on everything and nothing can be tested in isolation.",
+          "That's why keeping the dependency direction one-way is non-negotiable: apps may depend on packages, packages never on apps. A lint rule that enforces this automatically saves hundreds of hours of debugging over the long run.",
+          "## Tooling at Scale",
+          "As the repo grows, rebuilding and retesting everything every time becomes unbearable. Our recipe is simple: pnpm workspaces link the packages, and Turborepo reruns only what changed and what depends on it. Thanks to cached tasks, we don't even build an unchanged package a second time.",
+          "> As the repo grows, add automation, not rules. Every rule you expect people to remember is eventually forgotten; every rule the tools enforce is permanent.",
+          "A monorepo isn't a magic solution; applied wrong it can turn into one big mess. But for products that share a contract, with the right layer discipline and tooling, it's one of the strongest structures for keeping a team both fast and consistent at once."
+        ]
+      }
+    }
+  },
+  "store": {
+    "eyebrow": "// digital products",
+    "title": "Store",
+    "lead": "We package the tools we use in our own projects: templates, component sets and starter kits.",
+    "buy": "Buy Now",
+    "soon": "Coming soon",
+    "badges": {
+      "popular": "Popular",
+      "new": "New"
+    },
+    "items": {
+      "berry-ui": {
+        "category": "Design System",
+        "title": "Berry UI Kit",
+        "description": "Dark-themed Less design system built on UIkit; 40+ ready-made blocks and a token architecture."
+      },
+      "vue-launch": {
+        "category": "Template",
+        "title": "Vue Launch",
+        "description": "Vue 3 + TypeScript + Vite starter template; ships with i18n, router and a test setup."
+      },
+      "swift-components": {
+        "category": "iOS",
+        "title": "Swift Components",
+        "description": "SwiftUI component pack: charts, cards and animated controls. Fully previewable."
+      },
+      "icon-forge": {
+        "category": "Icon Set",
+        "title": "Icon Forge",
+        "description": "400+ pixel-perfect icons in SVG and font formats, in two weights."
+      },
+      "api-boiler": {
+        "category": "Backend",
+        "title": "API Boiler",
+        "description": "Fastify + PostgreSQL API skeleton; authentication, schema validation and OpenAPI included."
+      },
+      "berry-blocks": {
+        "category": "Template",
+        "title": "Berry Blocks",
+        "description": "25 ready-made landing blocks for marketing sites; copy, adapt, publish."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "// contact",
+    "title": "Say hello",
+    "lead": "Write to us to discuss your project, get a quote, or just to say hi.",
+    "note": "We usually reply within 24 hours."
+  },
+  "about": {
+    "eyebrow": "// about us",
+    "title": "Small team, ambitious work",
+    "lead": "PlayerBerry is an independent software studio that takes ideas to production. No agency crowd — you talk to the people doing the work.",
+    "story": [
+      "We started in 2018 with a single question: can good design, solid engineering and honest communication live in one team? Since then we've taken dozens of products from idea to launch across web, mobile and cloud.",
+      "Instead of scaling into a big agency, we chose to stay small and senior. On every project you talk directly to the person building it — no layers in between. That's why decisions are fast and feedback turns into code the same day.",
+      "We leave when the product settles, not when the work stops. For us success isn't delivered code; it's a product that serves its users, stays easy to maintain and keeps growing over time."
+    ],
+    "values": {
+      "craft": {
+        "title": "Craft",
+        "description": "Every detail counts. From pixel alignment to database indexes, we sweat the small stuff."
+      },
+      "clarity": {
+        "title": "Clarity",
+        "description": "Scope, timeline and cost are clear from day one. No surprise invoices, no hidden assumptions."
+      },
+      "partnership": {
+        "title": "Partnership",
+        "description": "We work as part of your team, not as a vendor. Your goal is our goal."
+      },
+      "longevity": {
+        "title": "Longevity",
+        "description": "We write code that's fast today and easy to maintain tomorrow — so the product lasts for years."
+      }
+    },
+    "cta": {
+      "title": "Let's work together",
+      "description": "Tell us your idea and we'll shape the scope and roadmap with you.",
+      "button": "Get in Touch"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for may have moved or never existed.",
+    "button": "Back to home"
+  },
+  "footer": {
+    "tagline": "A software studio building end-to-end digital products across web, mobile and cloud.",
+    "nav": "Site",
+    "rss": "RSS Feed",
+    "legal": "Legal",
+    "follow": "Follow us",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookies Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "randomized": {
+      "part0": "No ",
+      "part1": " was harmed in the making of this site."
+    },
+    "rights": "All rights reserved"
+  }
+}

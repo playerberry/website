@@ -1,0 +1,64 @@
+// ─── PlayerBerry design tokens ───────────────────────────────
+
+// Surfaces
+@pb-bg: #0a0a10;
+@pb-bg-raised: #10101a;
+@pb-surface: #14141f;
+@pb-surface-hover: #191926;
+@pb-border: rgba(255, 255, 255, 0.08);
+@pb-border-strong: rgba(255, 255, 255, 0.14);
+
+// Text
+@pb-text: #f2f2f7;
+@pb-text-emphasis: #ffffff;
+@pb-muted: #9a9aab;
+
+// Brand palette (berry first)
+@pb-berry: #ff3d77;
+@pb-violet: #8b5cf6;
+@pb-blue: #338aff;
+@pb-cyan: #3cf0c5;
+@pb-amber: #ffa63d;
+
+@pb-gradient-brand: linear-gradient(
+  -45deg,
+  @pb-amber,
+  @pb-berry,
+  @pb-violet,
+  @pb-blue,
+  @pb-cyan
+);
+@pb-gradient-primary: linear-gradient(135deg, @pb-berry 0%, @pb-violet 100%);
+
+// Shape
+@pb-radius: 16px;
+@pb-radius-small: 12px;
+@pb-radius-pill: 999px;
+
+// ─── UIkit variable overrides ────────────────────────────────
+
+@global-font-family: @pb-font-body;
+@global-font-size: 1rem;
+
+@global-color: @pb-text;
+@global-emphasis-color: @pb-text-emphasis;
+@global-muted-color: @pb-muted;
+
+@global-background: @pb-bg;
+@global-muted-background: @pb-surface;
+@global-secondary-background: @pb-surface;
+@global-primary-background: @pb-berry;
+
+@global-link-color: @pb-berry;
+@global-link-hover-color: lighten(@pb-berry, 8%);
+
+@global-border: @pb-border;
+
+@base-heading-font-family: @pb-font-display;
+@base-heading-font-weight: 600;
+@base-heading-color: @pb-text-emphasis;
+
+@offcanvas-bar-background: @pb-bg-raised;
+
+@navbar-background: transparent;
+@navbar-nav-item-height: 72px;

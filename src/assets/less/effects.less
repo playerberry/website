@@ -1,0 +1,106 @@
+// ─────────────────────────────────────────────────────────────
+// Ambient effects & accessibility
+// Global, mostly decorative layers that give the site its "alive"
+// feel: a drifting aurora, film grain, the scroll-progress bar and
+// the pointer spotlight token. Everything here degrades gracefully
+// and is silenced under `prefers-reduced-motion`.
+// ─────────────────────────────────────────────────────────────
+
+// Animatable spotlight tint used by cards (see card.less). Registering the
+// custom property lets browsers transition the colour smoothly on hover;
+// where @property is unsupported it simply snaps, which is still fine.
+@supports (background: paint(id)) {
+  @property --pb-spot-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: rgba(255, 61, 119, 0);
+  }
+}
+
+// Slowly drifting aurora behind all content. Sits above the body's static
+// radial wash but below the app, so it colours the page without ever
+// intercepting pointer events.
+body::before {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 38% at 18% 22%, rgba(139, 92, 246, 0.12), transparent 60%),
+    radial-gradient(34% 34% at 82% 12%, rgba(255, 61, 119, 0.1), transparent 60%),
+    radial-gradient(44% 44% at 70% 82%, rgba(60, 240, 197, 0.07), transparent 62%);
+  filter: blur(30px);
+  animation: pb-aurora 26s ease-in-out infinite alternate;
+}
+
+@keyframes pb-aurora {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.06);
+  }
+
+  100% {
+    transform: translate3d(-2%, 1.8%, 0) scale(1.03);
+  }
+}
+
+// Fine film grain across the whole surface for a premium, tactile finish.
+// Very low opacity and non-interactive, layered above everything visually.
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+// Scroll-progress bar (see ScrollProgress.vue). Fixed above the header.
+.pb-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 990;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pb-scroll-progress-bar {
+  height: 100%;
+  background: @pb-gradient-brand;
+  background-size: 200% 100%;
+  box-shadow: 0 0 12px rgba(255, 61, 119, 0.55);
+  animation: pb-gradient-shift 10s ease infinite;
+  transition: width 0.1s linear;
+}
+
+// Brand-consistent keyboard focus ring. Only shows for keyboard users, so it
+// never intrudes on pointer interactions.
+:focus-visible {
+  outline: 2px solid @pb-berry;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+// Respect users who prefer reduced motion: freeze animations, disable smooth
+// scrolling and collapse transitions to near-instant.
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

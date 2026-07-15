@@ -1,0 +1,450 @@
+{
+  "menu": {
+    "home": "Ana Sayfa",
+    "projects": "Projeler",
+    "blog": "Blog",
+    "store": "Mağaza",
+    "contact": "İletişim"
+  },
+  "hero": {
+    "badge": "Yeni projelere açığız",
+    "titleTop": "Sıradan yazılım değil,",
+    "titleHighlight": "epik deneyimler.",
+    "description": "PlayerBerry; web, mobil ve bulut üzerinde uçtan uca dijital ürünler tasarlayan ve geliştiren bir yazılım stüdyosudur. Fikrinizi alır, ürüne dönüştürür, birlikte büyütürüz.",
+    "ctaPrimary": "Projelerimizi İnceleyin",
+    "ctaSecondary": "Bize Ulaşın",
+    "stats": {
+      "years": { "value": "8+", "label": "Yıl deneyim" },
+      "projects": { "value": "40+", "label": "Tamamlanan proje" },
+      "clients": { "value": "25+", "label": "Mutlu müşteri" },
+      "uptime": { "value": "%99,9", "label": "Çalışma süresi" }
+    }
+  },
+  "home": {
+    "services": {
+      "eyebrow": "// neler yapıyoruz",
+      "title": "Uçtan uca ürün geliştirme",
+      "lead": "Fikir aşamasından yayına; tasarım, geliştirme ve altyapının tamamını tek çatı altında topluyoruz.",
+      "items": {
+        "web": {
+          "title": "Web Uygulamaları",
+          "description": "Vue ve TypeScript ile ölçeklenebilir, hızlı ve erişilebilir web uygulamaları geliştiriyoruz."
+        },
+        "mobile": {
+          "title": "Mobil Uygulamalar",
+          "description": "Swift ve SwiftUI ile App Store kalitesinde, gerçekten native iOS deneyimleri üretiyoruz."
+        },
+        "design": {
+          "title": "UI/UX Tasarım",
+          "description": "Tasarım sistemleri, prototipler ve kullanıcı odaklı arayüzlerle ürününüzü farklılaştırıyoruz."
+        },
+        "devops": {
+          "title": "Cloud & DevOps",
+          "description": "Docker, CI/CD ve bulut altyapısıyla ürününüzü güvenle yayına alıyor, ayakta tutuyoruz."
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "// nasıl çalışıyoruz",
+      "title": "Dört adımda fikirden ürüne",
+      "lead": "Her projede aynı disiplin: net kapsam, hızlı geri bildirim, ölçülebilir sonuç.",
+      "steps": {
+        "discover": {
+          "title": "Keşif",
+          "description": "Problemi, hedef kitleyi ve başarı kriterlerini birlikte netleştiriyoruz."
+        },
+        "design": {
+          "title": "Tasarım",
+          "description": "Akışlar, prototipler ve tasarım sistemi; kod yazılmadan önce ürünü görüyorsunuz."
+        },
+        "build": {
+          "title": "Geliştirme",
+          "description": "Kısa sprintler, sürekli önizleme ve test; her hafta çalışan bir sürüm."
+        },
+        "launch": {
+          "title": "Yayın & Destek",
+          "description": "Yayına alıyor, izliyor ve büyütüyoruz. İş bitince değil, ürün oturunca ayrılırız."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "// projeler",
+      "title": "Seçili işlerimiz",
+      "lead": "Farklı sektörlerden, üretimde olan ürünlerden bir kesit.",
+      "viewAll": "Tüm projeler"
+    },
+    "journal": {
+      "eyebrow": "// blog",
+      "title": "Blogdan son yazılar",
+      "lead": "Öğrendiklerimizi yazıyoruz: mimari kararlar, tasarım notları, saha deneyimi.",
+      "viewAll": "Tüm yazılar"
+    },
+    "cta": {
+      "title": "Aklınızda bir proje mi var?",
+      "description": "Bir kahve içimi sürede fikrinizi konuşalım; kapsamı ve yol haritasını birlikte çizelim.",
+      "button": "Teklif Alın"
+    }
+  },
+  "projects": {
+    "eyebrow": "// portfolyo",
+    "title": "Projeler",
+    "lead": "Üretimde olan, gerçek kullanıcılara dokunan işlerimizden seçtiklerimiz.",
+    "categories": {
+      "all": "Tümü",
+      "web": "Web",
+      "mobile": "Mobil",
+      "design": "Tasarım",
+      "devops": "DevOps"
+    },
+    "items": {
+      "nova": {
+        "title": "Nova Analytics",
+        "description": "SaaS ekipleri için gerçek zamanlı analitik paneli. Karmaşık veriyi saniyeler içinde okunur hâle getirir."
+      },
+      "pulse": {
+        "title": "Pulse Fit",
+        "description": "Apple Watch entegrasyonlu antrenman takip uygulaması; HealthKit ile tam senkronizasyon."
+      },
+      "atlas": {
+        "title": "Atlas Commerce",
+        "description": "Yüksek trafikli e-ticaret platformu; Stripe ödemeleri ve gelişmiş katalog yönetimi."
+      },
+      "echo": {
+        "title": "Echo Chat",
+        "description": "Milisaniye gecikmeli gerçek zamanlı mesajlaşma altyapısı; WebSocket ve Redis fan-out."
+      },
+      "forge": {
+        "title": "Forge CI",
+        "description": "Kendi sunucunuzda çalışan hafif CI/CD orkestratörü; container tabanlı izole build'ler."
+      },
+      "orbit": {
+        "title": "Orbit DS",
+        "description": "Çok markalı ürün ailesi için design token temelli, ölçeklenebilir tasarım sistemi."
+      }
+    }
+  },
+  "blog": {
+    "eyebrow": "// günlük",
+    "title": "Blog",
+    "lead": "Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.",
+    "readingTime": "{minutes} dk okuma",
+    "back": "Tüm yazılar",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "posts": {
+      "swift-concurrency": {
+        "title": "Swift Concurrency: async/await ile Callback Cehennemine Veda",
+        "excerpt": "İç içe geçmiş completion handler'lar okunmaz bir duvara dönüşür. Swift'in async/await'i asenkron kodu düz bir hikâye gibi okutuyor.",
+        "body": [
+          "Asenkron kod yazmanın eski yolu iyi niyetle başlar ve bir felakete dönüşür: bir ağ çağrısı, içinde başka bir çağrı, onun içinde bir tane daha... Her adım bir kapanış (closure) katmanı ekler ve kod sağa doğru kayan bir merdivene döner. Buna sevgiyle 'callback cehennemi' deriz.",
+          "## Eski Dünya: İç İçe Callback'ler",
+          "Bir kullanıcıyı, ardından avatarını çeken basit bir akış bile bu hâle gelir. Hata yönetimi her katmanda tekrarlanır ve asıl mantık gürültünün içinde kaybolur:",
+          "```swift\nfunc loadProfile(id: String,\n                 completion: @escaping (Result<Profile, Error>) -> Void) {\n    fetchUser(id) { result in\n        switch result {\n        case .success(let user):\n            fetchAvatar(user.avatarURL) { avatarResult in\n                switch avatarResult {\n                case .success(let avatar):\n                    completion(.success(Profile(user: user, avatar: avatar)))\n                case .failure(let error):\n                    completion(.failure(error))\n                }\n            }\n        case .failure(let error):\n            completion(.failure(error))\n        }\n    }\n}\n```",
+          "İki seviyeli iç içe geçmede bile göz nereye bakacağını şaşırıyor. Dört seviyeye çıktığında kodu okuyan kişi pes ediyor.",
+          "## async/await: Düz Okunan Asenkron Kod",
+          "Swift'in async/await'i aynı mantığı senkron kod kadar düz okutuyor. `await`, 'burada bekle ama iş parçacığını bloklama' demektir; hata yönetimi ise sıradan `try` ile yapılır:",
+          "```swift\nfunc loadProfile(id: String) async throws -> Profile {\n    let user = try await fetchUser(id)\n    let avatar = try await fetchAvatar(user.avatarURL)\n    return Profile(user: user, avatar: avatar)\n}\n```",
+          "Aynı iş, üçte bir satırda ve tek bir okuma çizgisinde. Artık `Result`'ı elle açıp kapatmıyor, hatayı `throws` ile yukarı bırakıyoruz.",
+          "## Paralellik: async let",
+          "Ama her şeyi sırayla `await` etmek bazen israftır: birbirinden bağımsız üç isteği neden sırayla bekleyelim? `async let`, işleri aynı anda başlatıp yalnızca sonuçlara ihtiyaç duyduğumuz noktada beklememizi sağlar:",
+          "```swift\nfunc loadDashboard(for id: String) async throws -> Dashboard {\n    async let profile = fetchProfile(id)\n    async let feed = fetchFeed(id)\n    async let badges = fetchBadges(id)\n\n    return try await Dashboard(profile: profile,\n                               feed: feed,\n                               badges: badges)\n}\n```",
+          "Üç istek paralel gider; toplam süre en yavaş isteğin süresine iner, üçünün toplamına değil. Neredeyse tek satırlık bir değişiklikle gerçek bir hız kazancı.",
+          "## Paylaşılan Durum ve Actor'lar",
+          "Eşzamanlılığın asıl tehlikesi, birden fazla görevin aynı veriyi aynı anda değiştirmesidir (data race). Swift bunu `actor` ile çözer: bir actor'ın içindeki duruma aynı anda yalnızca tek bir görev erişebilir ve derleyici bunu sizin için garanti eder:",
+          "```swift\nactor ImageCache {\n    private var store: [URL: Image] = [:]\n\n    func image(for url: URL) -> Image? {\n        store[url]\n    }\n\n    func insert(_ image: Image, for url: URL) {\n        store[url] = image\n    }\n}\n\n// Kullanım — actor'a her erişim await ile yapılır:\nlet cache = ImageCache()\nawait cache.insert(avatar, for: url)\nlet hit = await cache.image(for: url)\n```",
+          "> async/await kodu daha kısa yapmaz; okunur yapar. En büyük kazanç satır sayısında değil, altı ay sonra o kodu okuyan kişinin kafasındadır.",
+          "Sonuç olarak modern Swift'te asenkron kod artık bir korku kaynağı değil. Callback merdivenlerini düz bir anlatıya, kırılgan kilit mekanizmalarını derleyicinin garantilediği actor'lara bıraktık. Kod hem daha güvenli hem de nihayet okunabilir."
+        ]
+      },
+      "modern-cpp-bellek": {
+        "title": "Modern C++: Belleği Elle Yönetmeyi Bırakın",
+        "excerpt": "Her `new` bir söz, her `delete` bir borçtur — ve borçlar unutulur. Modern C++, belleği sizin yerinize ve tam zamanında serbest bırakır.",
+        "body": [
+          "C++'ın gücü de laneti de aynı yerden gelir: belleğe doğrudan hükmedersiniz. Ama bu güç, tek bir unutulmuş `delete`'in saatlerce süren bir sızıntı avına dönüşebileceği anlamına gelir. İyi haber şu: modern C++'ta belleği artık elle yönetmenize neredeyse hiç gerek yok.",
+          "## Elle Yönetimin Bedeli",
+          "Klasik tuzağa bakalım. Aşağıdaki fonksiyon masumca görünür ama bir erken `return` her şeyi mahveder:",
+          "```cpp\nvoid process() {\n    Widget* w = new Widget();\n\n    if (!w->init()) {\n        return;            // sızıntı! delete hiç çağrılmadı\n    }\n\n    w->run();\n    delete w;\n}\n```",
+          "`init()` başarısız olduğunda `delete` hiç çağrılmaz ve `Widget` bellekte öksüz kalır. İstisnalar işin içine girdiğinde durum daha da kötüleşir: `run()` bir istisna fırlatırsa yine sızıntı olur.",
+          "## RAII: Kaynak Edinimi Başlatmadır",
+          "Çözümün adı garip ama fikri basit: kaynağı bir nesnenin ömrüne bağlayın. Nesne kapsam dışına çıktığında yıkıcısı (destructor) otomatik çağrılır ve kaynağı serbest bırakır. Buna RAII denir ve C++'ın en güçlü fikridir:",
+          "```cpp\nclass FileHandle {\npublic:\n    explicit FileHandle(const char* path)\n        : file_(std::fopen(path, \"r\")) {}\n\n    ~FileHandle() {\n        if (file_) std::fclose(file_);\n    }\n\n    // Kopyalamayı yasakla: iki nesne aynı dosyayı kapatmasın.\n    FileHandle(const FileHandle&) = delete;\n    FileHandle& operator=(const FileHandle&) = delete;\n\n    std::FILE* get() const { return file_; }\n\nprivate:\n    std::FILE* file_;\n};\n```",
+          "`FileHandle` nesnesi nasıl yok edilirse edilsin — normal çıkışla, erken `return` ile ya da bir istisnayla — yıkıcı çalışır ve dosya kapanır. Kopyalamayı silerek (`= delete`) iki nesnenin aynı dosyayı kapatmasını da engelledik.",
+          "## Akıllı İşaretçiler",
+          "Standart kütüphane RAII'yi işaretçiler için hazır paketler: `unique_ptr` tek sahipliği, `shared_ptr` paylaşılan sahipliği yönetir. `new`/`delete` yazmayı tamamen bırakırsınız:",
+          "```cpp\n#include <memory>\n\nauto w = std::make_unique<Widget>();\nif (!w->init()) {\n    return;               // sızıntı yok — w otomatik yok edilir\n}\nw->run();\n\n// Paylaşılan sahiplik: son sahip gidince nesne serbest kalır.\nstd::shared_ptr<Config> config = std::make_shared<Config>();\nuseConfig(config);\n```",
+          "`make_unique` ile oluşturulan nesne, işaretçi kapsam dışına çıktığında otomatik silinir — erken `return` olsa da, istisna olsa da. `shared_ptr` ise son sahibi de gittiğinde nesneyi serbest bırakır; referans sayımını sizin yerinize tutar.",
+          "> Modern C++'ta kural nettir: çıplak `new` ve `delete` yazıyorsanız muhtemelen yanlış yapıyorsunuz. Belleği bir nesnenin ömrüne bağlayın, gerisini derleyici halletsin.",
+          "Bellek güvenliği C++'ta bir hayal değil, bir alışkanlıktır. RAII ve akıllı işaretçilerle, dilin ham gücünü kaybetmeden sızıntıların ve çift-serbest bırakmaların büyük kısmını daha derleme aşamasında ortadan kaldırırsınız."
+        ]
+      },
+      "c-isaretciler": {
+        "title": "C'de İşaretçiler: Korkulan Ama Yanlış Anlaşılan",
+        "excerpt": "İşaretçiler C'nin en çok korkulan konusu; oysa tek bir fikir üzerine kuruludur: bir değer yerine onun adresini tutmak. Adım adım sökelim.",
+        "body": [
+          "Yeni başlayanların C'de duvara tosladığı yer neredeyse her zaman aynıdır: işaretçiler. Oysa işaretçi karmaşık bir sihir değil, tek cümlelik bir fikirdir — bir değişkenin değerini değil, o değerin bellekteki adresini tutmak. Gerisi bu fikrin sonuçlarıdır.",
+          "## Bir İşaretçi Nedir?",
+          "`&` bir değişkenin adresini verir, `*` ise bir adresteki değere ulaşır. İkisi birbirinin tersidir:",
+          "```c\nint x = 42;\nint *p = &x;          // p, x'in adresini tutar\n\nprintf(\"%d\\n\", *p);   // 42 — p'nin gösterdiği değer\n*p = 7;               // x artık 7, çünkü p onu gösteriyor\n```",
+          "`p`, `x`'in nerede yaşadığını bilir. `*p` ile o adresteki değeri okur ya da yazarız; `*p = 7` demek, `x`'i doğrudan değiştirmekle birebir aynıdır. Fonksiyonların 'referansla' değer değiştirmesinin sırrı tam olarak budur.",
+          "## Diziler ve İşaretçiler",
+          "C'nin en şaşırtıcı gerçeği: bir dizi adı, çoğu bağlamda ilk elemanının adresine 'çürür' (decay). Yani dizi ile işaretçi, göründüğünden çok daha yakın akrabadır:",
+          "```c\nint nums[3] = {10, 20, 30};\nint *p = nums;        // dizi adı ilk elemanın adresine çürür\n\nprintf(\"%d\\n\", *(p + 2));   // 30 — nums[2] ile birebir aynı\nprintf(\"%d\\n\", p[2]);       // 30 — köşeli parantez de işaretçide çalışır\n```",
+          "`p[2]` ile `*(p + 2)` tamamen aynı şeydir; köşeli parantez söz dizimi yalnızca bir kısaltmadır. İşaretçi aritmetiği eleman boyutunu otomatik hesaba katar; bu yüzden `p + 2`, iki `int` ileri gider — iki bayt değil.",
+          "## const ile Niyet Belirtmek",
+          "İşaretçileri güvenli kılmanın en ucuz yolu `const`'tur. Bir fonksiyona `const` işaretçi geçmek, 'ben bunu değiştirmeyeceğim' sözü verir ve derleyici bu sözü zorlar:",
+          "```c\nvoid printName(const char *name) {\n    // name üzerinden yazma denemesi derleme hatası verir\n    printf(\"Merhaba, %s\\n\", name);\n}\n```",
+          "Bu küçük anahtar kelime hem çağıran tarafa bir garanti verir hem de sizi kendi hatalarınızdan korur: yanlışlıkla veriyi değiştirmeye kalkarsanız kod derlenmez.",
+          "> İşaretçiler korkutucu değildir; belirsizlik korkutucudur. Bir işaretçinin neyi ve nereye kadar gösterdiğini net bildiğinizde, C'nin en güçlü aracı elinizin altındadır.",
+          "İşaretçileri anladığınızda C'nin gerisi yerine oturur: diziler, dizeler, dinamik bellek ve veri yapıları hep aynı temel fikrin üzerine kurulur. Korkulası bir konu değil; C'nin kalbi."
+        ]
+      },
+      "llm-urun-entegrasyonu": {
+        "title": "Ürününüze LLM Eklerken: Demo ile Ürün Arasındaki Uçurum",
+        "excerpt": "Çalışan bir demo yapmak bir hafta sürer; onu güvenilir bir ürüne dönüştürmek altı ay. Aradaki farkın nerede saklandığını anlatıyoruz.",
+        "body": [
+          "Bir dil modeli demosunu ilk kez çalıştırdığınızda büyülü bir an yaşarsınız: birkaç satır kod, bir API anahtarı ve karşınızda insan gibi cevap veren bir sistem. Sorun şu ki bu büyü, ürünleşme yolundaki en aldatıcı tuzaktır. Demo, mutlu senaryoyu gösterir; ürün ise mutsuz senaryoların tamamıyla yaşamak zorundadır.",
+          "## Belirsizlikle Barışmak",
+          "Geleneksel yazılımda aynı girdi her zaman aynı çıktıyı üretir. LLM'lerde bu garanti yoktur; aynı soru iki kez sorulduğunda iki farklı, hatta bazen çelişen yanıt gelebilir. Bu yüzden mimarimizi 'doğru cevap' üzerine değil, 'kabul edilebilir cevaplar aralığı' üzerine kuruyoruz. Çıktıyı şema doğrulamasından geçiriyor, beklenen biçime uymayan yanıtları otomatik olarak yeniden deniyoruz.",
+          "Sıcaklık (temperature) ayarını düşürmek belirsizliği azaltır ama yaratıcılığı da köreltir. İşin sanatı, ürünün hangi bölümünde ne kadar öngörülebilirlik istediğinize karar vermekte. Bir hukuk özeti için sıfıra yakın, bir pazarlama metni önerisi için ise daha yüksek değerler kullanıyoruz.",
+          "## Bağlam Her Şeydir",
+          "Modelin kalitesi çoğu zaman modelin kendisinden değil, ona verdiğiniz bağlamdan gelir. RAG (retrieval-augmented generation) mimarisinde asıl mühendislik, doğru belgeyi doğru anda bulup modele sunmakta. Kötü bir arama katmanı, en güçlü modeli bile işe yaramaz hâle getirir; iyi bir arama katmanı ise orta boy bir modeli beklentinin üstüne çıkarır.",
+          "Bağlam penceresini tıka basa doldurmak cazip gelir ama pahalıdır ve modelin dikkatini dağıtır. 'Ne kadar çok bağlam, o kadar iyi' yanlış bir sezgidir; doğrusu 'ne kadar ilgili bağlam, o kadar iyi'dir. Alakasız on paragraf yerine alakalı iki paragraf her zaman kazanır.",
+          "## Değerlendirmeyi Ciddiye Almak",
+          "Klasik testlerde bir fonksiyon ya geçer ya kalır. LLM tabanlı bir özelliği nasıl test edersiniz? Biz her önemli akış için bir 'değerlendirme seti' tutuyoruz: gerçek kullanıcı sorularından derlenmiş, beklenen davranışları etiketlenmiş yüzlerce örnek. Prompt'u ya da modeli her değiştirdiğimizde bu seti baştan çalıştırıp bir gerileme (regresyon) olup olmadığına bakıyoruz.",
+          "> İyi bir değerlendirme seti, LLM ürünlerinin birim testidir. Onsuz her değişiklik bir kumar, her dağıtım bir duadır.",
+          "## Maliyet ve Gecikme Gerçeği",
+          "Demoda kimse token maliyetini düşünmez. Üründe ise her istek gerçek para ve gerçek saniyelerdir. Basit soruları küçük ve ucuz bir modele, yalnızca zor soruları büyük modele yönlendiren bir kademeleme (routing) katmanı faturayı çoğu zaman yarıya indiriyor. Yanıtları akış (streaming) hâlinde göndermek ise algılanan hızı köklü biçimde iyileştiriyor: kullanıcı ilk kelimeyi 300 milisaniyede görüyorsa, toplam yanıt üç saniye sürse bile bekleme hissi kayboluyor.",
+          "Sonuç olarak bir ürüne LLM eklemek, bir 'API çağırma' işi değil, bir ürün mühendisliği disiplinidir. Büyü demoda başlar; güven ise belirsizliği, bağlamı, değerlendirmeyi ve maliyeti tek tek ehlileştirdiğinizde kurulur."
+        ]
+      },
+      "core-web-vitals": {
+        "title": "Core Web Vitals: Kullanıcı Hızı Nasıl Hisseder?",
+        "excerpt": "Hız bir sayı değil, bir histir. Google'ın üç metriği aslında kullanıcının sabrını ölçer; onları gerçekten nasıl iyileştirdiğimizi anlatıyoruz.",
+        "body": [
+          "Bir sitenin 'hızlı' olması, sunucunun ne kadar çabuk yanıt verdiğiyle değil, kullanıcının ne kadar çabuk iş görebildiğiyle ilgilidir. Core Web Vitals tam da bunu ölçmeye çalışır: yükleniyor mu, tepki veriyor mu, zıplıyor mu? Üç metrik, kullanıcının üç sinir bozucu anını sayısallaştırır.",
+          "## LCP: 'Sayfa ne zaman geldi?'",
+          "Largest Contentful Paint, en büyük içerik parçasının ekrana geldiği anı ölçer; genelde bir kapak görseli ya da başlık. Kullanıcı için 'sayfa geldi' hissi budur. En sık suçlu, geç yüklenen görsellerdir. Kapak görselini önceden yüklemek (preload), modern formatlar (AVIF/WebP) kullanmak ve boyutu ekrana göre ayarlamak LCP'yi çoğu projede saniyeler mertebesinde iyileştiriyor.",
+          "Bir başka gizli suçlu, render'ı bloklayan yazı tipleridir. Font yüklenene kadar metni gizleyen siteler, boş bir ekranı uzun uzun gösterir. `font-display: swap` ile önce sistem fontuyla metni gösterip sonra marka fontuna geçmek, algılanan hızı belirgin biçimde artırıyor.",
+          "## INP: 'Tıkladım, neden bir şey olmuyor?'",
+          "Interaction to Next Paint, kullanıcının bir etkileşiminden sonra arayüzün ne kadar sürede tepki verdiğini ölçer. Buradaki asıl düşman, ana iş parçacığını (main thread) kilitleyen ağır JavaScript'tir. Tarayıcı tek bir uzun görevle meşgulken tıklamalar sıraya girer ve arayüz donmuş gibi hisseder.",
+          "Çözüm işi bölmektir: uzun hesaplamaları küçük parçalara ayırmak, gerçekten gerekmeyen kodu ertelemek ve mümkün olduğunca işi Web Worker'lara taşımak. Kullanıcı bir düğmeye bastığında ekranın anında bir şey söylemesi — bir yükleniyor göstergesi bile — sessiz bir donmadan çok daha iyidir.",
+          "## CLS: 'Tam tıklayacaktım, yer değiştirdi!'",
+          "Cumulative Layout Shift, sayfa yüklenirken içeriğin ne kadar zıpladığını ölçer. Herkes bunu yaşamıştır: bir yazıyı okurken üstte geç yüklenen bir reklam belirir ve bütün metin aşağı kayar. Bunun baş sebebi, boyutu önceden bildirilmemiş görseller ve gömülü içeriklerdir.",
+          "Kür basittir ama disiplin ister: her görsele ve gömülü içeriğe genişlik/yükseklik ya da en-boy oranı vermek, dinamik içeriğe önceden yer ayırmak. Yer kaymasını önlemek, en ucuz ama en çok fark edilen iyileştirmelerden biridir.",
+          "> Performans bir kerelik bir görev değil, bir bütçedir. Her yeni özellik o bütçeden harcar; ölçmeyi bırakırsanız borç sessizce birikir.",
+          "Biz bu üç metriği yalnızca laboratuvar testinde değil, gerçek kullanıcı verisiyle (RUM) izliyoruz. Çünkü sizin hızlı bilgisayarınızda kusursuz çalışan bir site, üç yıllık bir telefonda ve zayıf bir bağlantıda tamamen başka bir deneyim olabilir. Gerçek performans, en yavaş kullanıcınızın gördüğüdür."
+        ]
+      },
+      "typescript-tip-guvenligi": {
+        "title": "TypeScript ile 'Geçersiz Durum İmkânsız' Modelleme",
+        "excerpt": "En iyi hata, çalışırken yakaladığınız değil, yazılmasına derleyicinin izin vermediği hatadır. Tip sistemini bir tasarım aracı gibi kullanmayı anlatıyoruz.",
+        "body": [
+          "Çoğu ekip TypeScript'i 'JavaScript'e tip eklemek' olarak görür. Biz onu bir tasarım aracı olarak kullanıyoruz: amaç değişkenlere etiket yapıştırmak değil, geçersiz durumları en baştan temsil edilemez kılmaktır. Derleyicinin reddettiği bir kod hiçbir zaman üretime ulaşamaz.",
+          "## Boolean Bataklığı",
+          "Bir bileşene `isLoading`, `isError`, `data` diye üç ayrı alan koyduğunuzda tip sistemi size sekiz olası kombinasyon sunar; oysa bunların yalnızca üç dördü anlamlıdır. Hem `isLoading` hem `isError` değerinin aynı anda `true` olduğu bir durum mantıksızdır ama tip sistemi buna izin verir. Bu 'imkânsız' durumlar, gerçek hataların doğduğu yerdir.",
+          "Çözüm, ayrık birleşim (discriminated union) tipleridir. Durumu, her biri kendi alanlarını taşıyan ayrık biçimlere bölersiniz:",
+          "```ts\ntype State =\n  | { status: 'loading' }\n  | { status: 'error'; error: Error }\n  | { status: 'success'; data: User };\n```",
+          "Bu modelde `data`'ya yalnızca `success` durumundayken erişebilirsiniz; derleyici, hata durumunda veriyi okumaya çalışan kodu daha yazarken reddeder.",
+          "## İlksel Takıntısı",
+          "Bir kullanıcı kimliği `string`, bir e-posta `string`, bir tutar `number`... Hepsi aynı tip olduğunda, yanlışlıkla e-posta beklenen yere kullanıcı kimliği geçirmenizi hiçbir şey engellemez. Markalı tipler (branded types) tam da bunu engeller:",
+          "```ts\ntype UserId = string & { readonly brand: unique symbol };\n\n// Sıradan bir string'i buraya geçiremezsiniz — derleyici reddeder.\nfunction kullaniciYukle(id: UserId) { /* ... */ }\n```",
+          "Artık sıradan bir string'i `UserId` bekleyen bir fonksiyona geçiremezsiniz; kullanıcı kimliğiyle e-postayı karıştırmak bir derleme hatasına dönüşür.",
+          "Bu teknik özellikle para, tarih ve ölçü birimleri gibi karışması pahalıya patlayan değerlerde hayat kurtarır. Ünlü Mars Climate Orbiter kazası metrik ve emperyal birimlerin karışmasından oldu; iyi bir tip sistemi bunu bir derleme hatasına çevirebilirdi.",
+          "## Sınırlarda Doğrulama",
+          "Tip güvenliği yalnızca kendi kodunuzun içinde geçerlidir. Bir API'den gelen JSON, bir formdan gelen girdi ya da `localStorage`'dan okunan bir değer, siz `as User` deseniz de gerçekte `User` olmayabilir. `as` bir umut ifadesidir, bir garanti değil. Sistemin sınırlarında çalışma zamanı doğrulaması yapıp (örneğin bir şema doğrulayıcıyla), doğrulanmış veriyi tipe bağlıyoruz. Böylece iç kodumuz, verinin gerçekten söylediği şey olduğuna güvenerek yazılabiliyor.",
+          "> Tip sistemini bir güvenlik ağı değil, bir düşünme aracı olarak görün. İyi modellenmiş tipler, kodu yazmadan önce tasarımınızdaki boşlukları gösterir.",
+          "Sonuçta iyi tiplenmiş bir kod tabanında refaktör korkusu kaybolur. Bir alanı değiştirdiğinizde kırılan her yer kırmızıyla işaretlenir; test yazmadan önce derleyici size yapılacaklar listesini verir. Bu, hız ve güvenin aynı anda arttığı nadir yerlerden biridir."
+        ]
+      },
+      "erisilebilirlik-varsayilan": {
+        "title": "Erişilebilirlik Sonradan Eklenen Bir Şey Değildir",
+        "excerpt": "Erişilebilirlik bir uyumluluk maddesi değil, iyi tasarımın kendisidir. Klavyeden ekran okuyucuya, gerçekten kapsayıcı arayüzler nasıl kurulur?",
+        "body": [
+          "Erişilebilirlik çoğu projede en sona bırakılır: 'önce çalışsın, sonra erişilebilir yaparız.' Oysa sonradan eklenen erişilebilirlik hem daha pahalı hem daha kötüdür. En baştan düşünülen erişilebilirlik ise çoğu zaman herkes için daha iyi bir ürün ortaya çıkarır.",
+          "## Klavye: Farenin Olmadığı Dünya",
+          "Erişilebilirliğin en hızlı testi, fareyi bir kenara bırakıp sitede yalnızca Tab, Enter ve ok tuşlarıyla gezinmeyi denemektir. Odak sırası mantıklı mı? Her düğmeye ulaşabiliyor musunuz? Açtığınız bir menüden Escape ile çıkabiliyor musunuz? Görünür bir odak halkası var mı? Bu testi geçemeyen bir arayüz, yalnızca engelli kullanıcılar için değil, klavye ağırlıklı çalışan herkes için bozuktur.",
+          "En sık yapılan hata, bir `<div>` üzerine tıklama olayı koyup onu düğme gibi kullanmaktır. Görsel olarak aynı görünür ama klavyeyle odaklanamaz, Enter'a yanıt vermez, ekran okuyucuya 'düğme' olduğunu söylemez. Doğru HTML öğesini kullanmak, yüzlerce satır ARIA yamasından daha değerlidir.",
+          "## Ekran Okuyucular: Görmeden Gezinmek",
+          "Bir ekran okuyucu kullanıcısı sayfayı gözle taramaz; başlıklar, işaret noktaları (landmark) ve bağlantılar arasında sıçrayarak yapıyı dinler. Bu yüzden anlamlı bir başlık hiyerarşisi ve doğru HTML5 işaretleri (`<nav>`, `<main>`, `<header>`) yalnızca 'temiz kod' meselesi değil, gerçek bir gezinme aracıdır.",
+          "Görsellere anlamlı alternatif metin yazmak da bir zanaattir. 'resim1.jpg' değersizdir; 'bir grafik' yetersizdir; 'gelirin son çeyrekte %20 arttığını gösteren çizgi grafik' ise gerçekten bilgi taşır. Alternatif metin, görseli tarif etmek değil, onun taşıdığı bilgiyi aktarmaktır.",
+          "## Renk ve Hareket",
+          "Bilgiyi yalnızca renkle iletmek yaygın bir tuzaktır: 'kırmızı alanlar hatalı' dediğinizde, renk körü kullanıcılar hiçbir şey göremez. Renge her zaman bir ikon, bir etiket ya da bir desen eşlik etmeli. Kontrast oranları da pazarlıksızdır; şık görünen açık gri metin, güneş altında ya da zayıf bir gözle okunamaz.",
+          "Hareket hassasiyeti olan kullanıcılar için `prefers-reduced-motion` tercihini dinlemek bir nezaket değil, bir gerekliliktir. Büyük geçiş animasyonları bazı insanlarda gerçek fiziksel rahatsızlık yaratabilir; bu tercihi seçenlere sakin bir deneyim sunmak, tek bir CSS medya sorgusu kadar kolaydır.",
+          "> Altyazılar sağırlar için icat edildi, ama gürültülü bir metroda hepimiz kullanıyoruz. En dar koşul için tasarladığınızda, ürün herkes için netleşir.",
+          "Bizim için erişilebilirlik bir kontrol listesi değil, bir alışkanlıktır. Her bileşeni klavyeyle test ederiz, her rengi kontrastıyla seçeriz, her görsele metnini yazarız. Bu, bir azınlık için fazladan iş değil; herkes için daha sağlam, daha düşünülmüş bir ürünün doğal sonucudur."
+        ]
+      },
+      "vue-3-5-performans": {
+        "title": "Vue 3.5 ile Reaktivitede Performans İpuçları",
+        "excerpt": "Yeni reaktivite altyapısı bellek kullanımını ciddi biçimde azaltıyor. Büyük listelerde fark yaratan üç pratik teknik.",
+        "body": [
+          "Vue 3.5, reaktivite sisteminin içini neredeyse baştan yazdı: bağımlılık izleme artık çift yönlü bağlı liste (doubly-linked list) üzerinde çalışıyor ve bellek kullanımı önceki sürüme göre belirgin şekilde düştü. Bu, özellikle binlerce satırlık tablolar ve gerçek zamanlı güncellenen paneller için önemli. Ama altyapı iyileşmesi otomatik bir sihir değil; ondan faydalanmak yine de bilinçli kararlar gerektiriyor.",
+          "## Derin İzlemeyi Bırakın",
+          "Vue varsayılan olarak bir nesnenin her seviyesini reaktif yapar. Çoğu zaman buna ihtiyacınız yoktur: bir grafik için gelen 5.000 noktalık veri dizisinin her elemanını tek tek izlemek yalnızca bellek ve CPU harcar. `shallowRef` ve `shallowReactive` ile yalnızca en üst seviyeyi izleyip, veriyi bütün olarak değiştirdiğinizde Vue'nun gereksiz derin gezinmesini tamamen ortadan kaldırıyoruz.",
+          "Pratikte kural şu: veriyi 'değiştirmiyor, yeniden atıyorsanız' derin reaktiviteye ihtiyacınız yoktur. Büyük ve çoğunlukla salt-okunur veri kümelerinde sığ reaktivite çoğu zaman en büyük tek kazançtır.",
+          "## Hesaplanan Değerleri Bilinçli Bölün",
+          "Kocaman bir `computed` içinde on farklı şeyi hesaplamak cazip gelir ama tehlikelidir: içindeki tek bir bağımlılık değiştiğinde her şey yeniden hesaplanır. Hesaplanan değerleri küçük, tek sorumluluklu parçalara bölmek, Vue'nun yalnızca gerçekten değişen kısmı yeniden hesaplamasını sağlar. Küçük computed'lar hem daha hızlı hem daha okunabilirdir.",
+          "## v-memo'yu Doğru Yerde Kullanın",
+          "`v-memo`, bir listenin belirli satırlarını bağımlılıkları değişmediği sürece yeniden render etmemesini sağlar. Doğru kullanıldığında büyük tablolarda mucize yaratır; yanlış kullanıldığında ise ince böcekler üretir, çünkü Vue'ya 'bu satırı güncelleme' demiş olursunuz. Kuralımız: v-memo yalnızca ölçülebilir bir darboğaz olan, çok satırlı ve nadiren değişen listelerde kullanılır — asla 'ne olur ne olmaz' diye değil.",
+          "> Ölçmeden optimize etmeyin — ama ölçünce de çekinmeden refaktör edin. Tahmine dayalı optimizasyon, çözdüğünden çok sorun yaratır.",
+          "Bu üç tekniği birlikte uyguladığımız bir analitik panelde ilk boyama süresi yarıya indi ve kaydırma akıcılığı gözle görülür biçimde arttı. Sihirli bir anahtar yok; ama reaktivitenin nasıl çalıştığını bilen bir ekip, aynı donanımda iki kat akıcı bir ürün çıkarabiliyor."
+        ]
+      },
+      "tasarim-sistemi-kurmak": {
+        "title": "Sıfırdan Tasarım Sistemi Kurmak: Token'lardan Bileşenlere",
+        "excerpt": "Renk paletiyle başlamayın. İyi bir tasarım sistemi önce kararları, sonra değerleri standartlaştırır.",
+        "body": [
+          "Çoğu ekip tasarım sistemine renk paleti seçerek başlar; biz ise kararla başlıyoruz: bir buton kaç varyanta ihtiyaç duyar, bir kart hangi durumlarda gölge alır, hata rengi ne zaman kullanılır? Değerler bu kararların çıktısıdır, girdisi değil. Renkle başlayan sistemler güzel görünür ama ilk gerçek özellikte dağılır.",
+          "## Üç Katmanlı Token Mimarisi",
+          "Token katmanını üçe bölüyoruz. En altta ham değerler var: `berry-500`, `space-4` gibi anlamdan bağımsız sabitler. Ortada anlamsal roller: `surface`, `border`, `danger` — yani bir değerin ne işe yaradığı. En üstte bileşen token'ları: `button-primary-bg` gibi belirli kullanımlar. Bir bileşen asla ham değere değil, yalnızca anlamsal role bakar.",
+          "Bu ayrımın bedeli başta fazladan bir soyutlama gibi görünür; getirisi ise tema değişiminde ortaya çıkar. Koyu tema, markalı beyaz tema ya da yüksek kontrast tema — hepsi yalnızca anlamsal katmanı değiştirerek tek bir bileşen kodundan çıkıyor. Ham `#ff3d77` değerini bir bileşenin içine yazdığınız an bu esnekliği kaybedersiniz.",
+          "## Bileşenler Kararları Kodlar",
+          "İyi bir bileşen yalnızca görünümü değil, kararı da kodlar. Bir `Button` bileşeni 'birincil, ikincil, tehlike' gibi anlamlı varyantlar sunmalı; 'mavi buton, kırmızı buton' değil. Böylece bir tasarımcı 'bu eylem tehlikeli' dediğinde geliştirici doğru varyantı seçer; rengin ne olduğu sistemin sorunu olur, sayfanın değil.",
+          "Varyant sayısını bilinçli olarak az tutuyoruz. Her yeni varyant; bakılması, test edilmesi ve tutarlı kılınması gereken yeni bir yüzeydir. 'Belki lazım olur' diye eklenen varyantlar, sistemin en hızlı çürüyen yeridir.",
+          "## Sistemi Canlı Tutmak",
+          "Sistemin yaşaması için tek bir sert kural koyduk: tasarımda olmayan hiçbir değer koda giremez, kodda olmayan hiçbir bileşen tasarıma. İki taraf da aynı kaynaktan besleniyor. Bu kural sıkıcı gelir ama sistemi 'özel durum' CSS'inin yavaş yavaş boğmasından koruyan tek şey odur.",
+          "> Bir tasarım sistemi bir ürün değil, bir anlaşmadır. Kurallar gevşediği an sistem önce bir stil kılavuzuna, sonra bir dosya mezarlığına dönüşür.",
+          "Bu disiplinle sistemimiz altı aydır tek satır 'özel durum' CSS'i olmadan büyüyor. Yeni bir sayfa artık sıfırdan CSS yazmak değil, mevcut bileşenleri dizmek demek — ve bu, hızın tutarlılıktan ödün vermeden geldiği nadir durumlardan biri."
+        ]
+      },
+      "swiftui-ile-native": {
+        "title": "SwiftUI ile Native Hissettiren Arayüzler",
+        "excerpt": "Cross-platform araçların yakalayamadığı şey animasyon eğrileri ve dokunuş detayları. SwiftUI'da bu detayları nasıl işliyoruz?",
+        "body": [
+          "Bir uygulamanın 'native hissetmesi' çoğunlukla üç şeyde saklı: geçiş animasyonlarının eğrisi, dokunmatik geri bildirimin zamanlaması ve listelerin kaydırma fiziği. SwiftUI bu üçünü de platformun kendisinden ödünç alıyor; taklit etmiyor. Cross-platform araçların yakalamakta en çok zorlandığı şey tam da bu ince detaylar.",
+          "## Detaylarda Saklı Native His",
+          "Bir geçiş animasyonunun süresi doğru ama eğrisi yanlışsa, kullanıcı sebebini söyleyemeden 'bir şeyler yapay' hisseder. iOS'un kendi yay (spring) animasyonları yıllarca ince ayar görmüş; onları yeniden icat etmek yerine kullanmak bedava bir kalite katmanıdır. Aynısı dokunsal geri bildirim (haptics) için de geçerli: doğru anda gelen küçük bir titreşim, bir eylemin 'gerçekten olduğu' hissini verir.",
+          "## Üç Katmanlı Arayüz Mimarisi",
+          "Projelerimizde arayüzü üç katmana ayırıyoruz: saf görünüm bileşenleri, durum yöneten container'lar ve navigasyon. Saf görünümler hiçbir iş mantığı bilmez; yalnızca kendilerine verilen veriyi çizerler. Bu ayrım sayesinde bir görünümü, tüm uygulamayı çalıştırmadan tek başına önizleyebiliyoruz:",
+          "```swift\nstruct AvatarView: View {\n    let user: User\n\n    var body: some View {\n        HStack(spacing: 12) {\n            Circle()\n                .fill(.pink.gradient)\n                .frame(width: 44, height: 44)\n            Text(user.name)\n                .font(.headline)\n        }\n    }\n}\n```",
+          "SwiftUI'ın preview sistemi bu mimaride bir süper güce dönüşüyor. Görünümlerin preview'ları neredeyse canlı bir tasarım dokümanı gibi çalışıyor; tasarımcıyla aynı ekrana bakıp aynı dili konuşuyoruz. 'Şu boşluk 4 mü 8 mi olsun?' tartışması, kodu çalıştırıp beklemeden anında yapılıyor.",
+          "## Ne Zaman UIKit'e İnmeli",
+          "SwiftUI olgunlaştı ama her şey için doğru araç değil. Çok karmaşık, milimetrik kontrol gerektiren metin düzenleyiciler ya da kamera arayüzleri gibi yerlerde hâlâ UIKit'e inip onu SwiftUI'a köprülüyoruz. İşin ustalığı bu sınırı nereye çizeceğini bilmekte: dogmatik biçimde 'her şey SwiftUI' demek, bazen basit bir işi zorlaştırır.",
+          "> Artık soru 'yapılabilir mi?' değil, 'en temiz nasıl yapılır?'. Doğru mimariyle, tek kişilik bir ekip bile App Store kalitesinde bir ürünü haftalar içinde çıkarabiliyor.",
+          "SwiftUI'ın geldiği nokta şurası: platformun sunduğu native hissi neredeyse bedava alıyor, üstüne kendi ürün kararlarınızı ekliyorsunuz. Detaylara saygı gösteren bir ekip için bu, hem hızlı hem de gerçekten iyi hisseden uygulamalar demek."
+        ]
+      },
+      "monorepo-mimarisi": {
+        "title": "Monorepo Mimarisi: Tek Depo, Çok Ürün",
+        "excerpt": "API, web, mobil ve tasarım sistemi aynı depoda yaşayınca ne kazanılır, nerede dikkatli olmak gerekir?",
+        "body": [
+          "Birden fazla ürünü olan her ekip aynı soruyla karşılaşıyor: ayrı depolar mı, tek depo mu? Biz sözleşme paylaşan her şeyi tek depoda tutuyoruz: API şemaları, tasarım token'ları ve onları tüketen uygulamalar. Sözleşme değişince kırılan yer, aynı pull request içinde görünüyor — üç gün sonra başka bir depoda patlayan gizemli bir hata olarak değil.",
+          "## Neden Tek Depo?",
+          "Monorepo'nun en büyük vaadi 'atomik değişiklik'tir. Bir API alanının adını değiştirdiğinizde, onu kullanan web ve mobil uygulamayı aynı commit'te güncelleyebilirsiniz. Ayrı depolarda bu; sürüm yükseltme dansına, birbirini bekleyen pull request'lere ve 'hangi sürüm hangisiyle uyumlu' tablolarına dönüşür. Tek depoda ise ana dal her zaman kendi içinde tutarlıdır.",
+          "Paylaşılan kod da ikinci büyük kazanç. Bir tarih formatlama fonksiyonunu ya da bir doğrulama şemasını üç kez kopyalamak yerine tek bir yerde tutuyoruz; düzeltme bir kez yapılıyor, her yerde geçerli oluyor.",
+          "## Katman Disiplini Olmadan Çöker",
+          "İşin sırrı katman disiplinidir: paylaşılan paketler hiçbir çalışma zamanı detayı bilmez, uygulamalar ise paylaşılan paketlerin iç yapısına asla uzanmaz. Bu sınır bulanıklaştığı an monorepo bir kolaylık olmaktan çıkıp dev bir bağımlılık yumağına dönüşür; her şey her şeye bağlıdır ve hiçbir şey ayrı ayrı test edilemez.",
+          "Bağımlılık yönünü tek yönlü tutmak bu yüzden pazarlıksız: uygulamalar paketlere bağlanabilir, paketler uygulamalara asla. Bu kuralı otomatik olarak zorlayan bir lint kuralı, uzun vadede yüzlerce saatlik ayıklama zamanı kazandırır.",
+          "## Ölçekte Araçlar",
+          "Depo büyüdükçe her şeyi her seferinde yeniden derlemek ve test etmek dayanılmaz hâle gelir. Reçetemiz sade: pnpm workspace ile paketleri bağlıyor, Turborepo ile yalnızca değişen kısmı ve ona bağımlı olanları yeniden çalıştırıyoruz. Önbelleğe alınmış görevler sayesinde değişmemiş bir paketi ikinci kez derlemiyoruz bile.",
+          "> Depo büyüdükçe kural sayısını değil, otomasyonu artırın. İnsanların hatırlamasını beklediğiniz her kural er ya da geç unutulur; araçların zorladığı her kural kalıcıdır.",
+          "Monorepo sihirli bir çözüm değil; yanlış uygulandığında tek büyük bir karmaşaya dönüşebilir. Ama sözleşme paylaşan ürünler için, doğru katman disiplini ve araçlarla, ekibin aynı anda hem hızlı hem tutarlı kalmasını sağlayan en güçlü yapılardan biri."
+        ]
+      }
+    }
+  },
+  "store": {
+    "eyebrow": "// dijital ürünler",
+    "title": "Mağaza",
+    "lead": "Kendi projelerimizde kullandığımız araçları paketleyip sunuyoruz: şablonlar, bileşen setleri ve başlangıç kitleri.",
+    "buy": "Satın Al",
+    "soon": "Çok yakında",
+    "badges": {
+      "popular": "Popüler",
+      "new": "Yeni"
+    },
+    "items": {
+      "berry-ui": {
+        "category": "Tasarım Sistemi",
+        "title": "Berry UI Kit",
+        "description": "UIkit üzerine kurulu, koyu temalı Less tasarım sistemi; 40'tan fazla hazır blok ve token mimarisi."
+      },
+      "vue-launch": {
+        "category": "Şablon",
+        "title": "Vue Launch",
+        "description": "Vue 3 + TypeScript + Vite başlangıç şablonu; i18n, router ve test altyapısı kurulu gelir."
+      },
+      "swift-components": {
+        "category": "iOS",
+        "title": "Swift Components",
+        "description": "SwiftUI bileşen paketi; grafikler, kartlar ve animasyonlu kontroller. Tamamı önizlemeli."
+      },
+      "icon-forge": {
+        "category": "İkon Seti",
+        "title": "Icon Forge",
+        "description": "400'den fazla pixel-perfect ikon; SVG ve font formatında, iki farklı ağırlıkta."
+      },
+      "api-boiler": {
+        "category": "Backend",
+        "title": "API Boiler",
+        "description": "Fastify + PostgreSQL API iskeleti; kimlik doğrulama, şema doğrulama ve OpenAPI hazır."
+      },
+      "berry-blocks": {
+        "category": "Şablon",
+        "title": "Berry Blocks",
+        "description": "Pazarlama siteleri için 25 hazır landing bloğu; kopyala, uyarla, yayınla."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "// iletişim",
+    "title": "Merhaba deyin",
+    "lead": "Projenizi konuşmak, teklif almak ya da sadece selam vermek için bize yazın.",
+    "note": "Genellikle 24 saat içinde dönüş yaparız."
+  },
+  "about": {
+    "eyebrow": "// hakkımızda",
+    "title": "Küçük ekip, iddialı işler",
+    "lead": "PlayerBerry, fikirleri üretime taşıyan bağımsız bir yazılım stüdyosudur. Ajans kalabalığı değil; işi yapan kişilerle konuşursunuz.",
+    "story": [
+      "2018'de tek bir soruyla yola çıktık: iyi tasarım, sağlam mühendislik ve dürüst iletişim aynı ekipte buluşabilir mi? O günden beri web, mobil ve bulut alanında onlarca ürünü fikir aşamasından yayına taşıdık.",
+      "Büyük bir ajansa dönüşmek yerine küçük ve deneyimli kalmayı seçtik. Her projede işi yapan kişiyle doğrudan konuşursunuz; arada katman yok. Bu yüzden kararlar hızlı alınır, geri bildirim aynı gün koda döner.",
+      "İş bittiğinde değil, ürün oturduğunda ayrılırız. Bizim için başarı teslim edilen kod değil; kullanıcının işine yarayan, bakımı kolay ve zamanla büyüyen bir üründür."
+    ],
+    "values": {
+      "craft": {
+        "title": "Zanaat",
+        "description": "Her detay önemli. Piksel hizasından veritabanı indeksine kadar işi özenle yaparız."
+      },
+      "clarity": {
+        "title": "Şeffaflık",
+        "description": "Kapsam, süre ve maliyet en baştan net. Sürpriz fatura ya da gizli varsayım yok."
+      },
+      "partnership": {
+        "title": "Ortaklık",
+        "description": "Tedarikçi değil, ekibinizin bir parçası gibi çalışırız. Sizin hedefiniz bizim hedefimiz."
+      },
+      "longevity": {
+        "title": "Kalıcılık",
+        "description": "Bugün hızlı, yarın da bakımı kolay kod yazarız. Ürün yıllarca yaşasın diye."
+      }
+    },
+    "cta": {
+      "title": "Birlikte çalışalım mı?",
+      "description": "Fikrinizi dinleyelim, kapsamı ve yol haritasını birlikte çizelim.",
+      "button": "Bize Ulaşın"
+    }
+  },
+  "notFound": {
+    "title": "Sayfa bulunamadı",
+    "description": "Aradığınız sayfa taşınmış ya da hiç var olmamış olabilir.",
+    "button": "Ana sayfaya dön"
+  },
+  "footer": {
+    "tagline": "Web, mobil ve bulutta uçtan uca dijital ürünler üreten yazılım stüdyosu.",
+    "nav": "Site",
+    "rss": "RSS Akışı",
+    "legal": "Yasal",
+    "follow": "Bizi izleyin",
+    "about": "Hakkımızda",
+    "privacy": "Gizlilik Politikası",
+    "cookies": "Çerez Politikası",
+    "terms": "Hizmet Şartları",
+    "contact": "İletişim",
+    "randomized": {
+      "part0": "Bu sitenin yapımında hiçbir ",
+      "part1": " zarar görmemiştir."
+    },
+    "rights": "Tüm hakları saklıdır"
+  }
+}

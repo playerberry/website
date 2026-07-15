@@ -1,0 +1,31 @@
+{
+  "name": "playerberry",
+  "private": false,
+  "homepage": "playerberry.com",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "prepublish": "pnpm run build",
+    "release": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.0",
+    "highlight.js": "^11.11.1",
+    "uikit": "^3.25.19",
+    "vue": "^3.5.39",
+    "vue-i18n": "^11.4.6",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.7",
+    "gh-pages": "^6.3.0",
+    "less": "^4.6.7",
+    "typescript": "~5.9.3",
+    "vite": "^8.1.4",
+    "vue-tsc": "^3.3.7"
+  },
+  "packageManager": "pnpm@11.10.0"
+}

@@ -1,0 +1,24 @@
+// Brand gradient text — the PlayerBerry signature.
+.super-text {
+  background: @pb-gradient-brand;
+  background-size: 420% 420%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.08em; // keep descenders from clipping
+  animation: pb-gradient-shift 14s ease infinite;
+}
+
+@keyframes pb-gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

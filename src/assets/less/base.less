@@ -1,0 +1,64 @@
+// Document
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: #2a2a3c transparent;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 520px at 85% -5%, rgba(139, 92, 246, 0.13), transparent 60%),
+    radial-gradient(900px 480px at -10% 12%, rgba(255, 61, 119, 0.1), transparent 55%),
+    @pb-bg;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  min-height: 62vh;
+}
+
+// Typography
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.uk-h1,
+.uk-h2,
+.uk-h3,
+.uk-h4,
+.uk-heading-small,
+.uk-heading-medium,
+.uk-heading-large,
+.uk-heading-xlarge {
+  font-family: @pb-font-display;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: @pb-berry;
+  color: #fff;
+}
+
+// Scrollbar (WebKit)
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a3c;
+  border-radius: @pb-radius-pill;
+  border: 2px solid @pb-bg;
+
+  &:hover {
+    background: #3a3a50;
+  }
+}
