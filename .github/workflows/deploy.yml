@@ -43,6 +43,6 @@ jobs:
         run: |
           pnpm exec gh-pages \
             --dist dist \
-            --user "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>" \
+            --user "GitHub Actions <github-actions@users.noreply.github.com>" \
             --message "deploy: ${GITHUB_SHA}" \
             --repo "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
