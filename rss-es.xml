@@ -6,7 +6,7 @@
     <atom:link href="https://playerberry.com/rss-es.xml" rel="self" type="application/rss+xml" />
     <description>Decisiones de arquitectura, notas de diseño y lecciones del terreno.</description>
     <language>es</language>
-    <lastBuildDate>Thu, 16 Jul 2026 15:20:48 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2026 15:41:23 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: adiós al callback hell con async/await</title>
       <link>https://playerberry.com/blog/swift-concurrency</link>
