@@ -5,7 +5,8 @@
  * - UIkit (with its icon pack) for the component skeleton,
  * - vue-router for client-side navigation,
  * - vue-i18n for Turkish/English localisation,
- * - Font Awesome icons and the compiled Less theme,
+ * - the compiled Less theme and the global `Icon` component (inline SVGs —
+ *   the site does not ship icon webfonts),
  * - the custom `v-spotlight` directive for pointer-reactive card glows.
  *
  * The assembled app is mounted onto the `#app` element in `index.html`.
@@ -16,7 +17,7 @@ import Icons from "uikit/dist/js/uikit-icons";
 import i18n from "./i18n";
 import router from "./routes";
 import spotlight from "./directives/spotlight";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import Icon from "./components/Icon.vue";
 import "./assets/less/_main.less";
 import App from "./App.vue";
 
@@ -26,5 +27,6 @@ UIkit.use(Icons);
 createApp(App)
   .use(router)
   .use(i18n)
+  .component("Icon", Icon)
   .directive("spotlight", spotlight)
   .mount("#app");

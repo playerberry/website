@@ -53,6 +53,7 @@ const setLocale = (value: "tr" | "en") => {
             <button
               type="button"
               :class="{ 'is-active': locale === 'tr' }"
+              :aria-pressed="locale === 'tr'"
               @click="setLocale('tr')"
             >
               TR
@@ -61,6 +62,7 @@ const setLocale = (value: "tr" | "en") => {
             <button
               type="button"
               :class="{ 'is-active': locale === 'en' }"
+              :aria-pressed="locale === 'en'"
               @click="setLocale('en')"
             >
               EN
@@ -118,6 +120,7 @@ const setLocale = (value: "tr" | "en") => {
         <button
           type="button"
           :class="{ 'is-active': locale === 'tr' }"
+          :aria-pressed="locale === 'tr'"
           @click="setLocale('tr')"
         >
           TR
@@ -126,6 +129,7 @@ const setLocale = (value: "tr" | "en") => {
         <button
           type="button"
           :class="{ 'is-active': locale === 'en' }"
+          :aria-pressed="locale === 'en'"
           @click="setLocale('en')"
         >
           EN

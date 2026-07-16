@@ -19,8 +19,8 @@ const { t } = useI18n();
         <p class="pb-section-lead uk-margin-auto">{{ t("contact.lead") }}</p>
       </div>
       <div
-        class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-large uk-margin-auto"
         v-spotlight
+        class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-large uk-margin-auto"
       >
         <a class="pb-contact-email" href="mailto:hello@playerberry.com"
           >hello@playerberry.com</a
@@ -30,24 +30,25 @@ const { t } = useI18n();
           <a
             href="https://instagram.com/playerberry"
             target="_blank"
+            rel="noopener"
             aria-label="Instagram"
-            ><i class="fa-brands fa-instagram"></i
-          ></a>
+            ><Icon name="instagram" /></a>
           <a
             href="https://twitch.tv/playerberry"
             target="_blank"
+            rel="noopener"
             aria-label="Twitch"
-            ><i class="fa-brands fa-twitch"></i
-          ></a>
+            ><Icon name="twitch" /></a>
           <a
             href="https://youtube.com/@playerberry"
             target="_blank"
+            rel="noopener"
             aria-label="YouTube"
-            ><i class="fa-brands fa-youtube"></i
-          ></a>
-          <a href="https://x.com/playerberry" target="_blank" aria-label="X"
-            ><i class="fa-brands fa-twitter"></i
-          ></a>
+            ><Icon name="youtube" /></a>
+          <a
+href="https://x.com/playerberry" target="_blank"
+            rel="noopener" aria-label="X"
+            ><Icon name="twitter" /></a>
         </div>
       </div>
     </div>

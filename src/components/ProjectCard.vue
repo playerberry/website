@@ -17,7 +17,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="uk-card uk-card-default uk-card-hover uk-card-body" v-spotlight>
+  <div v-spotlight class="uk-card uk-card-default uk-card-hover uk-card-body">
     <div
       class="pb-project-thumb"
       :style="{ backgroundImage: project.gradient }"

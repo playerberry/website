@@ -7,38 +7,53 @@
  * cue that reinforces PlayerBerry's motion-forward, dynamic brand feel and
  * gives readers a sense of how far through a page they are.
  *
- * The bar is decorative (`aria-hidden`) and updates on passive scroll/resize
- * listeners that are removed when the component unmounts.
+ * The bar is decorative (`aria-hidden`) and animates via `transform: scaleX`
+ * (compositor-only — no layout or paint per frame). Scroll/resize events are
+ * coalesced through `requestAnimationFrame` so the ratio is computed at most
+ * once per frame. All listeners are removed when the component unmounts.
  */
 import { onMounted, onUnmounted, ref } from "vue";
 
-/** Current scroll completion, from `0` (top) to `100` (bottom), in percent. */
+/** Current scroll completion as a 0–1 ratio (drives `scaleX`). */
 const progress = ref(0);
+
+/** Pending rAF id, or `0` when no frame is scheduled. */
+let frame = 0;
 
 /**
  * Recompute the scroll ratio for the current viewport position. When the page
  * is not tall enough to scroll, the bar stays empty.
  */
-const update = (): void => {
+const measure = (): void => {
+  frame = 0;
   const scrollable =
     document.documentElement.scrollHeight - window.innerHeight;
-  progress.value = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  progress.value = scrollable > 0 ? window.scrollY / scrollable : 0;
+};
+
+/** Schedule a measurement on the next animation frame (at most one pending). */
+const schedule = (): void => {
+  if (!frame) frame = requestAnimationFrame(measure);
 };
 
 onMounted(() => {
-  update();
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
+  measure();
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", update);
-  window.removeEventListener("resize", update);
+  window.removeEventListener("scroll", schedule);
+  window.removeEventListener("resize", schedule);
+  if (frame) cancelAnimationFrame(frame);
 });
 </script>
 
 <template>
   <div class="pb-scroll-progress" aria-hidden="true">
-    <div class="pb-scroll-progress-bar" :style="{ width: `${progress}%` }"></div>
+    <div
+      class="pb-scroll-progress-bar"
+      :style="{ transform: `scaleX(${progress})` }"
+    ></div>
   </div>
 </template>

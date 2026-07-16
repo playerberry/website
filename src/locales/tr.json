@@ -6,6 +6,28 @@
     "store": "Mağaza",
     "contact": "İletişim"
   },
+  "a11y": {
+    "skipToContent": "İçeriğe atla"
+  },
+  "redirect": {
+    "discord": "Discord sunucumuza yönlendiriliyorsunuz...",
+    "instagram": "Instagram profilimize yönlendiriliyorsunuz...",
+    "twitch": "Twitch kanalımıza yönlendiriliyorsunuz...",
+    "kick": "Kick kanalımıza yönlendiriliyorsunuz...",
+    "youtube": "YouTube kanalımıza yönlendiriliyorsunuz...",
+    "twitter": "X profilimize yönlendiriliyorsunuz...",
+    "facebook": "Facebook sayfamıza yönlendiriliyorsunuz...",
+    "tiktok": "TikTok profilimize yönlendiriliyorsunuz..."
+  },
+  "meta": {
+    "home": "PlayerBerry — web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren yazılım stüdyosu.",
+    "projects": "Üretimde olan, gerçek kullanıcılara dokunan projelerimizden seçkiler: web, mobil, tasarım ve DevOps işleri.",
+    "blog": "Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz — PlayerBerry mühendislik günlüğü.",
+    "store": "Kendi projelerimizde kullandığımız araçlar: şablonlar, bileşen setleri ve başlangıç kitleri.",
+    "contact": "Projenizi konuşmak, teklif almak ya da selam vermek için PlayerBerry ile iletişime geçin.",
+    "about": "PlayerBerry'nin hikâyesi: küçük ve deneyimli bir ekiple fikirleri üretime taşıyan bağımsız yazılım stüdyosu.",
+    "legal": "PlayerBerry web sitesinin yasal belgeleri."
+  },
   "hero": {
     "badge": "Yeni projelere açığız",
     "titleTop": "Sıradan yazılım değil,",

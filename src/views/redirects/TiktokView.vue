@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Tiktok'a yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.tiktok") }}</h1>
 </template>

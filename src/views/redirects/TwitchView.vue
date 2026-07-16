@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Twitch'e yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.twitch") }}</h1>
 </template>

@@ -2,19 +2,22 @@
  * Application router.
  *
  * Declares every page route, the `/link/*` social-redirect shorteners and a
- * catch-all 404. It also keeps the document title in sync with the active
- * route (localised through vue-i18n) for clearer browser tabs and better SEO.
+ * catch-all 404. Views other than the landing page are lazy-loaded
+ * (`() => import(...)`) so the initial bundle stays small — notably the blog
+ * article view, which pulls in the syntax highlighter.
+ *
+ * It also keeps per-page SEO metadata (document title, meta description,
+ * canonical URL and Open Graph tags) in sync with the active route and the
+ * active locale — see {@link applyMeta}.
  */
+import { watch } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 import i18n from "../i18n";
+import { applyPageMeta } from "../assets/js/meta";
 
 import HomeView from "../views/HomeView.vue";
-import ProjectsView from "../views/ProjectsView.vue";
-import BlogView from "../views/BlogView.vue";
-import BlogPostView from "../views/BlogPostView.vue";
-import StoreView from "../views/StoreView.vue";
-
 import LinkView from "../views/LinkView.vue";
 import DiscordView from "../views/redirects/DiscordView.vue";
 import FacebookView from "../views/redirects/FacebookView.vue";
@@ -24,14 +27,6 @@ import TiktokView from "../views/redirects/TiktokView.vue";
 import TwitchView from "../views/redirects/TwitchView.vue";
 import TwitterView from "../views/redirects/TwitterView.vue";
 import YoutubeView from "../views/redirects/YoutubeView.vue";
-
-import TosView from "../views/TosView.vue";
-import CookiesView from "../views/CookiesView.vue";
-import PrivacyView from "../views/PrivacyView.vue";
-import ContactView from "../views/ContactView.vue";
-import AboutUsView from "../views/AboutUsView.vue";
-
-import NotFoundView from "../views/NotFoundView.vue";
 
 /**
  * External profile URLs for the `/link/<platform>` redirect routes. Keeping
@@ -77,34 +72,38 @@ const linkChildren = [
 }));
 
 /**
- * Route table. `meta.titleKey` (when present) is an i18n key resolved into the
- * document title by the global `afterEach` hook below.
+ * Route table. `meta.titleKey` / `meta.descriptionKey` are i18n keys resolved
+ * into the document metadata by {@link applyMeta}; `meta.ownMeta` marks routes
+ * (the blog article) that manage their own title/description once content
+ * resolves. The home page is imported eagerly for the fastest first paint;
+ * everything else is code-split.
  */
 const routes = [
   {
     path: "/",
     component: HomeView,
+    meta: { descriptionKey: "meta.home" },
   },
   {
     path: "/projects",
-    component: ProjectsView,
-    meta: { titleKey: "menu.projects" },
+    component: () => import("../views/ProjectsView.vue"),
+    meta: { titleKey: "menu.projects", descriptionKey: "meta.projects" },
   },
   {
     path: "/blog",
-    component: BlogView,
-    meta: { titleKey: "menu.blog" },
+    component: () => import("../views/BlogView.vue"),
+    meta: { titleKey: "menu.blog", descriptionKey: "meta.blog" },
   },
   {
-    // The per-post title is refined inside BlogPostView once the post loads.
+    // The per-post title/description are refined inside BlogPostView.
     path: "/blog/:slug",
-    component: BlogPostView,
-    meta: { titleKey: "menu.blog" },
+    component: () => import("../views/BlogPostView.vue"),
+    meta: { titleKey: "menu.blog", descriptionKey: "meta.blog", ownMeta: true },
   },
   {
     path: "/store",
-    component: StoreView,
-    meta: { titleKey: "menu.store" },
+    component: () => import("../views/StoreView.vue"),
+    meta: { titleKey: "menu.store", descriptionKey: "meta.store" },
   },
   {
     path: "/link",
@@ -120,32 +119,32 @@ const routes = [
   },
   {
     path: "/terms-and-conditions",
-    component: TosView,
-    meta: { titleKey: "footer.terms" },
+    component: () => import("../views/TosView.vue"),
+    meta: { titleKey: "footer.terms", descriptionKey: "meta.legal" },
   },
   {
     path: "/cookies-policy",
-    component: CookiesView,
-    meta: { titleKey: "footer.cookies" },
+    component: () => import("../views/CookiesView.vue"),
+    meta: { titleKey: "footer.cookies", descriptionKey: "meta.legal" },
   },
   {
     path: "/privacy-policy",
-    component: PrivacyView,
-    meta: { titleKey: "footer.privacy" },
+    component: () => import("../views/PrivacyView.vue"),
+    meta: { titleKey: "footer.privacy", descriptionKey: "meta.legal" },
   },
   {
     path: "/contact",
-    component: ContactView,
-    meta: { titleKey: "menu.contact" },
+    component: () => import("../views/ContactView.vue"),
+    meta: { titleKey: "menu.contact", descriptionKey: "meta.contact" },
   },
   {
     path: "/about-us",
-    component: AboutUsView,
-    meta: { titleKey: "footer.about" },
+    component: () => import("../views/AboutUsView.vue"),
+    meta: { titleKey: "footer.about", descriptionKey: "meta.about" },
   },
   {
     path: "/:pathMatch(.*)*",
-    component: NotFoundView,
+    component: () => import("../views/NotFoundView.vue"),
     meta: { titleKey: "notFound.title" },
   },
 ];
@@ -162,15 +161,33 @@ const router = createRouter({
   },
 });
 
-/** Base site name appended to every localised page title. */
-const SITE_NAME = "PlayerBerry";
+/**
+ * Apply localised document metadata (title, description, canonical and Open
+ * Graph tags) for a route. Runs after every navigation and again whenever the
+ * locale changes, so switching languages updates the browser tab immediately.
+ * Routes flagged `meta.ownMeta` are skipped — they refine their own metadata
+ * once their content resolves (e.g. a blog article's title/excerpt).
+ *
+ * @param to - The route to derive metadata from.
+ */
+const applyMeta = (to: RouteLocationNormalizedLoaded): void => {
+  if (to.meta.ownMeta) return;
 
-// Keep the browser tab title in step with the active route.
-router.afterEach((to) => {
+  const { t } = i18n.global;
   const titleKey = to.meta.titleKey as string | undefined;
-  document.title = titleKey
-    ? `${i18n.global.t(titleKey)} — ${SITE_NAME}`
-    : SITE_NAME;
-});
+  const descriptionKey = to.meta.descriptionKey as string | undefined;
+
+  applyPageMeta({
+    title: titleKey ? t(titleKey) : undefined,
+    description: descriptionKey ? t(descriptionKey) : undefined,
+    path: to.path,
+  });
+};
+
+// Keep metadata in step with navigation…
+router.afterEach((to) => applyMeta(to));
+
+// …and with language switches (re-resolve the current route's keys).
+watch(i18n.global.locale, () => applyMeta(router.currentRoute.value));
 
 export default router;

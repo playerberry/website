@@ -40,10 +40,10 @@ const techStack = [
 
 /** Service cards; `key` resolves localised copy, `icon`/`tone` style the tile. */
 const services = [
-  { key: "web", icon: "fa-solid fa-code", tone: "" },
-  { key: "mobile", icon: "fa-solid fa-mobile-screen", tone: "is-violet" },
-  { key: "design", icon: "fa-solid fa-palette", tone: "is-blue" },
-  { key: "devops", icon: "fa-solid fa-cloud", tone: "is-cyan" },
+  { key: "web", icon: "code", tone: "" },
+  { key: "mobile", icon: "mobile-screen", tone: "is-violet" },
+  { key: "design", icon: "palette", tone: "is-blue" },
+  { key: "devops", icon: "cloud", tone: "is-cyan" },
 ];
 
 /** i18n key suffixes for the four numbered process steps. */
@@ -114,9 +114,9 @@ const stats = ["years", "projects", "clients", "uptime"];
         uk-scrollspy="cls: uk-animation-slide-bottom-small; target: > div; delay: 100"
       >
         <div v-for="svc in services" :key="svc.key">
-          <div class="uk-card uk-card-default uk-card-hover uk-card-body" v-spotlight>
+          <div v-spotlight class="uk-card uk-card-default uk-card-hover uk-card-body">
             <div class="pb-icon-tile" :class="svc.tone">
-              <i :class="svc.icon"></i>
+              <Icon :name="svc.icon" />
             </div>
             <h3 class="uk-card-title">
               {{ t(`home.services.items.${svc.key}.title`) }}
@@ -163,8 +163,7 @@ const stats = ["years", "projects", "clients", "uptime"];
         </div>
         <RouterLink to="/projects" class="pb-link-arrow"
           >{{ t("home.work.viewAll") }}
-          <i class="fa-solid fa-arrow-right"></i
-        ></RouterLink>
+          <Icon name="arrow-right" /></RouterLink>
       </div>
       <div
         class="uk-grid uk-grid-match uk-child-width-1-2@s uk-child-width-1-3@m"
@@ -189,8 +188,7 @@ const stats = ["years", "projects", "clients", "uptime"];
         </div>
         <RouterLink to="/blog" class="pb-link-arrow"
           >{{ t("home.journal.viewAll") }}
-          <i class="fa-solid fa-arrow-right"></i
-        ></RouterLink>
+          <Icon name="arrow-right" /></RouterLink>
       </div>
       <div
         class="uk-grid uk-grid-match uk-child-width-1-2@s uk-child-width-1-3@m"

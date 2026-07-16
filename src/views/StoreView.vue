@@ -25,8 +25,8 @@ const { t } = useI18n();
       >
         <div v-for="prod in products" :key="prod.id">
           <div
-            class="uk-card uk-card-default uk-card-hover uk-card-body pb-product-card"
             v-spotlight
+            class="uk-card uk-card-default uk-card-hover uk-card-body pb-product-card"
           >
             <span
               v-if="prod.badge"
@@ -35,7 +35,7 @@ const { t } = useI18n();
               >{{ t(`store.badges.${prod.badge}`) }}</span
             >
             <div class="pb-icon-tile" :class="prod.tone">
-              <i :class="prod.icon"></i>
+              <Icon :name="prod.icon" />
             </div>
             <div class="pb-project-meta">
               <span>{{ t(`store.items.${prod.id}.category`) }}</span>

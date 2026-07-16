@@ -6,6 +6,28 @@
     "store": "Store",
     "contact": "Contact"
   },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "redirect": {
+    "discord": "Redirecting you to our Discord server...",
+    "instagram": "Redirecting you to our Instagram profile...",
+    "twitch": "Redirecting you to our Twitch channel...",
+    "kick": "Redirecting you to our Kick channel...",
+    "youtube": "Redirecting you to our YouTube channel...",
+    "twitter": "Redirecting you to our X profile...",
+    "facebook": "Redirecting you to our Facebook page...",
+    "tiktok": "Redirecting you to our TikTok profile..."
+  },
+  "meta": {
+    "home": "PlayerBerry — a software studio designing and building end-to-end digital products across web, mobile and cloud.",
+    "projects": "Selected production work touching real users: web, mobile, design and DevOps projects.",
+    "blog": "Architecture decisions, design notes and lessons from the field — the PlayerBerry engineering journal.",
+    "store": "The tools we use in our own projects: templates, component sets and starter kits.",
+    "contact": "Get in touch with PlayerBerry to discuss your project, get a quote, or just say hi.",
+    "about": "The PlayerBerry story: an independent software studio taking ideas to production with a small, senior team.",
+    "legal": "Legal documents of the PlayerBerry website."
+  },
   "hero": {
     "badge": "Open for new projects",
     "titleTop": "Not ordinary software —",

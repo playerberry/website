@@ -10,17 +10,25 @@ import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const { t, tm, rt } = useI18n();
+const { t, locale, getLocaleMessage } = useI18n();
 
-/** The narrative body as an array of paragraph strings. */
-const story = computed<string[]>(() => tm("about.story") as string[]);
+/**
+ * The narrative body as an array of paragraph strings, read raw from the
+ * locale messages (bypassing the message compiler, same as blog content) so
+ * future edits may freely contain `{`, `}` or `|`.
+ */
+const story = computed<string[]>(() => {
+  const read = (loc: string): string[] | undefined =>
+    (getLocaleMessage(loc) as { about?: { story?: string[] } })?.about?.story;
+  return read(locale.value) ?? read("en") ?? [];
+});
 
 /** Value cards; `key` resolves localised copy, `icon`/`tone` style the tile. */
 const values = [
-  { key: "craft", icon: "fa-solid fa-gem", tone: "" },
-  { key: "clarity", icon: "fa-solid fa-eye", tone: "is-violet" },
-  { key: "partnership", icon: "fa-solid fa-handshake", tone: "is-blue" },
-  { key: "longevity", icon: "fa-solid fa-seedling", tone: "is-cyan" },
+  { key: "craft", icon: "gem", tone: "" },
+  { key: "clarity", icon: "eye", tone: "is-violet" },
+  { key: "partnership", icon: "handshake", tone: "is-blue" },
+  { key: "longevity", icon: "seedling", tone: "is-cyan" },
 ];
 
 /** i18n key suffixes for the reused statistic tiles (`hero.stats.*`). */
@@ -37,7 +45,7 @@ const stats = ["years", "projects", "clients", "uptime"];
       </div>
 
       <div class="pb-post-body uk-margin-medium-bottom">
-        <p v-for="(para, i) in story" :key="i">{{ rt(para) }}</p>
+        <p v-for="(para, i) in story" :key="i">{{ para }}</p>
       </div>
 
       <div
@@ -46,9 +54,9 @@ const stats = ["years", "projects", "clients", "uptime"];
         uk-scrollspy="cls: uk-animation-slide-bottom-small; target: > div; delay: 100"
       >
         <div v-for="value in values" :key="value.key">
-          <div class="uk-card uk-card-default uk-card-hover uk-card-body" v-spotlight>
+          <div v-spotlight class="uk-card uk-card-default uk-card-hover uk-card-body">
             <div class="pb-icon-tile" :class="value.tone">
-              <i :class="value.icon"></i>
+              <Icon :name="value.icon" />
             </div>
             <h3 class="uk-card-title">
               {{ t(`about.values.${value.key}.title`) }}

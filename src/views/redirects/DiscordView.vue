@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Discord sunucumuza yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.discord") }}</h1>
 </template>

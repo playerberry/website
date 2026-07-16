@@ -18,6 +18,8 @@ interface SpotlightElement extends HTMLElement {
   _pbSpotlightMove?: (event: PointerEvent) => void;
   /** Pointer-leave handler bound during {@link spotlight.mounted}. */
   _pbSpotlightLeave?: () => void;
+  /** Pending rAF id (`0` when idle), so moves coalesce to one per frame. */
+  _pbSpotlightFrame?: number;
 }
 
 /**
@@ -27,6 +29,10 @@ interface SpotlightElement extends HTMLElement {
  * CSS custom properties, `--pb-spot-x` and `--pb-spot-y` (as percentages of
  * the element's box). Stylesheets can then paint a radial highlight anchored
  * to those coordinates, so cards feel alive and follow the pointer.
+ *
+ * Pointer moves are coalesced through `requestAnimationFrame`: the layout
+ * read (`getBoundingClientRect`) and the style writes happen at most once per
+ * frame, avoiding forced reflows under rapid pointer movement.
  *
  * The effect is purely cosmetic, so listeners are never attached for visitors
  * who prefer reduced motion — the card simply falls back to its static hover
@@ -41,17 +47,35 @@ const spotlight: Directive<SpotlightElement> = {
   mounted(el) {
     if (prefersReducedMotion()) return;
 
-    /** Project the pointer onto the element and expose it as CSS variables. */
-    const onMove = (event: PointerEvent): void => {
+    /** Latest pointer position; applied on the next animation frame. */
+    let lastX = 0;
+    let lastY = 0;
+
+    /** Read the element box once per frame and expose the pointer as CSS vars. */
+    const apply = (): void => {
+      el._pbSpotlightFrame = 0;
       const rect = el.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 100;
-      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      const x = ((lastX - rect.left) / rect.width) * 100;
+      const y = ((lastY - rect.top) / rect.height) * 100;
       el.style.setProperty("--pb-spot-x", `${x}%`);
       el.style.setProperty("--pb-spot-y", `${y}%`);
     };
 
+    /** Record the pointer and schedule one frame (if none is pending). */
+    const onMove = (event: PointerEvent): void => {
+      lastX = event.clientX;
+      lastY = event.clientY;
+      if (!el._pbSpotlightFrame) {
+        el._pbSpotlightFrame = requestAnimationFrame(apply);
+      }
+    };
+
     /** Reset to the resting position so the next hover starts cleanly. */
     const onLeave = (): void => {
+      if (el._pbSpotlightFrame) {
+        cancelAnimationFrame(el._pbSpotlightFrame);
+        el._pbSpotlightFrame = 0;
+      }
       el.style.removeProperty("--pb-spot-x");
       el.style.removeProperty("--pb-spot-y");
     };
@@ -69,6 +93,7 @@ const spotlight: Directive<SpotlightElement> = {
     if (el._pbSpotlightLeave) {
       el.removeEventListener("pointerleave", el._pbSpotlightLeave);
     }
+    if (el._pbSpotlightFrame) cancelAnimationFrame(el._pbSpotlightFrame);
   },
 };
 

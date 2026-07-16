@@ -49,8 +49,17 @@
   <body>
     <div>
       <h1>404</h1>
-      <p>Ulaşmaya çalıştığınız sayfa artık yok ya da hiç var olmadı.</p>
-      <a href="https://playerberry.com">Dön bebeğim.</a>
+      <p id="pb-404-text">Ulaşmaya çalıştığınız sayfa artık yok ya da hiç var olmadı.</p>
+      <a id="pb-404-link" href="https://playerberry.com">Dön bebeğim.</a>
     </div>
+    <script>
+      // Localize the brief fallback copy for non-Turkish browsers. (The page
+      // normally redirects instantly; this only matters if the redirect fails.)
+      if (navigator.language && navigator.language.toLowerCase().indexOf("tr") !== 0) {
+        document.getElementById("pb-404-text").textContent =
+          "The page you are looking for no longer exists — or never did.";
+        document.getElementById("pb-404-link").textContent = "Take me home.";
+      }
+    </script>
   </body>
 </html>

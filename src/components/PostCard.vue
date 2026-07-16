@@ -25,7 +25,7 @@ const content = computed(() => getPost(props.post.slug));
 </script>
 
 <template>
-  <div class="uk-card uk-card-default uk-card-hover uk-card-body" v-spotlight>
+  <div v-spotlight class="uk-card uk-card-default uk-card-hover uk-card-body">
     <div class="pb-post-meta">
       <span>{{ formatPostDate(post.date, locale) }}</span>
       <span>·</span>

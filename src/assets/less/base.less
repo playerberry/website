@@ -6,11 +6,12 @@ html {
 
 body {
   min-height: 100vh;
+  // Note: no `background-attachment: fixed` — it forces repaints on scroll on
+  // mobile browsers; the fixed aurora layer (effects.less) covers that role.
   background:
     radial-gradient(1100px 520px at 85% -5%, rgba(139, 92, 246, 0.13), transparent 60%),
     radial-gradient(900px 480px at -10% 12%, rgba(255, 61, 119, 0.1), transparent 55%),
     @pb-bg;
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -125,7 +125,7 @@ const fallbackCopy = (text: string): boolean => {
 
 /** Copy the raw (un-highlighted) source to the clipboard, then confirm. */
 const copy = async (): Promise<void> => {
-  let ok = false;
+  let ok: boolean;
   try {
     await navigator.clipboard.writeText(props.code);
     ok = true;
@@ -145,14 +145,17 @@ const copy = async (): Promise<void> => {
       <span class="pb-code-lang">{{ label }}</span>
       <button
         class="pb-code-copy"
+        :class="{ 'is-copied': copied }"
         type="button"
         :aria-label="copied ? t('blog.copied') : t('blog.copy')"
         @click="copy"
       >
-        <i :class="copied ? 'fa-solid fa-check' : 'fa-regular fa-copy'"></i>
+        <Icon :name="copied ? 'check' : 'copy'" />
         <span>{{ copied ? t("blog.copied") : t("blog.copy") }}</span>
       </button>
     </div>
+    <!-- highlight.js escapes source text itself; its output is safe HTML. -->
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <pre class="pb-post-code"><code class="hljs" v-html="highlighted"></code></pre>
   </div>
 </template>

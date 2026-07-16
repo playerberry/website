@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Facebook sayfamıza yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.facebook") }}</h1>
 </template>

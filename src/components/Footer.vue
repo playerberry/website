@@ -37,30 +37,31 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
             <a
               href="https://instagram.com/playerberry"
               target="_blank"
+            rel="noopener"
               aria-label="Instagram"
-              ><i class="fa-brands fa-instagram"></i
-            ></a>
+              ><Icon name="instagram" /></a>
             <a
               href="https://twitch.tv/playerberry"
               target="_blank"
+            rel="noopener"
               aria-label="Twitch"
-              ><i class="fa-brands fa-twitch"></i
-            ></a>
+              ><Icon name="twitch" /></a>
             <a
               href="https://youtube.com/@playerberry"
               target="_blank"
+            rel="noopener"
               aria-label="YouTube"
-              ><i class="fa-brands fa-youtube"></i
-            ></a>
-            <a href="https://x.com/playerberry" target="_blank" aria-label="X"
-              ><i class="fa-brands fa-twitter"></i
-            ></a>
+              ><Icon name="youtube" /></a>
+            <a
+href="https://x.com/playerberry" target="_blank"
+            rel="noopener" aria-label="X"
+              ><Icon name="twitter" /></a>
             <a
               href="https://facebook.com/playerberry"
               target="_blank"
+            rel="noopener"
               aria-label="Facebook"
-              ><i class="fa-brands fa-facebook"></i
-            ></a>
+              ><Icon name="facebook" /></a>
           </div>
         </div>
         <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
@@ -79,7 +80,7 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
               <RouterLink to="/store">{{ $t("menu.store") }}</RouterLink>
             </li>
             <li>
-              <a :href="feedHref" target="_blank" rel="alternate">{{
+              <a :href="feedHref" target="_blank" rel="alternate noopener">{{
                 $t("footer.rss")
               }}</a>
             </li>
@@ -123,6 +124,7 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
           }}<a
             :href="'https://www.google.com/search?q=' + randomizedFunny"
             target="_blank"
+            rel="noopener"
             ><span class="sentence">{{ randomizedFunny }}</span></a
           >{{ $t("footer.randomized.part1") }}
         </p>

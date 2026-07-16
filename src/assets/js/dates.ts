@@ -1,4 +1,30 @@
 /**
+ * Cached `Intl.DateTimeFormat` instances, keyed by BCP-47 locale. Constructing
+ * a formatter is comparatively expensive; posts lists format many dates with
+ * the same locale, so we build each formatter once and reuse it.
+ */
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+/**
+ * Get (or lazily create) the long-date formatter for a locale.
+ *
+ * @param tag - A BCP-47 locale tag such as `"tr-TR"`.
+ * @returns The shared formatter for that tag.
+ */
+const formatterFor = (tag: string): Intl.DateTimeFormat => {
+  let formatter = formatters.get(tag);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(tag, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    formatters.set(tag, formatter);
+  }
+  return formatter;
+};
+
+/**
  * Format an ISO date string as a long, localised date.
  *
  * Uses the platform `Intl.DateTimeFormat`, so month names and ordering follow
@@ -16,8 +42,4 @@
  * ```
  */
 export const formatPostDate = (iso: string, locale: string): string =>
-  new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : "en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(iso));
+  formatterFor(locale === "tr" ? "tr-TR" : "en-US").format(new Date(iso));

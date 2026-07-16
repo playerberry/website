@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Youtube kanalımıza yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.youtube") }}</h1>
 </template>

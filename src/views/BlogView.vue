@@ -37,16 +37,16 @@ const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.x
           class="pb-rss-link"
           :href="feedHref"
           target="_blank"
-          rel="alternate"
+          rel="alternate noopener"
         >
-          <i class="fa-solid fa-rss"></i><span>RSS</span>
+          <Icon name="rss" /><span>RSS</span>
         </a>
       </div>
 
       <!-- Featured (latest) post -->
       <div
-        class="uk-card uk-card-default uk-card-hover uk-margin-medium-bottom"
         v-spotlight
+        class="uk-card uk-card-default uk-card-hover uk-margin-medium-bottom"
       >
         <div class="uk-grid uk-grid-collapse uk-child-width-1-2@m" uk-grid>
           <div>

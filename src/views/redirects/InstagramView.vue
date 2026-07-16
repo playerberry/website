@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Instagram'a yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.instagram") }}</h1>
 </template>

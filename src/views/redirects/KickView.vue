@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Kick'e yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.kick") }}</h1>
 </template>

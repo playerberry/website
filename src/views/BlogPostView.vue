@@ -7,10 +7,8 @@
  * so the browser tab and shared links are meaningful.
  *
  * Article content is read raw (see {@link usePostContent}) so it may contain
- * arbitrary code. The body is parsed into typed blocks with a tiny inline
- * convention: a leading `## ` is a section heading, a leading `> ` is a pull
- * quote, and a ```` ``` ````-fenced string is a code block. Within paragraphs,
- * headings and quotes, text wrapped in single backticks becomes inline code.
+ * arbitrary code. The body is parsed into typed blocks by the pure helpers in
+ * {@link module:postBlocks} — see that module for the inline convention.
  */
 import { computed, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
@@ -18,6 +16,8 @@ import { useI18n } from "vue-i18n";
 import { posts } from "../data/posts";
 import { usePostContent } from "../composables/usePostContent";
 import { formatPostDate } from "../assets/js/dates.ts";
+import { applyPageMeta } from "../assets/js/meta";
+import { parseBlocks, type Block } from "../assets/js/postBlocks";
 import CodeBlock from "../components/CodeBlock.vue";
 import NotFoundView from "./NotFoundView.vue";
 
@@ -35,48 +35,19 @@ const content = computed(() =>
   post.value ? getPost(post.value.slug) : undefined,
 );
 
-/** A run of text that is either plain or inline code. */
-interface InlineSpan {
-  code: boolean;
-  text: string;
-}
-
-/** A rendered article block. */
-type Block =
-  | { kind: "code"; code: string; lang: string }
-  | { kind: "h2" | "quote" | "p"; spans: InlineSpan[] };
-
-/**
- * Split a line into alternating plain / inline-code spans on single backticks.
- * Odd segments (between a pair of backticks) are rendered as inline code.
- *
- * @param text - The line to split.
- * @returns The ordered spans.
- */
-const toSpans = (text: string): InlineSpan[] =>
-  text.split("`").map((part, i) => ({ code: i % 2 === 1, text: part }));
-
 /** The article body parsed into typed, render-ready blocks. */
-const blocks = computed<Block[]>(() =>
-  (content.value?.body ?? []).map((raw): Block => {
-    if (raw.startsWith("```")) {
-      // Capture the ```lang tag, then strip the opening line and closing fence.
-      const lang = (raw.match(/^```([^\n]*)/)?.[1] ?? "").trim();
-      const code = raw
-        .replace(/^```[^\n]*\n?/, "")
-        .replace(/\n?```\s*$/, "");
-      return { kind: "code", code, lang };
-    }
-    if (raw.startsWith("## ")) return { kind: "h2", spans: toSpans(raw.slice(3)) };
-    if (raw.startsWith("> ")) return { kind: "quote", spans: toSpans(raw.slice(2)) };
-    return { kind: "p", spans: toSpans(raw) };
-  }),
-);
+const blocks = computed<Block[]>(() => parseBlocks(content.value?.body ?? []));
 
-// Reflect the resolved (localised) post title in the browser tab title.
+// Reflect the resolved (localised) article in the page metadata: tab title,
+// meta description (the excerpt), canonical URL and social-card mirrors.
+// Re-runs when the locale changes, keeping the metadata in the active language.
 watchEffect(() => {
-  if (content.value) {
-    document.title = `${content.value.title} — PlayerBerry`;
+  if (content.value && post.value) {
+    applyPageMeta({
+      title: content.value.title,
+      description: content.value.excerpt,
+      path: `/blog/${post.value.slug}`,
+    });
   }
 });
 </script>
@@ -85,7 +56,7 @@ watchEffect(() => {
   <section v-if="post" class="pb-section">
     <div class="uk-container">
       <RouterLink to="/blog" class="pb-link-arrow"
-        ><i class="fa-solid fa-arrow-left"></i>
+        ><Icon name="arrow-left" />
         {{ t("blog.back") }}</RouterLink
       >
       <div class="pb-post-meta uk-margin-medium-top">

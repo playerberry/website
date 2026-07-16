@@ -8,5 +8,5 @@
 </script>
 
 <template>
-  <h1>Twitter'a yönlendiriliyorsunuz...</h1>
+  <h1>{{ $t("redirect.twitter") }}</h1>
 </template>
