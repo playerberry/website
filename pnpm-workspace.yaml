@@ -1,0 +1,8 @@
+# pnpm ayarları (pnpm v10+ ile "pnpm" package.json alanı yerine burada tutulur).
+# picomatch <2.3.2 sürümlerindeki ReDoS açığını (GHSA-3v7f-55p6-f55p) kapatmak
+# için geçişli bağımlılığı yamalı sürüme zorlar.
+# rollup <4.59.0 sürümlerindeki dizin aşımıyla dosya yazma açığını
+# (GHSA-mw96-cpmx-2vgc) kapatır.
+overrides:
+  "picomatch@<2.3.2": ">=2.3.2"
+  "rollup@>=4.0.0 <4.59.0": ">=4.59.0"
