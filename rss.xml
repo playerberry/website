@@ -6,7 +6,7 @@
     <atom:link href="https://playerberry.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.</description>
     <language>tr</language>
-    <lastBuildDate>Thu, 16 Jul 2026 14:15:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2026 14:19:04 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: async/await ile Callback Cehennemine Veda</title>
       <link>https://playerberry.com/blog/swift-concurrency</link>
