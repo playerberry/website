@@ -1,22 +1,54 @@
 name: Deploy
 
-# Build the site and publish it to the gh-pages branch on every push to
-# `stage`, so no manual `pnpm release` is needed. Can also be run by hand
+# Quality gate + deploy. `check` (lint, typecheck, tests) runs on every push
+# to `stage` and on pull requests. `deploy` builds the site and publishes it
+# to the gh-pages branch, but only after `check` passes and only on `stage`
+# pushes — so no manual `pnpm release` is needed. Can also be run by hand
 # from the Actions tab (workflow_dispatch).
 on:
   push:
     branches: [stage]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: deploy-gh-pages
+  group: deploy-gh-pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
   deploy:
+    needs: check
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
