@@ -3,12 +3,14 @@
  * Site header.
  *
  * A sticky, glassy navigation bar with the PlayerBerry wordmark, the primary
- * menu, a TR/EN language switch and a contact call-to-action. On narrow
- * screens the menu collapses into a UIkit off-canvas drawer.
+ * menu, a language switch (built from the supported-locale list) and a
+ * contact call-to-action. On narrow screens the menu collapses into a UIkit
+ * off-canvas drawer.
  */
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import UIkit from "uikit";
+import { SUPPORTED_LOCALES, type Locale } from "../assets/js/locales";
 
 const { locale } = useI18n();
 
@@ -17,10 +19,11 @@ const closeMenu = () => UIkit.offcanvas("#sidenav").hide();
 
 /**
  * Switch the active UI language, persist the choice and update `<html lang>`.
+ * A manual choice overrides the country-based detection on later visits.
  *
  * @param value - The locale to activate.
  */
-const setLocale = (value: "tr" | "en") => {
+const setLocale = (value: Locale) => {
   locale.value = value;
   localStorage.setItem("pb:locale", value);
   document.documentElement.lang = value;
@@ -49,24 +52,22 @@ const setLocale = (value: "tr" | "en") => {
               <RouterLink to="/store">{{ $t("menu.store") }}</RouterLink>
             </li>
           </ul>
-          <div class="pb-lang uk-navbar-item uk-visible@m" role="group" aria-label="Language">
-            <button
-              type="button"
-              :class="{ 'is-active': locale === 'tr' }"
-              :aria-pressed="locale === 'tr'"
-              @click="setLocale('tr')"
-            >
-              TR
-            </button>
-            <span class="pb-lang-sep">/</span>
-            <button
-              type="button"
-              :class="{ 'is-active': locale === 'en' }"
-              :aria-pressed="locale === 'en'"
-              @click="setLocale('en')"
-            >
-              EN
-            </button>
+          <div
+            class="pb-lang uk-navbar-item uk-visible@m"
+            role="group"
+            aria-label="Language"
+          >
+            <template v-for="(code, i) in SUPPORTED_LOCALES" :key="code">
+              <span v-if="i > 0" class="pb-lang-sep">/</span>
+              <button
+                type="button"
+                :class="{ 'is-active': locale === code }"
+                :aria-pressed="locale === code"
+                @click="setLocale(code)"
+              >
+                {{ code.toUpperCase() }}
+              </button>
+            </template>
           </div>
           <div class="uk-navbar-item uk-visible@m">
             <RouterLink
@@ -116,24 +117,22 @@ const setLocale = (value: "tr" | "en") => {
           }}</RouterLink>
         </li>
       </ul>
-      <div class="pb-lang pb-lang-mobile uk-margin-top" role="group" aria-label="Language">
-        <button
-          type="button"
-          :class="{ 'is-active': locale === 'tr' }"
-          :aria-pressed="locale === 'tr'"
-          @click="setLocale('tr')"
-        >
-          TR
-        </button>
-        <span class="pb-lang-sep">/</span>
-        <button
-          type="button"
-          :class="{ 'is-active': locale === 'en' }"
-          :aria-pressed="locale === 'en'"
-          @click="setLocale('en')"
-        >
-          EN
-        </button>
+      <div
+        class="pb-lang pb-lang-mobile uk-margin-top"
+        role="group"
+        aria-label="Language"
+      >
+        <template v-for="(code, i) in SUPPORTED_LOCALES" :key="code">
+          <span v-if="i > 0" class="pb-lang-sep">/</span>
+          <button
+            type="button"
+            :class="{ 'is-active': locale === code }"
+            :aria-pressed="locale === code"
+            @click="setLocale(code)"
+          >
+            {{ code.toUpperCase() }}
+          </button>
+        </template>
       </div>
     </div>
   </div>

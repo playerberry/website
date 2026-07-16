@@ -2,6 +2,7 @@ import type { Plugin } from "vite";
 import { posts } from "../src/data/posts";
 import trMessages from "../src/locales/tr.json";
 import enMessages from "../src/locales/en.json";
+import esMessages from "../src/locales/es.json";
 
 /** Absolute site origin used for feed and item links. */
 const SITE = "https://playerberry.com";
@@ -24,6 +25,7 @@ interface FeedMessages {
 const locales: Record<string, { messages: FeedMessages; file: string }> = {
   tr: { messages: trMessages as unknown as FeedMessages, file: "rss.xml" },
   en: { messages: enMessages as unknown as FeedMessages, file: "rss-en.xml" },
+  es: { messages: esMessages as unknown as FeedMessages, file: "rss-es.xml" },
 };
 
 /** Escape a string for safe inclusion in XML/HTML text and attributes. */
@@ -69,10 +71,10 @@ const cdata = (text: string): string =>
 /**
  * Build an RSS 2.0 feed document for a locale.
  *
- * @param locale - `"tr"` or `"en"`.
+ * @param locale - `"tr"`, `"en"` or `"es"`.
  * @returns The complete feed XML.
  */
-const buildFeed = (locale: "tr" | "en"): string => {
+const buildFeed = (locale: "tr" | "en" | "es"): string => {
   const { messages, file } = locales[locale];
 
   const items = posts
@@ -115,32 +117,30 @@ ${items}
 /**
  * Vite plugin that publishes the blog as static RSS 2.0 feeds.
  *
- * Emits `rss.xml` (Turkish) and `rss-en.xml` (English) into the build output,
- * and serves the same feeds from the dev server so they can be previewed
- * before deploying.
+ * Emits `rss.xml` (Turkish), `rss-en.xml` (English) and `rss-es.xml`
+ * (Spanish) into the build output, and serves the same feeds from the dev
+ * server so they can be previewed before deploying.
  */
 export function rss(): Plugin {
   return {
     name: "playerberry-rss",
 
     generateBundle() {
-      this.emitFile({
-        type: "asset",
-        fileName: "rss.xml",
-        source: buildFeed("tr"),
-      });
-      this.emitFile({
-        type: "asset",
-        fileName: "rss-en.xml",
-        source: buildFeed("en"),
-      });
+      for (const [locale, { file }] of Object.entries(locales)) {
+        this.emitFile({
+          type: "asset",
+          fileName: file,
+          source: buildFeed(locale as "tr" | "en" | "es"),
+        });
+      }
     },
 
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const url = (req as { url?: string }).url ?? "";
-        const feed =
-          url === "/rss.xml" ? "tr" : url === "/rss-en.xml" ? "en" : null;
+        const feed = Object.entries(locales).find(
+          ([, { file }]) => url === `/${file}`,
+        )?.[0] as "tr" | "en" | "es" | undefined;
         if (!feed) return next();
         res.setHeader("Content-Type", "application/rss+xml; charset=utf-8");
         res.end(buildFeed(feed));

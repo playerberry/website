@@ -10,6 +10,7 @@ import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import sentence from "../assets/js/random.ts";
+import { feedPathFor } from "../assets/js/locales";
 
 const { locale } = useI18n();
 
@@ -20,7 +21,7 @@ const randomizedFunny = sentence();
 const year = new Date().getFullYear();
 
 /** The RSS feed matching the active locale. */
-const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.xml"));
+const feedHref = computed(() => feedPathFor(locale.value));
 </script>
 
 <template>

@@ -12,6 +12,7 @@ import { posts } from "../data/posts";
 import PostCard from "../components/PostCard.vue";
 import { usePostContent } from "../composables/usePostContent";
 import { formatPostDate } from "../assets/js/dates.ts";
+import { feedPathFor } from "../assets/js/locales";
 
 const { t, locale } = useI18n();
 const { getPost } = usePostContent();
@@ -23,7 +24,7 @@ const [featured, ...rest] = posts;
 const featuredContent = computed(() => getPost(featured.slug));
 
 /** The RSS feed matching the active locale. */
-const feedHref = computed(() => (locale.value === "en" ? "/rss-en.xml" : "/rss.xml"));
+const feedHref = computed(() => feedPathFor(locale.value));
 </script>
 
 <template>

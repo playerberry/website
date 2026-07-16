@@ -10,6 +10,10 @@ describe("formatPostDate", () => {
     expect(formatPostDate("2026-06-18", "en")).toBe("June 18, 2026");
   });
 
+  it("formats Spanish dates as 'day de month de year'", () => {
+    expect(formatPostDate("2026-06-18", "es")).toBe("18 de junio de 2026");
+  });
+
   it("falls back to English for unknown locales", () => {
     expect(formatPostDate("2026-01-05", "de")).toBe("January 5, 2026");
   });
