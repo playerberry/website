@@ -3,14 +3,20 @@
  * Site header.
  *
  * A sticky, glassy navigation bar with the PlayerBerry wordmark, the primary
- * menu, a language switch (built from the supported-locale list) and a
- * contact call-to-action. On narrow screens the menu collapses into a UIkit
- * off-canvas drawer.
+ * menu, a language dropdown (built from the supported-locale list, showing
+ * each language's native name) and a contact call-to-action. On narrow
+ * screens the menu collapses into a UIkit off-canvas drawer.
  */
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import UIkit from "uikit";
-import { SUPPORTED_LOCALES, type Locale } from "../assets/js/locales";
+import { activateLocale } from "../i18n";
+import {
+  LOCALE_NAMES,
+  SUPPORTED_LOCALES,
+  isSupportedLocale,
+  type Locale,
+} from "../assets/js/locales";
 
 const { locale } = useI18n();
 
@@ -18,15 +24,25 @@ const { locale } = useI18n();
 const closeMenu = () => UIkit.offcanvas("#sidenav").hide();
 
 /**
- * Switch the active UI language, persist the choice and update `<html lang>`.
- * A manual choice overrides the country-based detection on later visits.
+ * Switch the active UI language (loading its catalogue on first use) and
+ * persist the choice — a manual choice overrides the country-based
+ * detection on later visits.
  *
  * @param value - The locale to activate.
  */
-const setLocale = (value: Locale) => {
-  locale.value = value;
+const setLocale = async (value: Locale) => {
+  await activateLocale(value);
   localStorage.setItem("pb:locale", value);
-  document.documentElement.lang = value;
+};
+
+/**
+ * Handle a change on one of the language `<select>` elements.
+ *
+ * @param event - The change event whose target holds the chosen locale.
+ */
+const onLocaleChange = (event: Event) => {
+  const value = (event.target as HTMLSelectElement).value;
+  if (isSupportedLocale(value)) void setLocale(value);
 };
 </script>
 
@@ -52,22 +68,21 @@ const setLocale = (value: Locale) => {
               <RouterLink to="/store">{{ $t("menu.store") }}</RouterLink>
             </li>
           </ul>
-          <div
-            class="pb-lang uk-navbar-item uk-visible@m"
-            role="group"
-            aria-label="Language"
-          >
-            <template v-for="(code, i) in SUPPORTED_LOCALES" :key="code">
-              <span v-if="i > 0" class="pb-lang-sep">/</span>
-              <button
-                type="button"
-                :class="{ 'is-active': locale === code }"
-                :aria-pressed="locale === code"
-                @click="setLocale(code)"
+          <div class="pb-lang uk-navbar-item uk-visible@m">
+            <select
+              class="pb-lang-select"
+              aria-label="Language"
+              :value="locale"
+              @change="onLocaleChange"
+            >
+              <option
+                v-for="code in SUPPORTED_LOCALES"
+                :key="code"
+                :value="code"
               >
-                {{ code.toUpperCase() }}
-              </button>
-            </template>
+                {{ LOCALE_NAMES[code] }}
+              </option>
+            </select>
           </div>
           <div class="uk-navbar-item uk-visible@m">
             <RouterLink
@@ -117,22 +132,17 @@ const setLocale = (value: Locale) => {
           }}</RouterLink>
         </li>
       </ul>
-      <div
-        class="pb-lang pb-lang-mobile uk-margin-top"
-        role="group"
-        aria-label="Language"
-      >
-        <template v-for="(code, i) in SUPPORTED_LOCALES" :key="code">
-          <span v-if="i > 0" class="pb-lang-sep">/</span>
-          <button
-            type="button"
-            :class="{ 'is-active': locale === code }"
-            :aria-pressed="locale === code"
-            @click="setLocale(code)"
-          >
-            {{ code.toUpperCase() }}
-          </button>
-        </template>
+      <div class="pb-lang pb-lang-mobile uk-margin-top">
+        <select
+          class="pb-lang-select"
+          aria-label="Language"
+          :value="locale"
+          @change="onLocaleChange"
+        >
+          <option v-for="code in SUPPORTED_LOCALES" :key="code" :value="code">
+            {{ LOCALE_NAMES[code] }}
+          </option>
+        </select>
       </div>
     </div>
   </div>

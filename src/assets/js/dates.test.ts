@@ -14,8 +14,13 @@ describe("formatPostDate", () => {
     expect(formatPostDate("2026-06-18", "es")).toBe("18 de junio de 2026");
   });
 
+  it("formats German and Japanese dates in their own conventions", () => {
+    expect(formatPostDate("2026-06-18", "de")).toBe("18. Juni 2026");
+    expect(formatPostDate("2026-06-18", "ja")).toBe("2026年6月18日");
+  });
+
   it("falls back to English for unknown locales", () => {
-    expect(formatPostDate("2026-01-05", "de")).toBe("January 5, 2026");
+    expect(formatPostDate("2026-01-05", "xx")).toBe("January 5, 2026");
   });
 
   it("reuses cached formatters across calls (same output, no throw)", () => {

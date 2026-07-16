@@ -16,13 +16,40 @@
  */
 
 /** Locales the UI ships translations for. */
-export const SUPPORTED_LOCALES = ["tr", "en", "es"] as const;
+export const SUPPORTED_LOCALES = [
+  "tr",
+  "en",
+  "es",
+  "fr",
+  "de",
+  "ru",
+  "ko",
+  "it",
+  "el",
+  "ja",
+  "zh",
+] as const;
 
-/** Union of the supported locale codes (`"tr" | "en" | "es"`). */
+/** Union of the supported locale codes. */
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
 /** The locale used when detection fails or a country isn't mapped. */
 export const DEFAULT_LOCALE: Locale = "en";
+
+/** Native display name per locale, shown in the language dropdown. */
+export const LOCALE_NAMES: Record<Locale, string> = {
+  tr: "Türkçe",
+  en: "English",
+  es: "Español",
+  fr: "Français",
+  de: "Deutsch",
+  ru: "Русский",
+  ko: "한국어",
+  it: "Italiano",
+  el: "Ελληνικά",
+  ja: "日本語",
+  zh: "中文",
+};
 
 /**
  * ISO 3166-1 alpha-2 country code → locale. Countries missing from this map
@@ -31,13 +58,32 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const COUNTRY_LOCALES: Record<string, Locale> = {
   TR: "tr",
   ES: "es",
+  FR: "fr",
+  DE: "de",
+  RU: "ru",
+  KR: "ko",
+  IT: "it",
+  GR: "el",
+  JP: "ja",
+  CN: "zh",
 };
 
-/** RSS feed path per locale (the Turkish feed keeps its legacy name). */
+/**
+ * RSS feed path per locale. The Turkish feed keeps its legacy name; locales
+ * whose articles fall back to English link the English feed.
+ */
 const FEED_PATHS: Record<Locale, string> = {
   tr: "/rss.xml",
   en: "/rss-en.xml",
   es: "/rss-es.xml",
+  fr: "/rss-en.xml",
+  de: "/rss-en.xml",
+  ru: "/rss-en.xml",
+  ko: "/rss-en.xml",
+  it: "/rss-en.xml",
+  el: "/rss-en.xml",
+  ja: "/rss-en.xml",
+  zh: "/rss-en.xml",
 };
 
 /**

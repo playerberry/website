@@ -28,6 +28,14 @@ const formatterFor = (tag: string): Intl.DateTimeFormat => {
 const localeTags: Record<string, string> = {
   tr: "tr-TR",
   es: "es-ES",
+  fr: "fr-FR",
+  de: "de-DE",
+  ru: "ru-RU",
+  ko: "ko-KR",
+  it: "it-IT",
+  el: "el-GR",
+  ja: "ja-JP",
+  zh: "zh-CN",
 };
 
 /**

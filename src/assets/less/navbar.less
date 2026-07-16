@@ -83,38 +83,42 @@
   }
 }
 
-// TR / EN language switch
+// Language dropdown (native language names, one option per locale)
 .pb-lang {
   display: flex;
   align-items: center;
-  gap: 4px;
+}
 
-  button {
-    padding: 4px 6px;
-    background: none;
-    border: none;
-    font-family: @pb-font-mono;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: @pb-muted;
-    cursor: pointer;
-    transition: color 0.2s ease;
+.pb-lang-select {
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid @pb-border;
+  border-radius: @pb-radius-pill;
+  font-family: @pb-font-mono;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: @pb-muted;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 
-    &:hover,
-    &:focus,
-    &.is-active {
-      color: @pb-text-emphasis;
-    }
+  &:hover,
+  &:focus {
+    color: @pb-text-emphasis;
+    border-color: @pb-border-strong;
   }
 
-  .pb-lang-sep {
-    color: @pb-border-strong;
+  option {
+    background: @pb-bg-raised;
+    color: @pb-text;
   }
 }
 
-.pb-lang-mobile button {
+.pb-lang-mobile .pb-lang-select {
+  width: 100%;
   font-size: 1rem;
-  padding: 6px 8px;
+  padding: 10px 12px;
 }
 
 // Mobile off-canvas menu

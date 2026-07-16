@@ -41,10 +41,21 @@ describe("localeForCountry", () => {
     expect(localeForCountry("ES")).toBe("es");
   });
 
+  it("maps each mapped country to its language", () => {
+    expect(localeForCountry("FR")).toBe("fr");
+    expect(localeForCountry("DE")).toBe("de");
+    expect(localeForCountry("RU")).toBe("ru");
+    expect(localeForCountry("KR")).toBe("ko");
+    expect(localeForCountry("IT")).toBe("it");
+    expect(localeForCountry("GR")).toBe("el");
+    expect(localeForCountry("JP")).toBe("ja");
+    expect(localeForCountry("CN")).toBe("zh");
+  });
+
   it("falls back to English for unmapped countries", () => {
-    expect(localeForCountry("DE")).toBe("en");
     expect(localeForCountry("US")).toBe("en");
-    expect(localeForCountry("JP")).toBe("en");
+    expect(localeForCountry("BR")).toBe("en");
+    expect(localeForCountry("NL")).toBe("en");
   });
 
   it("falls back to English when detection failed", () => {
@@ -64,7 +75,13 @@ describe("feedPathFor", () => {
     expect(feedPathFor("es")).toBe("/rss-es.xml");
   });
 
+  it("links the English feed for locales without translated articles", () => {
+    expect(feedPathFor("fr")).toBe("/rss-en.xml");
+    expect(feedPathFor("ja")).toBe("/rss-en.xml");
+    expect(feedPathFor("zh")).toBe("/rss-en.xml");
+  });
+
   it("falls back to the English feed for unknown locales", () => {
-    expect(feedPathFor("de")).toBe("/rss-en.xml");
+    expect(feedPathFor("xx")).toBe("/rss-en.xml");
   });
 });

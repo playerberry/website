@@ -1,18 +1,20 @@
 /**
  * Internationalisation setup.
  *
- * Configures vue-i18n with the Turkish, English and Spanish catalogues. The
- * initial locale is country-based rather than browser-based: a manual choice
- * saved from the header switch wins, otherwise the visitor's country
+ * Configures vue-i18n with English (the fallback) bundled eagerly; every
+ * other catalogue lives in its own lazy chunk and is loaded on demand the
+ * first time its locale is activated, keeping the main bundle small.
+ *
+ * The initial locale is country-based rather than browser-based: a manual
+ * choice saved from the header switch wins, otherwise the visitor's country
  * (resolved at the Cloudflare edge via `/cdn-cgi/trace`) picks the language
  * through {@link localeForCountry}, and English is the fallback for unmapped
- * countries or failed detection. See `assets/js/locales.ts` for the
- * country → locale map and the steps to add a new language.
+ * countries or failed detection. Catalogues without a `blog.posts` section
+ * fall back to the English articles per post. See `assets/js/locales.ts`
+ * for the country → locale map and the steps to add a new language.
  */
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
-import tr from "./locales/tr.json";
-import es from "./locales/es.json";
 import {
   DEFAULT_LOCALE,
   isSupportedLocale,
@@ -27,16 +29,44 @@ const GEO_CACHE_KEY = "pb:geo-locale";
 /** How long to wait for the geolocation lookup before falling back (ms). */
 const GEO_TIMEOUT_MS = 1500;
 
+/** Lazy loaders for every locale catalogue, keyed by module path. */
+const catalogues = import.meta.glob("./locales/*.json") as Record<
+  string,
+  () => Promise<{ default: typeof en }>
+>;
+
 const i18n = createI18n({
-  locale: DEFAULT_LOCALE,
+  locale: DEFAULT_LOCALE as string,
   fallbackLocale: "en",
   legacy: false,
-  messages: {
-    en,
-    tr,
-    es,
-  },
+  // Only English ships in the main bundle; the other catalogues are injected
+  // by `loadLocaleMessages` the first time their locale is activated.
+  messages: { en } as Record<Locale, typeof en>,
 });
+
+/**
+ * Ensure a locale's message catalogue is registered, fetching its lazy chunk
+ * on first use.
+ *
+ * @param locale - The locale about to be activated.
+ */
+const loadLocaleMessages = async (locale: Locale): Promise<void> => {
+  if (locale === "en" || i18n.global.availableLocales.includes(locale)) return;
+  const module = await catalogues[`./locales/${locale}.json`]();
+  i18n.global.setLocaleMessage(locale, module.default);
+};
+
+/**
+ * Activate a locale: load its catalogue if needed, switch vue-i18n over and
+ * keep `<html lang>` in sync for assistive tech and search engines.
+ *
+ * @param locale - The locale to activate.
+ */
+export const activateLocale = async (locale: Locale): Promise<void> => {
+  await loadLocaleMessages(locale);
+  i18n.global.locale.value = locale;
+  document.documentElement.lang = locale;
+};
 
 /**
  * Detect the visitor's locale from their country.
@@ -73,16 +103,19 @@ const detectGeoLocale = async (): Promise<Locale> => {
  * Resolve and activate the initial locale before the app mounts.
  *
  * Preference order: the choice saved from the language switch (`pb:locale`
- * in `localStorage`), then the country-based detection, then English. Also
- * keeps `<html lang>` in sync so assistive tech and search engines see the
- * right language. Never rejects.
+ * in `localStorage`), then the country-based detection, then English. Never
+ * rejects.
  */
 export const initLocale = async (): Promise<void> => {
   const saved = localStorage.getItem("pb:locale");
   const locale =
     saved && isSupportedLocale(saved) ? saved : await detectGeoLocale();
-  i18n.global.locale.value = locale;
-  document.documentElement.lang = locale;
+  try {
+    await activateLocale(locale);
+  } catch {
+    // A failed catalogue fetch must not block the app; English is bundled.
+    await activateLocale(DEFAULT_LOCALE);
+  }
 };
 
 export default i18n;

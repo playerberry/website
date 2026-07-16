@@ -1,0 +1,260 @@
+{
+  "menu": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "blog": "Blog",
+    "store": "Boutique",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu"
+  },
+  "redirect": {
+    "discord": "Redirection vers notre serveur Discord...",
+    "instagram": "Redirection vers notre profil Instagram...",
+    "twitch": "Redirection vers notre chaîne Twitch...",
+    "kick": "Redirection vers notre chaîne Kick...",
+    "youtube": "Redirection vers notre chaîne YouTube...",
+    "twitter": "Redirection vers notre profil X...",
+    "facebook": "Redirection vers notre page Facebook...",
+    "tiktok": "Redirection vers notre profil TikTok..."
+  },
+  "meta": {
+    "home": "PlayerBerry — un studio logiciel qui conçoit et construit des produits numériques de bout en bout sur le web, le mobile et le cloud.",
+    "projects": "Une sélection de travaux en production, utilisés par de vrais utilisateurs : projets web, mobiles, design et DevOps.",
+    "blog": "Décisions d'architecture, notes de design et leçons du terrain — le journal d'ingénierie de PlayerBerry.",
+    "store": "Les outils que nous utilisons dans nos propres projets : templates, jeux de composants et kits de démarrage.",
+    "contact": "Contactez PlayerBerry pour parler de votre projet, demander un devis ou simplement dire bonjour.",
+    "about": "L'histoire de PlayerBerry : un studio logiciel indépendant qui mène les idées jusqu'en production avec une petite équipe senior.",
+    "legal": "Documents légaux du site web de PlayerBerry."
+  },
+  "hero": {
+    "titleTop": "Pas des logiciels ordinaires :",
+    "titleHighlight": "des expériences épiques.",
+    "description": "Nous sommes un studio logiciel qui construit des produits numériques de bout en bout sur le web, le mobile et le cloud. Nous transformons votre idée en produit avec vous, nous le lançons et nous le faisons grandir.",
+    "ctaPrimary": "Découvrir Nos Projets",
+    "ctaSecondary": "Nous Contacter",
+    "stats": {
+      "years": { "value": "8+", "label": "Ans d'expérience" },
+      "projects": { "value": "40+", "label": "Projets livrés" },
+      "clients": { "value": "25+", "label": "Clients satisfaits" },
+      "uptime": { "value": "99,9 %", "label": "Disponibilité" }
+    }
+  },
+  "home": {
+    "services": {
+      "eyebrow": "// ce que nous faisons",
+      "title": "Développement produit de bout en bout",
+      "lead": "Design, ingénierie et infrastructure sous un même toit : vous travaillez avec la même équipe de l'idée au lancement.",
+      "items": {
+        "web": {
+          "title": "Applications Web",
+          "description": "Des applications web évolutives, rapides et accessibles, construites avec Vue et TypeScript."
+        },
+        "mobile": {
+          "title": "Applications Mobiles",
+          "description": "Des expériences iOS réellement natives, dignes de l'App Store, créées avec Swift et SwiftUI."
+        },
+        "design": {
+          "title": "Design UI/UX",
+          "description": "Des systèmes de design, des prototypes et des interfaces centrées utilisateur qui démarquent votre produit."
+        },
+        "devops": {
+          "title": "Cloud & DevOps",
+          "description": "Docker, CI/CD et infrastructure cloud pour lancer votre produit en toute sécurité et le maintenir en marche."
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "// comment nous travaillons",
+      "title": "De l'idée au produit en quatre étapes",
+      "lead": "La même discipline sur chaque projet : périmètre clair, retours rapides, résultats mesurables.",
+      "steps": {
+        "discover": {
+          "title": "Découverte",
+          "description": "Nous clarifions ensemble le problème, l'audience et les critères de succès."
+        },
+        "design": {
+          "title": "Design",
+          "description": "Parcours, prototypes et système de design : vous voyez le produit avant l'écriture du code."
+        },
+        "build": {
+          "title": "Développement",
+          "description": "Sprints courts, previews continues et tests ; une version fonctionnelle chaque semaine."
+        },
+        "launch": {
+          "title": "Lancement & Support",
+          "description": "Nous lançons, surveillons et faisons grandir. Nous partons quand le produit est stable, pas quand le travail s'arrête."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "// projets",
+      "title": "Travaux sélectionnés",
+      "lead": "Un aperçu de produits en production dans différents secteurs.",
+      "viewAll": "Tous les projets"
+    },
+    "journal": {
+      "eyebrow": "// blog",
+      "title": "Derniers articles du blog",
+      "lead": "Nous écrivons ce que nous apprenons : décisions d'architecture, notes de design, expérience de terrain.",
+      "viewAll": "Tous les articles"
+    },
+    "cta": {
+      "title": "Un projet en tête ?",
+      "description": "Parlons-en autour d'un café : nous définirons ensemble le périmètre et la feuille de route.",
+      "button": "Demander un Devis"
+    }
+  },
+  "projects": {
+    "eyebrow": "// portfolio",
+    "title": "Projets",
+    "lead": "Une sélection de travaux en production, utilisés par de vrais utilisateurs.",
+    "categories": {
+      "all": "Tous",
+      "web": "Web",
+      "mobile": "Mobile",
+      "design": "Design",
+      "devops": "DevOps"
+    },
+    "items": {
+      "nova": {
+        "title": "Nova Analytics",
+        "description": "Tableau de bord analytique en temps réel pour les équipes SaaS. Transforme des données complexes en informations lisibles en quelques secondes."
+      },
+      "pulse": {
+        "title": "Pulse Fit",
+        "description": "Application de suivi d'entraînement avec intégration Apple Watch et synchronisation complète avec HealthKit."
+      },
+      "atlas": {
+        "title": "Atlas Commerce",
+        "description": "Plateforme e-commerce à fort trafic avec paiements Stripe et gestion avancée du catalogue."
+      },
+      "echo": {
+        "title": "Echo Chat",
+        "description": "Infrastructure de messagerie en temps réel à latence milliseconde ; WebSocket et fan-out Redis."
+      },
+      "forge": {
+        "title": "Forge CI",
+        "description": "Orchestrateur CI/CD léger et auto-hébergé avec des builds isolés basés sur des conteneurs."
+      },
+      "orbit": {
+        "title": "Orbit DS",
+        "description": "Système de design évolutif basé sur les design tokens pour une famille de produits multi-marques."
+      }
+    }
+  },
+  "blog": {
+    "eyebrow": "// journal",
+    "title": "Blog",
+    "lead": "Décisions d'architecture, notes de design et leçons du terrain.",
+    "readingTime": "{minutes} min de lecture",
+    "back": "Tous les articles",
+    "copy": "Copier",
+    "copied": "Copié"
+  },
+  "store": {
+    "eyebrow": "// produits numériques",
+    "title": "Boutique",
+    "lead": "Nous packageons les outils que nous utilisons dans nos propres projets : templates, jeux de composants et kits de démarrage.",
+    "buy": "Acheter",
+    "soon": "Bientôt disponible",
+    "badges": {
+      "popular": "Populaire",
+      "new": "Nouveau"
+    },
+    "items": {
+      "berry-ui": {
+        "category": "Système de Design",
+        "title": "Berry UI Kit",
+        "description": "Système de design Less en thème sombre construit sur UIkit ; plus de 40 blocs prêts à l'emploi et une architecture de tokens."
+      },
+      "vue-launch": {
+        "category": "Template",
+        "title": "Vue Launch",
+        "description": "Template de démarrage Vue 3 + TypeScript + Vite ; livré avec i18n, router et configuration de tests."
+      },
+      "swift-components": {
+        "category": "iOS",
+        "title": "Swift Components",
+        "description": "Pack de composants SwiftUI : graphiques, cartes et contrôles animés. Entièrement prévisualisable."
+      },
+      "icon-forge": {
+        "category": "Jeu d'Icônes",
+        "title": "Icon Forge",
+        "description": "Plus de 400 icônes pixel-perfect aux formats SVG et police, en deux graisses."
+      },
+      "api-boiler": {
+        "category": "Backend",
+        "title": "API Boiler",
+        "description": "Squelette d'API Fastify + PostgreSQL ; authentification, validation de schémas et OpenAPI inclus."
+      },
+      "berry-blocks": {
+        "category": "Template",
+        "title": "Berry Blocks",
+        "description": "25 blocs de landing prêts à l'emploi pour les sites marketing ; copiez, adaptez, publiez."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "// contact",
+    "title": "Dites bonjour",
+    "lead": "Écrivez-nous pour parler de votre projet, demander un devis ou simplement dire bonjour.",
+    "note": "Nous répondons généralement sous 24 heures."
+  },
+  "about": {
+    "eyebrow": "// à propos",
+    "title": "Petite équipe, grandes ambitions",
+    "lead": "PlayerBerry est un studio logiciel indépendant qui mène les idées jusqu'en production. Pas de foule d'agence — vous parlez avec ceux qui font le travail.",
+    "story": [
+      "Nous avons démarré en 2018 avec une seule question : le bon design, l'ingénierie solide et la communication honnête peuvent-ils cohabiter dans une même équipe ? Depuis, nous avons mené des dizaines de produits de l'idée au lancement sur le web, le mobile et le cloud.",
+      "Plutôt que de devenir une grande agence, nous avons choisi de rester petits et seniors. Sur chaque projet, vous parlez directement avec la personne qui le construit — sans intermédiaires. Les décisions sont rapides et les retours deviennent du code le jour même.",
+      "Nous partons quand le produit est stable, pas quand le travail s'arrête. Pour nous, le succès n'est pas du code livré ; c'est un produit qui sert ses utilisateurs, reste facile à maintenir et continue de grandir avec le temps."
+    ],
+    "values": {
+      "craft": {
+        "title": "Artisanat",
+        "description": "Chaque détail compte. De l'alignement des pixels aux index de base de données, nous soignons les petites choses."
+      },
+      "clarity": {
+        "title": "Clarté",
+        "description": "Périmètre, délais et coûts clairs dès le premier jour. Pas de factures surprises ni d'hypothèses cachées."
+      },
+      "partnership": {
+        "title": "Partenariat",
+        "description": "Nous travaillons comme une partie de votre équipe, pas comme un prestataire. Votre objectif est le nôtre."
+      },
+      "longevity": {
+        "title": "Longévité",
+        "description": "Nous écrivons du code rapide aujourd'hui et facile à maintenir demain — pour que le produit dure des années."
+      }
+    },
+    "cta": {
+      "title": "Travaillons ensemble",
+      "description": "Racontez-nous votre idée et nous définirons avec vous le périmètre et la feuille de route.",
+      "button": "Nous Contacter"
+    }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous cherchez a peut-être été déplacée ou n'a jamais existé.",
+    "button": "Retour à l'accueil"
+  },
+  "footer": {
+    "tagline": "Un studio logiciel qui construit des produits numériques de bout en bout sur le web, le mobile et le cloud.",
+    "nav": "Site",
+    "rss": "Flux RSS",
+    "legal": "Légal",
+    "follow": "Suivez-nous",
+    "about": "À propos",
+    "privacy": "Politique de Confidentialité",
+    "cookies": "Politique de Cookies",
+    "terms": "Conditions d'Utilisation",
+    "contact": "Contact",
+    "randomized": {
+      "part0": "Aucun ",
+      "part1": " n'a été blessé pendant la création de ce site."
+    },
+    "rights": "Tous droits réservés"
+  }
+}
