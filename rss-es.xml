@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PlayerBerry — Blog</title>
+    <link>https://playerberry.com/blog</link>
+    <atom:link href="https://playerberry.com/rss-es.xml" rel="self" type="application/rss+xml" />
+    <description>Decisiones de arquitectura, notas de diseño y lecciones del terreno.</description>
+    <language>es</language>
+    <lastBuildDate>Thu, 16 Jul 2026 15:20:48 GMT</lastBuildDate>
+    <item>
+      <title>Swift Concurrency: adiós al callback hell con async/await</title>
+      <link>https://playerberry.com/blog/swift-concurrency</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency</guid>
+      <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[En una app que heredamos llegamos a contar seis niveles de closures anidados. async/await lee el mismo flujo como una historia lineal — te contamos cómo.]]></description>
+      <content:encoded><![CDATA[<p>Hace unos años heredamos una app de iOS para mantenimiento y nos sentamos a contar: seis niveles de completion handlers anidados en una sola función. Nadie sabía qué error pertenecía a qué capa en el closure más profundo; daba tanto miedo tocarla que alguien había dejado un comentario arriba: 'no entrar'. No es broma.</p>
+<h2>Cómo se construye la escalera</h2>
+<p>Lo interesante es que quien construyó esa escalera no era un mal desarrollador. En el mundo antiguo, hasta el flujo más inocente — cargar un usuario y luego su avatar — acababa inevitablemente así:</p>
+<pre><code>func loadProfile(id: String,
+                 completion: @escaping (Result&lt;Profile, Error&gt;) -&gt; Void) {
+    fetchUser(id) { result in
+        switch result {
+        case .success(let user):
+            fetchAvatar(user.avatarURL) { avatarResult in
+                switch avatarResult {
+                case .success(let avatar):
+                    completion(.success(Profile(user: user, avatar: avatar)))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        case .failure(let error):
+            completion(.failure(error))
+        }
+    }
+}</code></pre>
+<p>Veinte líneas para dos peticiones. La lógica real son tres palabras — coger usuario, coger avatar, combinar — y ni siquiera se ve en el código. Cada capa arrastra su propia gestión de errores, y si olvidas llamar a <code>completion</code> en una rama, la app se queda colgada en silencio. Ningún compilador te lo va a decir.</p>
+<h2>await: espera, pero sin bloquear</h2>
+<p>La misma función con async/await:</p>
+<pre><code>func loadProfile(id: String) async throws -&gt; Profile {
+    let user = try await fetchUser(id)
+    let avatar = try await fetchAvatar(user.avatarURL)
+    return Profile(user: user, avatar: avatar)
+}</code></pre>
+<p>Donde ves <code>await</code>, la función se pausa sin bloquear el hilo; el sistema aprovecha para ejecutar otro trabajo. La gestión de errores pasó de los closures a <code>throws</code>: se acabó desenvolver <code>Result</code> a mano, se acabaron los <code>completion</code> olvidados. Si falta una rama, te enteras al compilar, no en producción.</p>
+<h2>No pongas en fila el trabajo independiente</h2>
+<p>En el código de arriba el avatar depende del usuario, así que esperar en orden es razonable. Pero hacer <code>await</code> de tres peticiones independientes una tras otra es puro desperdicio. <code>async let</code> las arranca todas a la vez:</p>
+<pre><code>func loadDashboard(for id: String) async throws -&gt; Dashboard {
+    async let profile = fetchProfile(id)
+    async let feed = fetchFeed(id)
+    async let badges = fetchBadges(id)
+
+    return try await Dashboard(profile: profile,
+                               feed: feed,
+                               badges: badges)
+}</code></pre>
+<p>El tiempo total ya no es la suma de las tres peticiones, sino la más lenta. En aquel proyecto heredado, este único cambio llevó la pantalla de inicio de 1,8 segundos a 700 milisegundos. Sin medirlo no lo habríamos creído.</p>
+<h2>Estado compartido: entra el actor</h2>
+<p>La parte de la concurrencia que de verdad quema son las condiciones de carrera (data races): dos tareas escribiendo en el mismo diccionario a la vez — a veces un crash, a veces datos corruptos en silencio. La respuesta de Swift es el <code>actor</code>: solo una tarea puede tocar su estado a la vez, y el compilador lo garantiza:</p>
+<pre><code>actor ImageCache {
+    private var store: [URL: Image] = [:]
+
+    func image(for url: URL) -&gt; Image? {
+        store[url]
+    }
+
+    func insert(_ image: Image, for url: URL) {
+        store[url] = image
+    }
+}
+
+// El acceso siempre pasa por await:
+let cache = ImageCache()
+await cache.insert(avatar, for: url)
+let hit = await cache.image(for: url)</code></pre>
+<p>Antes montábamos esto con candados sobre una <code>DispatchQueue</code> y esperábamos que todo el mundo los usara bien. La esperanza no es una estrategia de concurrencia.</p>
+<blockquote><p>async/await no acorta el código; lo hace legible. La ganancia no está en las líneas — está en la cara de quien abra ese archivo dentro de seis meses.</p></blockquote>
+<p>Aquella función del 'no entrar' hoy tiene treinta líneas, y cada persona nueva del equipo la entiende a la primera. Todavía no hemos conocido a nadie que eche de menos la escalera de callbacks.</p>]]></content:encoded>
+      <category>Swift</category>
+      <category>Concurrency</category>
+    </item>
+    <item>
+      <title>C++ moderno: deja de gestionar la memoria a mano</title>
+      <link>https://playerberry.com/blog/modern-cpp-bellek</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek</guid>
+      <pubDate>Sun, 12 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Cazar una fuga leyendo la salida de valgrind a las dos de la madrugada es toda una experiencia; no la recomendamos. RAII y los punteros inteligentes jubilan casi todas esas cacerías.]]></description>
+      <content:encoded><![CDATA[<p>Si alguna vez has cazado una fuga de memoria leyendo la salida de valgrind a las dos de la madrugada en un servidor de juegos, ya sabes de qué va este artículo. El culpable era casi siempre el mismo: un <code>new</code> en alguna parte y una ruta de retorno que se saltaba el <code>delete</code>. El poder directo de C++ sobre la memoria cobra su peaje exactamente así.</p>
+<h2>Cómo nace una fuga</h2>
+<p>Mira esta función — podría salir de un libro de texto:</p>
+<pre><code>void process() {
+    Widget* w = new Widget();
+
+    if (!w-&gt;init()) {
+        return;            // fuga: nunca se llega al delete
+    }
+
+    w-&gt;run();
+    delete w;
+}</code></pre>
+<p>Si <code>init()</code> falla, <code>delete</code> no se ejecuta y el <code>Widget</code> queda huérfano en memoria. Si <code>run()</code> lanza una excepción, misma historia. El problema no es el descuido — es confiar a un humano la regla de 'limpia en cada ruta de salida'. Los humanos olvidan. Cuanto más crece el código, más olvidan.</p>
+<h2>RAII: deja que el objeto limpie</h2>
+<p>La respuesta de C++ tiene un nombre que suena a burocracia — Resource Acquisition Is Initialization — pero la idea cabe en una frase: ata el recurso a la vida de un objeto. Cuando el objeto sale del ámbito, su destructor se ejecuta y libera el recurso. No importa cómo salgas: flujo normal, <code>return</code> temprano, excepción... el destructor corre siempre:</p>
+<pre><code>class FileHandle {
+public:
+    explicit FileHandle(const char* path)
+        : file_(std::fopen(path, &quot;r&quot;)) {}
+
+    ~FileHandle() {
+        if (file_) std::fclose(file_);
+    }
+
+    // Copia desactivada: dos objetos no deben cerrar el mismo archivo.
+    FileHandle(const FileHandle&amp;) = delete;
+    FileHandle&amp; operator=(const FileHandle&amp;) = delete;
+
+    std::FILE* get() const { return file_; }
+
+private:
+    std::FILE* file_;
+};</code></pre>
+<p>Ya no existe la tarea de 'acordarse de cerrar el archivo'; en cuanto un <code>FileHandle</code> sale del ámbito, el archivo se cierra. <code>std::lock_guard</code>, <code>std::vector</code>, <code>std::string</code> — la biblioteca estándar está construida sobre este mismo patrón. Probablemente llevas años usando RAII sin ponerle nombre.</p>
+<h2>Punteros inteligentes: vivir sin new/delete</h2>
+<p>El mismo patrón viene preempaquetado para punteros: <code>unique_ptr</code> para propiedad única, <code>shared_ptr</code> para propiedad compartida.</p>
+<pre><code>#include &lt;memory&gt;
+
+auto w = std::make_unique&lt;Widget&gt;();
+if (!w-&gt;init()) {
+    return;               // sin fuga; w se limpia solo
+}
+w-&gt;run();
+
+// Propiedad compartida: el objeto se libera cuando se va el último dueño.
+auto config = std::make_shared&lt;Config&gt;();
+useConfig(config);</code></pre>
+<p>Toda la clase de errores del <code>process()</code> original — el <code>delete</code> olvidado, el doble <code>delete</code>, la fuga en la ruta de la excepción — desapareció con un cambio de una línea. ¿El coste en rendimiento? Cero para <code>unique_ptr</code>; el código compilado es idéntico al de un puntero crudo.</p>
+<p>Una advertencia honesta: <code>shared_ptr</code> no lo cura todo. Su contador de referencias es atómico, así que no es gratis, y las referencias cíclicas — A sostiene a B, B sostiene a A — nunca dejan que el contador llegue a cero. Que tu opción por defecto sea <code>unique_ptr</code>; pasa a <code>shared_ptr</code> solo cuando la propiedad sea genuinamente compartida, y usa <code>weak_ptr</code> en el borde con riesgo de ciclo.</p>
+<blockquote><p>Si ves new y delete a pelo en código C++ moderno, o está pasando algo muy especial o hay un bug esperando. La experiencia dice: casi siempre lo segundo.</p></blockquote>
+<p>Volviendo a aquella sesión de valgrind a las dos de la madrugada: esa fuga la arreglamos a mano, porque la base de código no estaba lista para punteros inteligentes. Al mes siguiente pusimos la regla — el código nuevo no escribe <code>new</code> a pelo. No hemos vuelto a salir de cacería.</p>]]></content:encoded>
+      <category>C++</category>
+      <category>Memory</category>
+    </item>
+    <item>
+      <title>Punteros en C: temidos, pero malentendidos</title>
+      <link>https://playerberry.com/blog/c-isaretciler</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler</guid>
+      <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Un puntero se reduce a una sola idea: guarda la dirección, no el valor. Todo lo demás — arrays, paso por referencia, const — se deduce de ahí.]]></description>
+      <content:encoded><![CDATA[<p>Todo el que aprende C choca contra el muro la misma semana: la semana de los punteros. Asteriscos, ampersands, avisos crípticos del compilador... Y sin embargo, detrás del telón hay una sola idea: guardar no el valor de una variable, sino dónde vive ese valor en memoria. Todo lo demás son consecuencias.</p>
+<h2>&amp; da la dirección, * la sigue</h2>
+<pre><code>int x = 42;
+int *p = &amp;x;          // p guarda la dirección de x
+
+printf(&quot;%d\n&quot;, *p);   // 42 — el valor al que apunta p
+*p = 7;               // x ahora vale 7; p apunta a ella</code></pre>
+<p><code>&amp;x</code> responde a '¿dónde vive x?'; <code>*p</code> responde a '¿qué hay en el sitio al que apunta p?'. Son inversos. Cuando escribes <code>*p = 7</code> estás cambiando <code>x</code> directamente, porque ambos miran a la misma dirección.</p>
+<p>El primer fruto real de esta idea son las funciones que pueden modificar variables de fuera. En C todo argumento se pasa por copia — pero pasa una dirección y la función alcanza el dato real:</p>
+<pre><code>void swap(int *a, int *b) {
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+int i = 1, j = 2;
+swap(&amp;i, &amp;j);         // i == 2, j == 1</code></pre>
+<p>Si alguna vez te has preguntado por qué <code>scanf</code> necesita <code>&amp;num</code>: esa es la respuesta. Le das la dirección para que pueda escribir el valor leído en tu variable.</p>
+<h2>Arrays: parientes más cercanos de lo que parecen</h2>
+<p>El hecho que más sorprende a quien empieza con C: el nombre de un array, en la mayoría de contextos, se convierte en la dirección de su primer elemento. A esto se le llama 'decay':</p>
+<pre><code>int nums[3] = {10, 20, 30};
+int *p = nums;              // igual que &amp;nums[0]
+
+printf(&quot;%d\n&quot;, *(p + 2));   // 30
+printf(&quot;%d\n&quot;, p[2]);       // 30 — exactamente lo mismo</code></pre>
+<p><code>p[2]</code> y <code>*(p + 2)</code> son dos escrituras de la misma expresión; los corchetes son solo un atajo. El matiz que se le escapa a la gente: <code>p + 2</code> avanza dos <code>int</code>, no dos bytes. La aritmética de punteros tiene en cuenta el tamaño del elemento por ti.</p>
+<h2>const: una promesa al compilador</h2>
+<p>Toda función que recibe un puntero recibe también el poder de modificar el dato. <code>const</code> es la forma de devolver ese poder:</p>
+<pre><code>void printName(const char *name) {
+    // *name = 'X';  -&gt; error de compilación
+    printf(&quot;Hola, %s\n&quot;, name);
+}</code></pre>
+<p>Una palabra clave diminuta haciendo dos trabajos: le garantiza a quien llama que no tocarás sus datos, y a ti te da un error de compilación si lo intentas por accidente. Un seguro gratis — sé generoso con él en tus firmas.</p>
+<p>La mala fama de los punteros viene, creo, de la mala enseñanza. Lanzarse a la sintaxis antes de asentar el concepto de dirección — sin dibujar cajas y flechas — convierte los símbolos en magia sin sentido. En cambio, una vez que la idea de dirección encaja, los arrays, las cadenas, la memoria dinámica y las listas enlazadas se apilan ordenadamente sobre el mismo cimiento. No hay nada que temer; esto es el corazón de C.</p>]]></content:encoded>
+      <category>C</category>
+      <category>Systems</category>
+    </item>
+    <item>
+      <title>Añadir un LLM a tu producto: el abismo entre la demo y producción</title>
+      <link>https://playerberry.com/blog/llm-urun-entegrasyonu</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu</guid>
+      <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[La demo del viernes se llevó aplausos; el lunes, el primer usuario real acorraló al sistema en tres minutos. Cuatro disciplinas que cierran esa distancia.]]></description>
+      <content:encoded><![CDATA[<p>Enseñamos la demo el viernes por la tarde y la sala aplaudió. El lunes por la mañana, el primer usuario real subió una captura de pantalla en lugar de una factura, recargó la página a mitad de respuesta y sacó a la luz cuatro fallos distintos que jamás habíamos visto en la demo — en tres minutos. Llevar un LLM a producción es, en resumen, la distancia entre esos dos días.</p>
+<h2>Misma pregunta, dos respuestas distintas</h2>
+<p>El software al que estamos acostumbrados produce la misma salida para la misma entrada. Un modelo de lenguaje no — y en lugar de pelear contra eso, construyes la arquitectura a su alrededor. Regla número uno: nunca te fíes de la salida del modelo en crudo. Si esperas datos estructurados, valida contra un esquema y reintenta si no encaja:</p>
+<pre><code>const Invoice = z.object({
+  vendor: z.string(),
+  total: z.number().positive(),
+  currency: z.enum([&quot;TRY&quot;, &quot;USD&quot;, &quot;EUR&quot;]),
+});
+
+async function extractInvoice(text: string) {
+  for (let attempt = 1; attempt &lt;= 3; attempt++) {
+    const raw = await model.complete(prompt(text));
+    const parsed = Invoice.safeParse(tryJson(raw));
+    if (parsed.success) return parsed.data;
+  }
+  throw new ExtractionFailed();
+}</code></pre>
+<p>Cuando tres intentos siguen sin encajar en el esquema, lo correcto es un error honesto al usuario — no aceptar datos malos en silencio. Un sistema capaz de decir 'no estoy seguro' gana mucha más confianza que uno que habla con seguridad sin tenerla.</p>
+<h2>El contexto vale más que el modelo</h2>
+<p>La frase que más oímos en los proyectos: '¿Y si ponemos un modelo más potente?' Normalmente no ayuda — porque lo que determina la calidad de la respuesta es, sobre todo, lo que le enseñas al modelo. En una arquitectura RAG la ingeniería de verdad vive en la capa de búsqueda: un sistema que no encuentra el documento correcto va a inventar, sea cual sea el modelo. No tiene otro material con el que trabajar.</p>
+<p>Atiborrar la ventana de contexto tampoco es la solución. Diez documentos irrelevantes distraen al modelo e inflan la factura. En nuestras mediciones, dos párrafos relevantes ganaron sistemáticamente a veinte añadidos 'por si acaso'. Menos, pero certero, gana.</p>
+<h2>No cambies prompts a ciegas</h2>
+<p>Cambiaste tres palabras del prompt; ¿el sistema es mejor ahora? Sin mediciones, la respuesta honesta es 'ni idea'. Para cada flujo crítico mantenemos un conjunto de evaluación compilado de preguntas reales de usuarios — entradas y comportamientos esperados, un archivo corriente en control de versiones:</p>
+<pre><code>{
+  &quot;input&quot;: &quot;¿Quién aprobó la factura de AWS del mes pasado?&quot;,
+  &quot;expect&quot;: {
+    &quot;must_cite_source&quot;: true,
+    &quot;must_not_contain&quot;: [&quot;supongo&quot;, &quot;probablemente&quot;],
+    &quot;tool_called&quot;: &quot;search_invoices&quot;
+  }
+}</code></pre>
+<p>Cada vez que cambia el prompt o el modelo, el conjunto se ejecuta de nuevo; si la puntuación baja, el cambio no llega a la rama principal. Es el test de regresión del mundo LLM. Montarlo llevó medio día; a cambio, los despliegues dejaron de ser apuestas.</p>
+<h2>La factura de tokens y el vacío de tres segundos</h2>
+<p>En una demo nadie mira el coste; en producción cada petición es dinero real. El remedio más eficaz es el enrutamiento: manda la clasificación y los resúmenes cortos a un modelo pequeño, y reserva el grande para las preguntas de verdad difíciles. Esa única decisión recortó nuestra factura a más de la mitad. En cuanto a la latencia, el streaming no es negociable: si la primera palabra aparece a los 300 milisegundos, al usuario no le importa un total de tres segundos. Tres segundos mirando una pantalla en blanco, en cambio, son una eternidad.</p>
+<blockquote><p>Una demo es el escaparate del camino feliz; un producto es la suma de los caminos infelices. Con los LLM, esa brecha es más ancha que nunca.</p></blockquote>
+<p>El abismo se puede cruzar. Validación de esquemas, contexto certero, un conjunto de evaluación y disciplina de costes — juntos convierten una demo hipnotizante en un producto fiable. En orden, y sin prisas.</p>]]></content:encoded>
+      <category>AI</category>
+      <category>Product</category>
+    </item>
+    <item>
+      <title>Core Web Vitals: cómo sienten los usuarios la velocidad</title>
+      <link>https://playerberry.com/blog/core-web-vitals</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals</guid>
+      <pubDate>Fri, 03 Jul 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Lighthouse decía 90; los usuarios decían que el sitio iba lento. Ambos tenían razón. Qué significan las tres métricas en el terreno y cómo se arreglaron de verdad.]]></description>
+      <content:encoded><![CDATA[<p>Un cliente de e-commerce llegó con la queja de 'el sitio va lento'. Abrimos Lighthouse: más de 90, todo verde. Luego miramos los datos de usuarios reales y el cuadro se dio la vuelta — en móviles Android de gama media, el LCP superaba los cuatro segundos. Ambas cosas eran ciertas: el laboratorio era rápido, el terreno era lento. Ahí es exactamente donde los Core Web Vitals se ganan el sueldo: miden lo que los usuarios sienten de verdad.</p>
+<h2>LCP: cuándo 'llegó' la página</h2>
+<p>Largest Contentful Paint marca el momento en que aparece la pieza de contenido más grande — normalmente la imagen de cabecera o el titular. En aquel proyecto el culpable era una imagen de cabecera descubierta tarde: el navegador descargaba primero el CSS y solo entonces se enteraba de que la imagen existía. La cura es avisarle desde el principio:</p>
+<pre><code>&lt;link
+  rel=&quot;preload&quot;
+  as=&quot;image&quot;
+  href=&quot;/hero.avif&quot;
+  imagesrcset=&quot;/hero-800.avif 800w, /hero-1600.avif 1600w&quot;
+/&gt;</code></pre>
+<p>Y luego está el clásico de las fuentes web: los sitios que ocultan el texto hasta que llega la fuente le enseñan al usuario una larga pantalla vacía. <code>font-display: swap</code> pinta primero con una fuente del sistema y cambia cuando aterriza la de marca:</p>
+<pre><code>@font-face {
+  font-family: &quot;Space Grotesk&quot;;
+  src: url(&quot;/fonts/space-grotesk.woff2&quot;) format(&quot;woff2&quot;);
+  font-display: swap;
+}</code></pre>
+<p>Esos dos cambios, más convertir las imágenes a AVIF, llevaron el LCP de aquel sitio de 4,1 segundos a 1,9. Nada exótico — solo facilitarle el trabajo al navegador.</p>
+<h2>INP: he pulsado, ¿por qué no pasa nada?</h2>
+<p>Interaction to Next Paint mide el tiempo desde una interacción hasta la primera respuesta visible. El enemigo principal es el JavaScript que bloquea el hilo principal durante cientos de milisegundos: mientras el navegador está ocupado con una tarea larga, los clics hacen cola y la interfaz se siente congelada. La cura es trocear el trabajo:</p>
+<pre><code>async function processRows(rows) {
+  for (const [i, row] of rows.entries()) {
+    handle(row);
+    if (i % 100 === 0) {
+      // Deja respirar al navegador cada 100 filas:
+      await new Promise((r) =&gt; setTimeout(r, 0));
+    }
+  }
+}</code></pre>
+<p>Tosco pero eficaz: el bucle largo ahora cede el hilo principal periódicamente y los clics pendientes se procesan. Hay herramientas más elegantes — <code>scheduler.yield()</code>, Web Workers — pero el principio no cambia: el hilo principal pertenece al usuario; tú estás de visita.</p>
+<h2>CLS: iba a pulsarlo y se movió</h2>
+<p>Cumulative Layout Shift mide cuánto salta el contenido durante la carga. Todo el mundo lo ha vivido: el párrafo que estás leyendo se hunde porque un banner apareció tarde ahí arriba. La causa es casi siempre la misma — imágenes y embeds sin tamaño declarado. En CSS moderno el arreglo son dos líneas:</p>
+<pre><code>img {
+  aspect-ratio: 16 / 9; /* el hueco se reserva antes de cargar la imagen */
+  width: 100%;
+  height: auto;
+}</code></pre>
+<p>En cuanto el navegador conoce la proporción, reserva el sitio por adelantado; nada salta. Mismo principio para banners y anuncios dinámicos: reserva el área primero, coloca el contenido dentro después.</p>
+<blockquote><p>Los tests de laboratorio miden tu ordenador; el RUM mide el teléfono de tu usuario. A la hora de decidir, mira el segundo.</p></blockquote>
+<p>La lección que nos dejó aquel proyecto: el rendimiento no es una limpieza de primavera puntual — se gestiona como un presupuesto. Cada funcionalidad nueva gasta de él. Si mides continuamente, la deuda se ve antes de acumularse; si dejas de medir, vuelve con intereses.</p>]]></content:encoded>
+      <category>Performance</category>
+      <category>UX</category>
+    </item>
+    <item>
+      <title>Hacer imposibles los estados inválidos con TypeScript</title>
+      <link>https://playerberry.com/blog/typescript-tip-guvenligi</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi</guid>
+      <pubDate>Sat, 27 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Si refactorizar te da miedo, puede que el problema no sea tu valentía — sino tus tipos. Sobre usar el sistema de tipos como herramienta de diseño, no como máquina de etiquetar.]]></description>
+      <content:encoded><![CDATA[<p>Si la sala se queda en silencio cuando alguien dice 'vamos a renombrar este campo', el problema no es la valentía — son los tipos. En una base de código bien modelada, refactorizar no da miedo: haces el cambio, todo lo roto se enciende en rojo, limpias la lista y listo. Los equipos que usan TypeScript como 'JavaScript con etiquetas' nunca llegan a sentir esa tranquilidad.</p>
+<h2>El pantano de los booleanos</h2>
+<p>El ejemplo clásico, porque sigue en todas partes: tres campos sueltos — <code>isLoading</code>, <code>isError</code>, <code>data</code>. Tres campos te dan ocho combinaciones; tres tienen sentido. Un estado que está cargando y fallido a la vez no existe lógicamente — pero existe en el sistema de tipos, y un día aparece en producción. Modela el estado como una unión discriminada y las combinaciones absurdas se caen del lenguaje:</p>
+<pre><code>type State =
+  | { status: &quot;loading&quot; }
+  | { status: &quot;error&quot;; error: Error }
+  | { status: &quot;success&quot;; data: User };</code></pre>
+<p><code>data</code> ahora solo es alcanzable en la rama <code>success</code>. El código que intenta leerlo mientras carga ni siquiera compila; esa clase de bug muere en el editor, mucho antes de producción.</p>
+<p>El bonus menos conocido de este patrón: combinado con <code>switch</code>, el compilador también caza las ramas que faltan:</p>
+<pre><code>function render(state: State) {
+  switch (state.status) {
+    case &quot;loading&quot;:
+      return spinner();
+    case &quot;error&quot;:
+      return alert(state.error);
+    case &quot;success&quot;:
+      return table(state.data);
+    default: {
+      const missing: never = state; // revienta aquí si se añade un estado
+      return missing;
+    }
+  }
+}</code></pre>
+<p>Seis meses después, cuando alguien añada <code>{ status: &quot;empty&quot; }</code> a <code>State</code>, este <code>switch</code> dejará de compilar y cada sitio que necesite actualizarse se delatará solo. Tu lista de tareas la escribe el compilador.</p>
+<h2>Cuando todo es un string</h2>
+<p>Id de usuario: <code>string</code>. Email: <code>string</code>. Número de pedido: <code>string</code>... Cuando todos son el mismo tipo, nada te impide escribir <code>sendEmail(user.id)</code>. Los tipos con marca (branded types) convierten esa confusión en un error de compilación:</p>
+<pre><code>type UserId = string &amp; { readonly __brand: &quot;UserId&quot; };
+type Email = string &amp; { readonly __brand: &quot;Email&quot; };
+
+function sendEmail(to: Email) {
+  /* ... */
+}
+
+sendEmail(user.id); // error de compilación — un id no es un Email</code></pre>
+<p>En tiempo de ejecución son strings corrientes; el coste es cero. Pero en valores donde confundirse sale caro — dinero, fechas, unidades de medida — esta valla de coste cero evita accidentes reales. El Mars Climate Orbiter se perdió por una confusión entre unidades métricas e imperiales; un sistema de tipos bien planteado habría cazado ese error antes del lanzamiento.</p>
+<h2>Valida en la frontera, confía dentro</h2>
+<p>Los tipos solo valen dentro de tu propio código. Decirle <code>as User</code> al JSON que llega de una API no es un hecho — es un deseo. Haz validación en tiempo de ejecución en la frontera; dentro, confía en tus tipos con la conciencia tranquila:</p>
+<pre><code>const User = z.object({
+  id: z.string(),
+  name: z.string(),
+  age: z.number().int().min(0),
+});
+
+const user = User.parse(await res.json()); // revienta aquí si no encaja</code></pre>
+<p>Así el fallo ocurre en la puerta por donde entran los datos, con un mensaje legible — no tres capas más abajo como 'undefined is not a function'.</p>
+<blockquote><p><code>as</code> es una expresión de esperanza; <code>parse</code> es una prueba. Exige pruebas en la frontera.</p></blockquote>
+<p>Cuando empiezas a tratar los tipos como herramienta de diseño, pasa algo interesante: ves los huecos de tu diseño mientras modelas, antes de escribir código. El compilador te obliga a responder '¿qué pasa con este campo en aquel estado?'. Una definición de tipo que se siente mal al escribirla es, muy a menudo, el primer síntoma de una mala decisión de diseño.</p>]]></content:encoded>
+      <category>TypeScript</category>
+      <category>Architecture</category>
+    </item>
+    <item>
+      <title>La accesibilidad no es una capa que se añade después</title>
+      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan</guid>
+      <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Guarda el ratón en un cajón e intenta navegar tu sitio solo con Tab. Ese test de cinco minutos dice más sobre la mayoría de interfaces que un mes de analítica.]]></description>
+      <content:encoded><![CDATA[<p>En un test de usuarios observamos a un participante navegar nuestro sitio con un lector de pantalla. Diez minutos sacaron a la luz cinco problemas que llevábamos meses sin ver. El más doloroso: lo que nosotros creíamos un botón de 'Añadir al carrito' era, para él, solo 'algo clicable' — una caja sin nombre que nunca decía qué hacía. Ese día entendimos que la accesibilidad no es un punto de cumplimiento; es calidad de producto, sin más.</p>
+<h2>El test de cinco minutos: suelta el ratón</h2>
+<p>La lectura más rápida del estado de tu sitio: guarda el ratón y navega solo con Tab, Enter y las flechas. ¿Ves dónde está el foco? ¿Llegas a todos los botones? ¿Puedes cerrar ese menú con Escape? Una interfaz que suspende este test está rota no solo para usuarios con discapacidad, sino para cualquiera que prefiera trabajar con el teclado.</p>
+<p>El error que este test caza más a menudo es bien conocido: fabricar botones con <code>div</code>s.</p>
+<pre><code>&lt;!-- Parece un botón, no hace nada del trabajo: --&gt;
+&lt;div class=&quot;btn&quot; onclick=&quot;save()&quot;&gt;Guardar&lt;/div&gt;
+
+&lt;!-- Teclado, foco, Enter, lector de pantalla — todo gratis: --&gt;
+&lt;button type=&quot;button&quot; onclick=&quot;save()&quot;&gt;Guardar&lt;/button&gt;</code></pre>
+<p>El primero funciona con ratón y ahí se acaba: no puede recibir foco, no oye Enter, nunca le dice a un lector de pantalla que es un botón. Podrías parchear todo eso con <code>tabindex</code>, <code>role</code> y <code>keydown</code> — pero ¿para qué? El elemento HTML correcto hace con cero líneas lo que cien líneas de parches ARIA no consiguen.</p>
+<h2>La estructura se cuenta, no se muestra</h2>
+<p>Quien usa un lector de pantalla no escanea la página con la vista; escucha, saltando entre encabezados y puntos de referencia (landmarks). Por eso <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code> y una jerarquía de encabezados sensata no son una estética de 'código limpio' — son un instrumento de navegación real. El texto alternativo es parte del mismo trabajo, y un oficio en sí mismo: 'gráfico' no aporta información; 'gráfico de líneas que muestra los ingresos subiendo un 20 por ciento en el último trimestre' sí. La regla es simple: no describas la imagen, transmite lo que dice.</p>
+<h2>El color no puede hablar solo</h2>
+<p>Si marcaste los campos inválidos del formulario solo con rojo, para un usuario daltónico no marcaste nada — y eso es uno de cada doce hombres, no un error de redondeo. El color siempre necesita un segundo canal: un icono, una etiqueta, un patrón. El contraste tampoco se negocia; ese elegante texto gris claro desaparece en la pantalla de un móvil a mediodía.</p>
+<p>Del movimiento se habla menos, pero para algunos usuarios no es cuestión de comodidad — es salud: los grandes parallax y las transiciones aparatosas pueden provocar náuseas físicas reales en personas con trastornos vestibulares. Respetar al usuario que pidió a su sistema reducir el movimiento es una media query:</p>
+<pre><code>@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>
+<blockquote><p>Los subtítulos se inventaron para usuarios sordos; hoy todos vemos vídeos con ellos en el metro. Lo que se diseña para la restricción se vuelve más claro para todos.</p></blockquote>
+<p>Desde aquel test de usuarios, la regla del equipo es: cada componente nuevo se prueba con teclado antes del merge, cada imagen llega con su texto alternativo, cada color se elige con su contraste. Sobre el papel parece trabajo extra; en la práctica, al lado del coste de arreglarlo después, hacerlo bien desde el principio sale casi gratis.</p>]]></content:encoded>
+      <category>Accessibility</category>
+      <category>Frontend</category>
+    </item>
+    <item>
+      <title>Reactividad en Vue 3.5: notas prácticas de rendimiento</title>
+      <link>https://playerberry.com/blog/vue-3-5-performans</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans</guid>
+      <pubDate>Thu, 18 Jun 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Un panel que se congelaba al escribir sobre una tabla de 5.000 filas quedó fluido con tres cambios. Sin magia — solo saber cómo funciona la reactividad.]]></description>
+      <content:encoded><![CDATA[<p>Hace unos meses trabajamos en una queja clásica en un panel de analítica: la interfaz se congelaba mientras se actualizaba una tabla de 5.000 filas. Pasar a Vue 3.5 ayudó por sí solo — el nuevo motor de reactividad recorta bastante la memoria — pero la diferencia real vino de tres cambios deliberados. Los tres se esconden en la respuesta a la misma pregunta: ¿cómo funciona la reactividad en realidad?</p>
+<h2>No lo rastrees todo en profundidad</h2>
+<p>Por defecto, Vue hace reactivo cada nivel de un objeto. Ponerle un rastreador a cada uno de 5.000 puntos de un gráfico solo quema memoria — total, nunca mutas esos puntos uno a uno. Si reemplazas los datos en bloque, con rastrear la referencia basta:</p>
+<pre><code>import { shallowRef } from &quot;vue&quot;;
+
+const points = shallowRef&lt;Point[]&gt;([]);
+
+// Reemplaza en bloque cuando llegan datos nuevos — un solo disparo:
+async function refresh() {
+  points.value = await fetchPoints();
+}</code></pre>
+<p>La regla en la práctica: si reasignas en lugar de mutar, usa <code>shallowRef</code>. En nuestro panel fue la mayor ganancia individual; la memoria bajó a ojos vista y el tirón en las actualizaciones grandes desapareció.</p>
+<h2>computed gordo, cadena perezosa</h2>
+<p>El segundo culpable era un <code>computed</code> gigante que lo hacía todo: filtrar, ordenar, agrupar, sumar — todo en uno. Cualquier dependencia que se moviera relanzaba la cadena entera. Lo partimos:</p>
+<pre><code>// Antes: todo en un computed, todo se rehace con cualquier cambio.
+// Después: cada eslabón corre solo cuando cambia su propia entrada.
+const filtered = computed(() =&gt; rows.value.filter(matches(query.value)));
+const sorted = computed(() =&gt; sortBy(filtered.value, sortKey.value));
+const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></pre>
+<p>Cuando cambia la clave de ordenación, el filtrado ya no se repite; solo se recalculan <code>sorted</code> y lo que viene después. Los computed pequeños son más rápidos y más legibles — de todos modos nadie sabía qué pasaba dentro del gigante.</p>
+<h2>v-memo: potente, pero afilado</h2>
+<p>El toque final: <code>v-memo</code> en las filas de la tabla. Una fila se salta el re-render mientras sus dependencias no cambien:</p>
+<pre><code>&lt;tr
+  v-for=&quot;row in rows&quot;
+  :key=&quot;row.id&quot;
+  v-memo=&quot;[row.id === selectedId, row.updatedAt]&quot;
+&gt;
+  ...
+&lt;/tr&gt;</code></pre>
+<p>Al cambiar la selección, de las 5.000 filas solo se redibujan dos — la que estaba seleccionada y la nueva. Pero seamos honestos: <code>v-memo</code> es un cuchillo afilado. Si te dejas algo en la lista de dependencias, le has dicho a Vue 'no actualices nunca esta fila' y la interfaz se queda obsoleta en silencio. Nosotros lo usamos solo sobre un cuello de botella medido — nunca 'por si acaso'.</p>
+<blockquote><p>Mide primero, optimiza después — pero una vez medido, tampoco te cortes. La optimización a ojo crea más problemas de los que resuelve.</p></blockquote>
+<p>El resultado: el primer pintado se redujo a la mitad, las congelaciones al escribir desaparecieron y el código quedó más legible que antes. Esa es la parte satisfactoria del trabajo de rendimiento — con el diagnóstico correcto, el arreglo suele ser cuestión de unas pocas líneas.</p>]]></content:encoded>
+      <category>Vue</category>
+      <category>Performance</category>
+    </item>
+    <item>
+      <title>Construir un sistema de diseño desde cero: de tokens a componentes</title>
+      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak</guid>
+      <pubDate>Sat, 02 May 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Nuestro primer sistema empezó con una paleta de colores y colapsó en 14 variantes de botón en tres meses. Lo que mantiene en pie al segundo no son los colores — es una arquitectura de tokens de tres capas y una regla dura.]]></description>
+      <content:encoded><![CDATA[<p>Construimos nuestro primer sistema de diseño eligiendo una paleta de colores. Seis semanas después llegó el primer 'caso especial': una página de campaña quería el botón 'un pelín más oscuro'. Luego otro. A los tres meses el sistema tenía 14 variantes de botón y nadie sabía cuál usar cuándo. En el segundo intento no empezamos por el color, sino por las decisiones.</p>
+<h2>Decisiones, no valores</h2>
+<p>Lo que un sistema de diseño estandariza de verdad no son los colores — son las decisiones: ¿cuántas variantes necesita un botón? ¿Cuándo lleva sombra una tarjeta? ¿Cuándo se usa el color de error — y más importante, cuándo no? Una paleta elegida antes de responder esas preguntas es una bonita colección de colores, nada más. Los valores son la salida de las decisiones, no la entrada.</p>
+<h2>Tres capas: crudo, semántico, componente</h2>
+<p>Nuestra arquitectura de tokens tiene tres capas, y los componentes nunca miran valores crudos — solo roles semánticos:</p>
+<pre><code>// 1) Valores crudos — sin significado, solo constantes:
+@berry-500: #ff3d77;
+@ink-900: #0a0a10;
+
+// 2) Roles semánticos — 'para qué sirve este valor':
+@color-danger: @berry-500;
+@surface-base: @ink-900;
+
+// 3) Tokens de componente — un uso concreto:
+@button-danger-bg: @color-danger;</code></pre>
+<p>A primera vista parece una indirección innecesaria — hasta que llega la primera petición de tema. Tema oscuro, tema blanco de marca, alto contraste: todos salen cambiando solo la segunda capa, sin tocar una línea de código de componentes. En el momento en que escribes <code>#ff3d77</code> dentro de un componente, esa flexibilidad se ha ido; el valor ya vive ahí y no viaja.</p>
+<h2>Resiste la inflación de variantes</h2>
+<p>En el lado de los componentes el principio es el mismo: un <code>Button</code> ofrece 'primario, secundario, peligro' — no 'botón azul, botón rojo'. El diseñador dice 'esta acción es destructiva', el desarrollador elige la variante <code>danger</code>; de qué color sea es asunto interno del sistema, no de la página.</p>
+<p>Mantener bajo el número de variantes es una batalla consciente. Cada variante nueva es otra superficie que testear, documentar y mantener coherente. Aquellos 14 botones de nuestro primer sistema nos dieron la lección: todo lo que se añade 'por si acaso' se convierte en el rincón del sistema que antes se pudre.</p>
+<h2>La única regla dura</h2>
+<p>La regla que lleva dos años manteniendo vivo el sistema cabe en una frase: ningún valor que no esté en el diseño entra en el código, ningún componente que no esté en el código entra en el diseño. Ambos lados beben de la misma fuente de tokens. La regla a veces molesta — la tentación de 'es cosa de dos minutos, lo escribo a mano y ya' no muere nunca — pero son exactamente esos trabajos de dos minutos los que matan los sistemas. El CSS de caso especial es la primera señal de podredumbre; deja entrar uno y vendrán más.</p>
+<blockquote><p>Un sistema de diseño no es un proyecto — es un acuerdo. Los proyectos terminan; un acuerdo vive mientras ambas partes lo honren.</p></blockquote>
+<p>Nuestro segundo sistema lleva seis meses creciendo sin una sola línea de CSS de caso especial. Abrir una página nueva ya no significa escribir CSS; significa componer piezas existentes. Y todo lo que aprendimos del naufragio del primero sostiene a este segundo — que quizá sea el verdadero primer paso para construir un sistema de diseño: estrellar uno.</p>]]></content:encoded>
+      <category>Design Systems</category>
+      <category>Less</category>
+    </item>
+    <item>
+      <title>Interfaces que se sienten nativas con SwiftUI</title>
+      <link>https://playerberry.com/blog/swiftui-ile-native</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native</guid>
+      <pubDate>Fri, 27 Mar 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[La respuesta honesta a '¿no podríamos usar Flutter?' — poder, se puede, pero esa sensación no estará. Los tres detalles detrás de la sensación nativa y cómo los tratamos en SwiftUI.]]></description>
+      <content:encoded><![CDATA[<p>Casi todos los arranques de proyecto incluyen la misma pregunta: '¿No podríamos ir a cross-platform?' La respuesta honesta: poder, se puede — pero esa sensación no estará. Que una app se sienta nativa se reduce a tres detalles: la curva de sus animaciones de transición, el timing de su respuesta háptica y la física de su scroll. Los usuarios no saben nombrarlos, pero notan la diferencia al instante. La baza de SwiftUI es que toma los tres directamente de la plataforma; no los imita, los usa.</p>
+<h2>No reinventes el muelle</h2>
+<p>Las animaciones de muelle (spring) de iOS son producto de más de una década de ajuste fino. Una animación con la duración correcta pero la curva equivocada deja en el usuario una sensación de 'algo raro' que no sabe explicar. Teniendo la de verdad a mano, no hay motivo para dibujar curvas a mano:</p>
+<pre><code>withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+    isExpanded.toggle()
+}</code></pre>
+<p>Dos parámetros, y la animación habla el idioma de la plataforma. La respuesta háptica vive en la misma categoría de victoria barata: un toquecito en el momento justo — <code>sensoryFeedback(.success, trigger:)</code> — le da a una acción la sensación de que 'ha pasado de verdad'. Esto no es decoración; son los ladrillos de la confianza del usuario.</p>
+<h2>Mantén las vistas tontas</h2>
+<p>El único principio al que nos aferramos con fuerza en la arquitectura: las vistas son tontas. No saben de lógica de negocio; reciben datos y dibujan. La gestión de estado vive en la capa de contenedores, la navegación en la suya:</p>
+<pre><code>struct AvatarView: View {
+    let user: User
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Circle()
+                .fill(.pink.gradient)
+                .frame(width: 44, height: 44)
+            Text(user.name)
+                .font(.headline)
+        }
+    }
+}</code></pre>
+<p>El beneficio cotidiano de esta separación aparece en las previews: una vista tonta se puede previsualizar sola, sin arrancar la app. Nos sentamos con la diseñadora mirando la misma pantalla y zanjamos el debate de 'este hueco, ¿4 u 8?' sobre el código, al momento. Las previews se convirtieron en nuestro documento de diseño vivo; la brecha del '¿será igual de verdad?' entre Figma y el código se cerró.</p>
+<h2>Saber dónde está la frontera</h2>
+<p>SwiftUI ha madurado, pero no es el arma de todas las batallas. Editores de texto que exigen control milimétrico, interfaces de cámara, comportamientos de scroll muy particulares — ahí seguimos bajando a UIKit y tendiendo el puente con <code>UIViewRepresentable</code>. No hay derrota en ello; el oficio está precisamente en saber dónde trazar la línea. La postura dogmática de 'todo tiene que ser SwiftUI' es la manera más fiable de convertir una tarea simple en una epopeya.</p>
+<blockquote><p>La pregunta ya no es '¿puede hacerlo SwiftUI?' — es '¿dónde se hace más limpio?'</p></blockquote>
+<p>Donde estamos hoy: la sensación nativa sale casi gratis, y el esfuerzo se invierte en tus propias decisiones de producto. Un equipo de una sola persona que respete los detalles puede lanzar algo con calidad de App Store en semanas. '¿No habría funcionado Flutter?' Habría funcionado. Pero la diferencia se siente en esos primeros tres segundos que los usuarios no saben poner en palabras.</p>]]></content:encoded>
+      <category>Swift</category>
+      <category>iOS</category>
+    </item>
+    <item>
+      <title>Arquitectura monorepo: un repositorio, muchos productos</title>
+      <link>https://playerberry.com/blog/monorepo-mimarisi</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi</guid>
+      <pubDate>Tue, 10 Feb 2026 09:00:00 GMT</pubDate>
+      <description><![CDATA[Renombraron un campo en la API; web se actualizó, móvil se olvidó, y el bug estalló en producción tres días después. Esa semana decidimos fundir tres repositorios en uno.]]></description>
+      <content:encoded><![CDATA[<p>El suceso que tomó la decisión por nosotros: renombraron un campo en la API. El equipo web se actualizó el mismo día; el equivalente en el repositorio móvil se escapó. El bug afloró tres días después, en producción, como mensajes de 'mi página de perfil está vacía' cayendo en soporte. Tres repositorios, tres versiones, pull requests esperándose unos a otros... Esa semana decidimos mover a un único repositorio todo lo que comparte un contrato.</p>
+<h2>La comodidad del cambio atómico</h2>
+<p>La promesa real de un monorepo es una palabra: atomicidad. Renombra un campo en el esquema de la API y el código web y móvil que lo consume se actualiza en el mismo pull request. Lo que se rompa está ahí mismo, en el diff, delante de tus ojos. En repositorios separados el mismo trabajo se convierte en el baile de versiones: publica el paquete, súbelo en tres repositorios, mantén una tabla de qué versión es compatible con cuál. En un solo repositorio, la rama principal es coherente consigo misma en todo momento — para nosotros, esa fue la frase que zanjó el debate de arquitectura.</p>
+<h2>El montaje: menos de lo que crees</h2>
+<p>Nuestra receta es pnpm workspaces + Turborepo; el núcleo son dos archivos pequeños:</p>
+<pre><code># pnpm-workspace.yaml
+packages:
+  - &quot;apps/*&quot; # web, mobile, api
+  - &quot;packages/*&quot; # compartido: ui, config, api-client</code></pre>
+<pre><code>{
+  &quot;tasks&quot;: {
+    &quot;build&quot;: {
+      &quot;dependsOn&quot;: [&quot;^build&quot;],
+      &quot;outputs&quot;: [&quot;dist/**&quot;]
+    },
+    &quot;test&quot;: { &quot;dependsOn&quot;: [&quot;build&quot;] }
+  }
+}</code></pre>
+<p><code>^build</code> significa: antes de compilar un paquete, compila aquello de lo que depende. Turborepo deduce el grafo de tareas y sirve de caché todo lo que no ha cambiado. A medida que el repositorio crece, esa caché vale oro — el repositorio triplicó su tamaño y nuestra CI sigue siendo más rápida que el primer día.</p>
+<h2>El asunto de verdad: disciplina de capas</h2>
+<p>La mala noticia: las herramientas no te van a salvar. Donde colapsan los monorepos no es en lo técnico sino en lo disciplinario — las fronteras se difuminan, todo el mundo mete la mano en todos los paquetes, y seis meses después sostienes una maraña de dependencias del tamaño de un repositorio. Nuestra regla es unidireccional: las apps pueden depender de los paquetes; los paquetes de las apps, jamás. Y la regla se la confiamos al lint, no a las personas:</p>
+<pre><code>{
+  &quot;rules&quot;: {
+    &quot;import/no-restricted-paths&quot;: [&quot;error&quot;, {
+      &quot;zones&quot;: [
+        { &quot;target&quot;: &quot;./packages&quot;, &quot;from&quot;: &quot;./apps&quot; }
+      ]
+    }]
+  }
+}</code></pre>
+<p>Automatizada la prohibición, se acaba también el debate: una violación es una marca roja en la CI, no una diferencia de opiniones en la code review. La gente gasta su energía en el trabajo, no en recordar reglas.</p>
+<blockquote><p>Cuando el repositorio crezca, añade automatización, no reglas. Una regla que imponen las herramientas es permanente; una que la gente recuerda dura hasta que esa persona se va de vacaciones.</p></blockquote>
+<p>Una nota al pie honesta: un monorepo no es gratis. La CI cuesta esfuerzo de montar, el historial de git se abarrota y, mal configurado, todos acaban esperando a todos. Para productos que no comparten contrato y viven vidas separadas seguimos recomendando repositorios separados. Pero desde aquel bug de tres días en producción, no nos cabe en la cabeza que código que habla el mismo contrato viva en casas distintas.</p>]]></content:encoded>
+      <category>Architecture</category>
+      <category>Tooling</category>
+    </item>
+  </channel>
+</rss>
