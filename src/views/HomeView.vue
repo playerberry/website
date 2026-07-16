@@ -57,9 +57,6 @@ const stats = ["years", "projects", "clients", "uptime"];
   <!-- Hero -->
   <section class="pb-hero">
     <div class="uk-container uk-text-center">
-      <div class="pb-hero-badge">
-        <span class="pb-dot"></span>{{ t("hero.badge") }}
-      </div>
       <h1 class="pb-hero-title">
         {{ t("hero.titleTop") }}<br />
         <span class="super-text">{{ t("hero.titleHighlight") }}</span>

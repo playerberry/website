@@ -42,45 +42,8 @@
   }
 }
 
-.pb-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 18px;
-  border: 1px solid @pb-border-strong;
-  border-radius: @pb-radius-pill;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  font-family: @pb-font-mono;
-  font-size: 0.8rem;
-  color: @pb-muted;
-}
-
-.pb-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: @pb-cyan;
-  animation: pb-pulse 2s ease-out infinite;
-}
-
-@keyframes pb-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(60, 240, 197, 0.5);
-  }
-
-  70% {
-    box-shadow: 0 0 0 10px rgba(60, 240, 197, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(60, 240, 197, 0);
-  }
-}
-
 // Staggered entrance: each hero element rises and fades in on first paint.
 // (Silenced for reduced-motion visitors via effects.less.)
-.pb-hero-badge,
 .pb-hero-title,
 .pb-hero-lead,
 .pb-hero-actions,
@@ -89,23 +52,22 @@
 }
 
 .pb-hero-title {
-  margin: 28px 0 0;
+  margin: 0;
   font-size: clamp(2.6rem, 6.5vw, 5rem);
   line-height: 1.05;
   font-weight: 700;
-  animation-delay: 0.08s;
 }
 
 .pb-hero-lead {
-  animation-delay: 0.16s;
+  animation-delay: 0.08s;
 }
 
 .pb-hero-actions {
-  animation-delay: 0.24s;
+  animation-delay: 0.16s;
 }
 
 .pb-hero-stats {
-  animation-delay: 0.32s;
+  animation-delay: 0.24s;
 }
 
 @keyframes pb-rise {
