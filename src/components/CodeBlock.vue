@@ -23,6 +23,8 @@ import swift from "highlight.js/lib/languages/swift";
 import c from "highlight.js/lib/languages/c";
 import cpp from "highlight.js/lib/languages/cpp";
 import csharp from "highlight.js/lib/languages/csharp";
+import json from "highlight.js/lib/languages/json";
+import yaml from "highlight.js/lib/languages/yaml";
 
 // Register once at module load (this module is a singleton).
 hljs.registerLanguage("javascript", javascript);
@@ -34,6 +36,8 @@ hljs.registerLanguage("swift", swift);
 hljs.registerLanguage("c", c);
 hljs.registerLanguage("cpp", cpp);
 hljs.registerLanguage("csharp", csharp);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("yaml", yaml);
 
 const props = defineProps<{
   /** The raw source code to display. */
@@ -61,6 +65,9 @@ const languageAliases: Record<string, string> = {
   cs: "csharp",
   "c#": "csharp",
   csharp: "csharp",
+  json: "json",
+  yaml: "yaml",
+  yml: "yaml",
 };
 
 /** Human-readable label shown in the code block header. */
@@ -74,6 +81,8 @@ const displayNames: Record<string, string> = {
   c: "C",
   cpp: "C++",
   csharp: "C#",
+  json: "JSON",
+  yaml: "YAML",
 };
 
 /** The resolved highlight.js language id, or `""` when unknown. */
