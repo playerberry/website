@@ -251,8 +251,12 @@ const renderShell = (
   );
 };
 
-/** The three self-hosted faces (file-name prefixes). */
-const FONT_FAMILIES = ["inter", "space-grotesk", "jetbrains-mono"];
+/**
+ * Faces worth preloading (file-name prefixes): the body and display fonts
+ * that set the first paint's text. The mono face only dresses small labels,
+ * so it can arrive later without delaying the largest contentful paint.
+ */
+const FONT_FAMILIES = ["inter", "space-grotesk"];
 
 /**
  * Unicode subsets a language's text is set in — the font files worth
