@@ -57,3 +57,48 @@ export const parseBlock = (raw: string): Block => {
  */
 export const parseBlocks = (body: readonly string[]): Block[] =>
   body.map(parseBlock);
+
+/** Average reading speed for prose, in words per minute. */
+export const WORDS_PER_MINUTE = 200;
+
+/** Time budgeted per line of code, in seconds (code reads slower than prose). */
+export const SECONDS_PER_CODE_LINE = 2;
+
+/**
+ * Count the whitespace-separated words in a run of spans.
+ *
+ * @param spans - The spans of a heading, quote or paragraph.
+ * @returns The number of words (inline code counts as words too).
+ */
+const countWords = (spans: readonly InlineSpan[]): number =>
+  spans
+    .map((span) => span.text)
+    .join(" ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+/**
+ * Estimate the reading time of an article body.
+ *
+ * Prose (headings, quotes, paragraphs) is counted at {@link WORDS_PER_MINUTE};
+ * code blocks are budgeted per line at {@link SECONDS_PER_CODE_LINE} since
+ * they are scanned rather than read. The total is rounded up to whole minutes
+ * and never drops below one, so short posts still show "1 min read".
+ *
+ * Words are split on whitespace, which suits the languages the blog ships in.
+ *
+ * @param body - The raw block strings, in document order.
+ * @returns The estimated reading time in whole minutes (at least 1).
+ */
+export const readingMinutes = (body: readonly string[]): number => {
+  let seconds = 0;
+  for (const block of parseBlocks(body)) {
+    if (block.kind === "code") {
+      const lines = block.code ? block.code.split("\n").length : 0;
+      seconds += lines * SECONDS_PER_CODE_LINE;
+    } else {
+      seconds += (countWords(block.spans) / WORDS_PER_MINUTE) * 60;
+    }
+  }
+  return Math.max(1, Math.ceil(seconds / 60));
+};

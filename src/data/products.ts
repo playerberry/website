@@ -6,7 +6,7 @@
 export interface Product {
   /** Stable identifier; also the i18n key suffix. */
   id: string;
-  /** Price in US dollars. */
+  /** Price in US dollars; `0` renders the localised "free" label. */
   price: number;
   /** Icon name (see Icon.vue) shown on the product tile. */
   icon: string;
@@ -14,6 +14,12 @@ export interface Product {
   badge?: "popular" | "new";
   /** Accent-colour modifier for the icon tile (empty string = berry default). */
   tone: "" | "is-violet" | "is-blue" | "is-cyan" | "is-amber";
+  /**
+   * External page where the product lives (its own site or a store listing).
+   * When set, the card's action becomes a link there instead of the inert
+   * "buy" button.
+   */
+  url?: string;
 }
 
 /**
@@ -21,6 +27,14 @@ export interface Product {
  * files under `store.items.<id>`; this array holds only the metadata.
  */
 export const products: Product[] = [
+  {
+    id: "neredesinco",
+    price: 0,
+    icon: "location-dot",
+    badge: "new",
+    tone: "",
+    url: "https://neredesin.co",
+  },
   {
     id: "berry-ui",
     price: 49,

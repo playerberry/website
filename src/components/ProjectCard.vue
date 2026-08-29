@@ -3,7 +3,8 @@
  * ProjectCard
  *
  * Portfolio card showing a project's gradient thumbnail (with its initial),
- * category/year meta, localised title and description, and technology chips.
+ * category/year meta, localised title and description, technology chips and
+ * — for shipped products with a public URL — an external "visit" link.
  * The `v-spotlight` directive adds a pointer-following glow on hover.
  *
  * @prop project - The {@link Project} metadata to render.
@@ -21,6 +22,7 @@ const { t } = useI18n();
     <div
       class="pb-project-thumb"
       :style="{ backgroundImage: project.gradient }"
+      aria-hidden="true"
     >
       <span class="pb-project-initial">{{
         project.id.charAt(0).toUpperCase()
@@ -37,5 +39,13 @@ const { t } = useI18n();
         tech
       }}</span>
     </div>
+    <a
+      v-if="project.url"
+      :href="project.url"
+      class="pb-link-arrow pb-project-link"
+      target="_blank"
+      rel="noopener"
+      >{{ t("projects.visit") }} <Icon name="arrow-up-right-from-square"
+    /></a>
   </div>
 </template>

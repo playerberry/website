@@ -8,9 +8,12 @@
  * gives readers a sense of how far through a page they are.
  *
  * The bar is decorative (`aria-hidden`) and animates via `transform: scaleX`
- * (compositor-only — no layout or paint per frame). Scroll/resize events are
- * coalesced through `requestAnimationFrame` so the ratio is computed at most
- * once per frame. All listeners are removed when the component unmounts.
+ * (compositor-only — no layout or paint per frame). Scroll/resize events and
+ * document-size changes (observed with a `ResizeObserver`, so the ratio stays
+ * correct when content grows or shrinks without a scroll — a locale switch,
+ * a lazily loaded route, fonts arriving) are coalesced through
+ * `requestAnimationFrame` so the ratio is computed at most once per frame.
+ * All listeners and the observer are removed when the component unmounts.
  */
 import { onMounted, onUnmounted, ref } from "vue";
 
@@ -19,6 +22,9 @@ const progress = ref(0);
 
 /** Pending rAF id, or `0` when no frame is scheduled. */
 let frame = 0;
+
+/** Observer re-measuring when the document's height changes. */
+let observer: ResizeObserver | undefined;
 
 /**
  * Recompute the scroll ratio for the current viewport position. When the page
@@ -40,11 +46,18 @@ onMounted(() => {
   measure();
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule);
+  // Observe both the root and the body: the body carries the content height,
+  // and the root covers the case where it is later given a fixed height.
+  observer = new ResizeObserver(schedule);
+  observer.observe(document.documentElement);
+  observer.observe(document.body);
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", schedule);
   window.removeEventListener("resize", schedule);
+  observer?.disconnect();
+  observer = undefined;
   if (frame) cancelAnimationFrame(frame);
 });
 </script>

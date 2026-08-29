@@ -1,4 +1,12 @@
-import { describe, expect, it } from "vitest";
+// Pin the process to a UTC-negative zone before anything is formatted. Post
+// dates are date-only ISO strings, which parse as UTC midnight; if the
+// formatter ever stopped forcing UTC, every expectation below would slip back
+// a day here (and on any developer machine west of Greenwich). Node applies a
+// `TZ` change at runtime, and the formatters are created lazily inside the
+// tests, so the hoisted imports below are not a problem.
+process.env.TZ = "America/Los_Angeles";
+
+import { describe, expect, it, vi } from "vitest";
 import { formatPostDate } from "./dates";
 
 describe("formatPostDate", () => {
@@ -23,9 +31,20 @@ describe("formatPostDate", () => {
     expect(formatPostDate("2026-01-05", "xx")).toBe("January 5, 2026");
   });
 
-  it("reuses cached formatters across calls (same output, no throw)", () => {
-    const first = formatPostDate("2024-09-08", "tr");
-    const second = formatPostDate("2024-09-08", "tr");
-    expect(second).toBe(first);
+  it("constructs one Intl.DateTimeFormat per locale", () => {
+    // Use a locale no earlier test has touched; otherwise the cache is already
+    // warm and the spy would count zero constructions with or without caching.
+    // The spy delegates to the real constructor explicitly: a bare spy is used
+    // as `new.target`, which would hand back an object without `format`.
+    const Original = Intl.DateTimeFormat;
+    const spy = vi
+      .spyOn(Intl, "DateTimeFormat")
+      .mockImplementation(function (...args) {
+        return new Original(...args);
+      });
+    expect(formatPostDate("2024-09-08", "fr")).toBe("8 septembre 2024");
+    expect(formatPostDate("2024-09-09", "fr")).toBe("9 septembre 2024");
+    expect(spy).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
   });
 });

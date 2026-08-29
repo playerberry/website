@@ -1,13 +1,26 @@
 import { useI18n } from "vue-i18n";
+import { readingMinutes } from "../assets/js/postBlocks";
 
-/** Localised article content for a single blog post. */
-export interface PostContent {
+/** The raw article fields stored under `blog.posts.<slug>` in a locale file. */
+interface RawPostContent {
   /** The post's title. */
   title: string;
   /** A short summary shown on cards and the blog index. */
   excerpt: string;
   /** Ordered body blocks (paragraphs, `## ` headings, `> ` quotes, ``` code). */
   body: string[];
+}
+
+/** Localised article content for a single blog post, plus derived fields. */
+export interface PostContent extends RawPostContent {
+  /** Estimated reading time in whole minutes, derived from `body`. */
+  minutes: number;
+  /**
+   * The locale the content was actually resolved from: the active locale, or
+   * `"en"` when the active catalogue has no article for the slug. Callers use
+   * it to mark fallback content with a `lang` attribute.
+   */
+  lang: string;
 }
 
 /**
@@ -35,9 +48,10 @@ export function usePostContent() {
   const getPost = (slug: string): PostContent | undefined => {
     const read = (loc: string): PostContent | undefined => {
       const messages = getLocaleMessage(loc) as {
-        blog?: { posts?: Record<string, PostContent> };
+        blog?: { posts?: Record<string, RawPostContent> };
       };
-      return messages?.blog?.posts?.[slug];
+      const raw = messages?.blog?.posts?.[slug];
+      return raw && { ...raw, minutes: readingMinutes(raw.body), lang: loc };
     };
     return read(locale.value) ?? read("en");
   };

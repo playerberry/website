@@ -1,9 +1,3 @@
 {
-  "bookmarks.saveBookmarksInProject": true,
-  "less.compile": {
-    "compress": true,
-    "main": "_main.less",
-    "out": "../css/style",
-    "outExt": ".css"
-  }
+  "bookmarks.saveBookmarksInProject": true
 }

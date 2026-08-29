@@ -13,13 +13,16 @@
   margin-top: 16px;
 }
 
+// Column headings. Styled purely by class so the heading level can follow the
+// page outline (h2) without picking up UIkit's h2 size or `* + h2` top margin.
 .pb-footer-heading {
   font-family: @pb-font-mono;
   font-size: 0.75rem;
+  line-height: 1.4;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: @pb-muted;
-  margin-bottom: 18px;
+  margin: 0 0 18px;
 }
 
 .pb-footer-links {
@@ -46,6 +49,12 @@
   display: flex;
   gap: 10px;
   margin-top: 24px;
+
+  // Under its footer heading the heading's own bottom margin is the gap, as
+  // in the link columns.
+  .pb-footer-heading + & {
+    margin-top: 0;
+  }
 
   a {
     width: 40px;

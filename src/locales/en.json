@@ -7,6 +7,9 @@
     "contact": "Contact"
   },
   "a11y": {
+    "language": "Language",
+    "menu": "Menu",
+    "close": "Close",
     "skipToContent": "Skip to content"
   },
   "redirect": {
@@ -20,18 +23,27 @@
     "tiktok": "Redirecting you to our TikTok profile..."
   },
   "meta": {
-    "home": "PlayerBerry — a software studio designing and building end-to-end digital products across web, mobile and cloud.",
-    "projects": "Selected production work touching real users: web, mobile, design and DevOps projects.",
-    "blog": "Architecture decisions, design notes and lessons from the field — the PlayerBerry engineering journal.",
-    "store": "The tools we use in our own projects: templates, component sets and starter kits.",
-    "contact": "Get in touch with PlayerBerry to discuss your project, get a quote, or just say hi.",
-    "about": "The PlayerBerry story: an independent software studio taking ideas to production with a small, senior team.",
-    "legal": "Legal documents of the PlayerBerry website."
+    "titles": {
+      "home": "PlayerBerry — Web, Mobile & Cloud Software Studio",
+      "projects": "Web & Mobile App Projects",
+      "blog": "Software Blog: Architecture, Design & Engineering",
+      "store": "Templates, Component Kits & Apps",
+      "contact": "Contact: Get a Quote for Your Software Project",
+      "about": "About Us: An Independent Software Studio"
+    },
+    "ogAlt": "PlayerBerry — web, mobile and cloud software studio",
+    "home": "Independent software studio building web apps, iOS apps and cloud infrastructure with Vue, TypeScript and Swift. Let's turn your idea into a product.",
+    "projects": "PlayerBerry's web, mobile, design and DevOps projects: iOS apps, SaaS dashboards and e-commerce platforms that are live in production and reach real users.",
+    "blog": "The PlayerBerry software blog: architecture decisions, design notes and engineering articles on Swift, Vue, TypeScript, C++ and web performance.",
+    "store": "The PlayerBerry store: Vue and SwiftUI templates, UI component kits, icon packs, API starter kits and our own apps such as Neredesin Co.",
+    "contact": "Get a quote from PlayerBerry for your website, mobile app or cloud project. Write to hello@playerberry.com — we usually reply within 24 hours.",
+    "about": "The PlayerBerry story: an independent software studio with a small, experienced team that has been taking ideas to production since 2018.",
+    "legal": "Legal documents of the PlayerBerry website: privacy policy, cookie policy and terms of service."
   },
   "hero": {
     "titleTop": "Not ordinary software —",
     "titleHighlight": "epic experiences.",
-    "description": "We're a software studio building end-to-end digital products across web, mobile and cloud. We turn your idea into a product together, ship it, and keep growing it.",
+    "description": "We are an independent software studio building web applications, iOS mobile apps and cloud infrastructure. Together we turn your idea into a product, ship it and keep growing it.",
     "ctaPrimary": "Explore Our Work",
     "ctaSecondary": "Get in Touch",
     "stats": {
@@ -44,8 +56,8 @@
   "home": {
     "services": {
       "eyebrow": "// what we do",
-      "title": "End-to-end product development",
-      "lead": "Design, engineering and infrastructure under one roof — you work with the same team from idea to launch.",
+      "title": "End-to-end software development services",
+      "lead": "Web apps, mobile apps, UI/UX design and cloud infrastructure under one roof — you work with the same team from idea to launch.",
       "items": {
         "web": {
           "title": "Web Applications",
@@ -91,13 +103,13 @@
     "work": {
       "eyebrow": "// projects",
       "title": "Selected work",
-      "lead": "A slice of production products across different industries.",
+      "lead": "A slice of web and mobile products in production across different industries.",
       "viewAll": "All projects"
     },
     "journal": {
       "eyebrow": "// blog",
       "title": "Latest from the blog",
-      "lead": "We write down what we learn: architecture decisions, design notes, field experience.",
+      "lead": "We write down what we learn: software architecture, design notes, field experience.",
       "viewAll": "All posts"
     },
     "cta": {
@@ -108,8 +120,10 @@
   },
   "projects": {
     "eyebrow": "// portfolio",
-    "title": "Projects",
-    "lead": "Hand-picked work that is live in production, touching real users.",
+    "title": "Web & Mobile App Projects",
+    "lead": "Hand-picked web, mobile, design and DevOps work that is live in production, touching real users.",
+    "visit": "Visit site",
+    "filterLabel": "Filter by category",
     "categories": {
       "all": "All",
       "web": "Web",
@@ -118,6 +132,10 @@
       "devops": "DevOps"
     },
     "items": {
+      "neredesinco": {
+        "title": "Neredesin Co",
+        "description": "Rule-based, moderated social platform for in-person events: a SwiftUI iOS app, Fastify API, media worker and moderation console."
+      },
       "nova": {
         "title": "Nova Analytics",
         "description": "Real-time analytics dashboard for SaaS teams. Turns complex data into insight within seconds."
@@ -146,11 +164,12 @@
   },
   "blog": {
     "eyebrow": "// journal",
-    "title": "Blog",
-    "lead": "Architecture decisions, design notes and lessons from the field.",
+    "title": "Software Blog",
+    "lead": "Architecture decisions, design notes and lessons from the field on Swift, Vue and TypeScript.",
     "readingTime": "{minutes} min read",
     "back": "All posts",
     "copy": "Copy",
+    "copyFailed": "Copy failed",
     "copied": "Copied",
     "posts": {
       "swift-concurrency": {
@@ -395,15 +414,22 @@
   },
   "store": {
     "eyebrow": "// digital products",
-    "title": "Store",
-    "lead": "We package the tools we use in our own projects: templates, component sets and starter kits.",
+    "title": "Digital Products & Apps",
+    "lead": "We offer the tools we use in our own projects and the apps we build: templates, component kits, starter kits and Neredesin Co.",
     "buy": "Buy Now",
     "soon": "Coming soon",
+    "free": "Free",
+    "get": "Get the app",
     "badges": {
       "popular": "Popular",
       "new": "New"
     },
     "items": {
+      "neredesinco": {
+        "category": "iOS App",
+        "title": "Neredesin Co",
+        "description": "Discover events around you, join in and chat with the people you meet there. Rule-based, moderated and privacy-respecting."
+      },
       "berry-ui": {
         "category": "Design System",
         "title": "Berry UI Kit",
@@ -438,14 +464,14 @@
   },
   "contact": {
     "eyebrow": "// contact",
-    "title": "Say hello",
-    "lead": "Write to us to discuss your project, get a quote, or just to say hi.",
+    "title": "Get in touch about your software project",
+    "lead": "Write to us to discuss your website, mobile app or cloud project, get a quote, or just say hello.",
     "note": "We usually reply within 24 hours."
   },
   "about": {
     "eyebrow": "// about us",
     "title": "Small team, ambitious work",
-    "lead": "PlayerBerry is an independent software studio that takes ideas to production. No agency crowd — you talk to the people doing the work.",
+    "lead": "PlayerBerry is an independent software studio that takes ideas to production; we build web, mobile and cloud products. No agency crowd — you talk to the people doing the work.",
     "story": [
       "We started in 2018 with a single question: can good design, solid engineering and honest communication live in one team? Since then we've taken dozens of products from idea to launch across web, mobile and cloud.",
       "Instead of scaling into a big agency, we chose to stay small and senior. On every project you talk directly to the person building it — no layers in between. Decisions are fast, and feedback turns into code the same day.",
@@ -481,7 +507,7 @@
     "button": "Back to home"
   },
   "footer": {
-    "tagline": "A software studio building end-to-end digital products across web, mobile and cloud.",
+    "tagline": "Independent software studio building end-to-end digital products for web, mobile and cloud.",
     "nav": "Site",
     "rss": "RSS Feed",
     "legal": "Legal",

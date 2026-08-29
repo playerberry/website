@@ -2,16 +2,19 @@
 /**
  * PrivacyView (`/privacy-policy`)
  *
- * Static Privacy Policy document. Content is presentational prose only — there
- * is no component logic.
+ * Static Privacy Policy document. Content is presentational prose only — the
+ * only component dependency is `RouterLink` for the in-site links.
  */
+import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <div class="uk-margin-large-top">
+  <!-- The legal documents are published in Turkish only, so the root carries
+       an explicit `lang` regardless of the active UI locale. -->
+  <div class="uk-margin-large-top" lang="tr">
     <div class="uk-container">
       <h1>Gizlilik Politikası</h1>
-      <p>Son Güncelleme: 08 Eylül 2024</p>
+      <p>Son güncelleme: 29 Ağustos 2026</p>
       <p>
         Bu Gizlilik Politikası, Hizmeti kullanırken kişisel bilgilerinizi
         toplama, kullanma ve ifşa etme konusundaki politikalarımızı ve
@@ -19,13 +22,13 @@
         verir ve sizi kanunların nasıl koruduğunu açıklar.
       </p>
       <p>
-        Hizmeti sağlamak ve geliştirmek amacıyla kişisel verilerinizi
+        Kişisel verilerinizi yalnızca Hizmeti sağlamak ve sürdürmek amacıyla
         kullanıyoruz. Hizmeti kullanarak, bu Gizlilik Politikası'nda belirtilen
         bilgilerin toplanmasını ve kullanılmasını kabul etmiş olursunuz.
       </p>
 
-      <h2>Yorumlar ve Tanımlar</h2>
-      <h3>Yorumlar</h3>
+      <h2>Yorumlama ve Tanımlar</h2>
+      <h3>Yorumlama</h3>
       <p>
         Bu Gizlilik Politikası'nda kullanılan ilk harfi büyük kelimelerin,
         aşağıdaki tanımlar altında belirtilen anlamları vardır. Tanımlar, tekil
@@ -35,13 +38,6 @@
       <h3>Tanımlar</h3>
       <p>Bu Gizlilik Politikası bağlamında:</p>
       <ul>
-        <li>
-          <p>
-            <strong>Hesap</strong>, Hizmetimize veya Hizmetimizin bir kısmına
-            erişmek için sizin adınıza oluşturulan benzersiz bir hesabı ifade
-            eder.
-          </p>
-        </li>
         <li>
           <p>
             <strong>Bağlı Kuruluş</strong>, bir tarafı kontrol eden, onun
@@ -54,9 +50,9 @@
         </li>
         <li>
           <p>
-            <strong>Şirket</strong>, bu Sözleşmede &quot;Şirket&quot;,
-            &quot;Biz&quot;, &quot;Bizi&quot; veya &quot;Bizim&quot; olarak
-            anılacaktır ve PlayerBerry'yi ifade eder.
+            <strong>Şirket</strong>, bu Gizlilik Politikası'nda
+            &quot;Şirket&quot;, &quot;Biz&quot;, &quot;Bizi&quot; veya
+            &quot;Bizim&quot; olarak anılacaktır ve PlayerBerry'yi ifade eder.
           </p>
         </li>
         <li>
@@ -89,29 +85,23 @@
           <p>
             <strong>Hizmet Sağlayıcı</strong>, Şirket adına verileri işleyen
             herhangi bir gerçek veya tüzel kişiyi ifade eder. Şirket tarafından
-            Hizmeti kolaylaştırmak, Şirket adına Hizmeti sağlamak, Hizmetle
-            ilgili hizmetleri gerçekleştirmek veya Hizmetin nasıl kullanıldığını
-            analiz etmeye yardımcı olmak amacıyla istihdam edilen üçüncü taraf
+            Hizmeti kolaylaştırmak, Şirket adına Hizmeti sağlamak veya Hizmetle
+            ilgili hizmetleri gerçekleştirmek amacıyla kullanılan üçüncü taraf
             şirketleri veya bireyleri ifade eder.
           </p>
         </li>
         <li>
           <p>
-            <strong>Kullanım Verileri</strong>, Hizmetin kullanımıyla veya
-            Hizmet altyapısından otomatik olarak toplanan verileri (örneğin, bir
-            sayfada geçirilen süre) ifade eder.
+            <strong>Tarayıcı Depolaması</strong>, tarayıcınızın Web Sitesi için
+            Cihazınızda sakladığı ve yalnızca Web Sitesi tarafından okunabilen
+            küçük veri kayıtlarını (localStorage ve sessionStorage) ifade eder.
           </p>
         </li>
         <li>
           <p>
             <strong>Web Sitesi</strong>, PlayerBerry'yi ifade eder ve şu
             adresten erişilebilir:
-            <a
-              href="https://playerberry.com"
-              rel="external nofollow noopener"
-              target="_blank"
-              >https://playerberry.com</a
-            >.
+            <RouterLink to="/">https://playerberry.com</RouterLink>.
           </p>
         </li>
         <li>
@@ -127,125 +117,145 @@
       <h3>Toplanan Veri Türleri</h3>
       <h4>Kişisel Veri</h4>
       <p>
-        Hizmetimizi kullanırken, sizi tanımlamak veya sizinle iletişime geçmek
-        için kullanılabilecek bazı kişisel bilgileri sağlamanızı isteyebiliriz.
-        Kişisel olarak tanımlanabilir bilgiler şunları içerebilir, ancak
-        bunlarla sınırlı değildir:
+        Hizmet, hesap oluşturmanızı, giriş yapmanızı veya herhangi bir form
+        doldurmanızı gerektirmez; Hizmeti kullanırken sizden kişisel bilgi
+        talep etmeyiz. Şirketin işlediği tek Kişisel Veri, bizimle gönüllü
+        olarak e-posta yoluyla
+        (<a href="mailto:hello@playerberry.com">hello@playerberry.com</a>)
+        iletişime geçmeyi seçtiğinizde sağladığınız bilgilerdir. Bu bilgiler
+        şunları içerebilir:
       </p>
       <ul>
-        <li>Kullanım Verileri</li>
-      </ul>
-
-      <h4>Kullanım Verileri</h4>
-      <p>Kullanım Verileri Hizmetimizi kullanırken otomatik olarak toplanır.</p>
-      <p>
-        Kullanım Verileri, Cihazınızın İnternet Protokolü adresi (örneğin IP
-        adresi), tarayıcı türü, tarayıcı sürümü, Hizmetimizin ziyaret ettiğiniz
-        sayfaları, ziyaretinizin tarihi ve saati, bu sayfalarda geçirilen süre,
-        benzersiz cihaz tanımlayıcıları ve diğer tanısal veriler gibi bilgileri
-        içerebilir.
-      </p>
-      <p>
-        Hizmete bir mobil cihaz aracılığıyla eriştiğinizde, kullandığınız mobil
-        cihaz türü, mobil cihazınızın benzersiz kimliği, mobil cihazınızın IP
-        adresi, mobil işletim sistemi, kullandığınız mobil İnternet tarayıcısı
-        türü, benzersiz cihaz tanımlayıcıları ve diğer tanısal veriler gibi
-        belirli bilgileri otomatik olarak toplayabiliriz.
-      </p>
-      <p>
-        Ayrıca, tarayıcınızın her ziyaret ettiğinizde gönderdiği bilgileri veya
-        Hizmete bir mobil cihaz aracılığıyla eriştiğinizde topladığımız
-        bilgileri de toplayabiliriz.
-      </p>
-
-      <h4>İzleme Teknolojileri ve Çerezler</h4>
-      <p>
-        Hizmetimizdeki faaliyetleri izlemek ve belirli bilgileri saklamak için
-        Çerezler ve benzeri izleme teknolojilerini kullanıyoruz. İzleme
-        teknolojileri, bilgi toplamak, izlemek ve Hizmetimizi geliştirmek ve
-        analiz etmek amacıyla işaretçiler, etiketler ve komut dosyalarını
-        içerir. Kullandığımız teknolojiler şunları içerebilir:
-      </p>
-      <ul>
+        <li>E-posta adresiniz</li>
         <li>
-          <strong>Çerezler veya Tarayıcı Çerezleri.</strong> Çerez, Cihazınıza
-          yerleştirilen küçük bir dosyadır. Tarayıcınızı tüm Çerezleri
-          reddetmesi veya bir Çerezin ne zaman gönderildiğini belirtmesi için
-          yönlendirebilirsiniz. Ancak, Çerezleri kabul etmezseniz, Hizmetimizin
-          bazı kısımlarını kullanamayabilirsiniz. Tarayıcı ayarlarınızı
-          Çerezleri reddedecek şekilde ayarlamadığınız sürece, Hizmetimiz
-          Çerezleri kullanabilir.
-        </li>
-        <li>
-          <strong>Web İşaretçileri.</strong> Hizmetimizin ve e-postalarımızın
-          belirli bölümleri, Şirketin kullanıcıları saymasına veya bir e-posta
-          açıldığında ve diğer web sitesi istatistikleri (örneğin, belirli bir
-          bölümün popülerliğini kaydetmek ve sistem ve sunucu bütünlüğünü
-          doğrulamak) için izin veren web işaretçileri (açık gifler, piksel
-          etiketler ve tek pikselli gifler olarak da bilinir) içerebilir.
+          İletinizde paylaşmayı seçtiğiniz adınız ve diğer bilgiler ile
+          iletinizin içeriği
         </li>
       </ul>
 
+      <h4>Otomatik Olarak Toplanan Veriler</h4>
       <p>
-        Çerezler "Kalıcı" veya "Oturum" Çerezleri olabilir. Kalıcı Çerezler,
-        Çevrimdışıyken kişisel bilgisayarınızda veya mobil cihazınızda kalır,
-        oturum çerezleri ise tarayıcınızı kapattığınızda silinir.
+        Hizmet, kullanımınıza ilişkin verileri otomatik olarak toplamaz.
+        Ziyaret ettiğiniz sayfalar, ziyaret tarihi ve saati, sayfalarda
+        geçirilen süre veya benzersiz cihaz tanımlayıcıları gibi bilgiler
+        kaydedilmez; analitik ya da izleme aracı kullanılmaz.
+      </p>
+      <p>
+        Tarayıcınızın her web isteğinde ilettiği IP adresi ve tarayıcı bilgisi
+        gibi teknik veriler yalnızca aşağıda belirtilen Hizmet Sağlayıcıların
+        altyapısına ulaşır ve Şirket tarafından saklanmaz. Ülkeye göre dil
+        tespiti ile Tarayıcı Depolamasının kullanımı aşağıda ayrıca
+        açıklanmıştır.
       </p>
 
+      <h4>Çerezler ve Tarayıcı Depolaması</h4>
       <p>
-        Aşağıda belirtilen amaçlar doğrultusunda hem Oturum hem de Kalıcı
-        Çerezleri kullanıyoruz:
+        Web Sitesi kendi adına Çerez yerleştirmez; hesap, giriş, kimlik
+        doğrulama veya çerez onayı amacıyla herhangi bir Çerez ya da izleme
+        teknolojisi kullanmaz. Bunun yerine, yalnızca aşağıda belirtilen
+        amaçlarla Tarayıcı Depolamasını kullanır:
       </p>
       <ul>
         <li>
-          <p><strong>Gerekli / Temel Çerezler</strong></p>
-          <p>Tür: Oturum Çerezleri</p>
+          <p><strong>Dil Tercihi</strong></p>
+          <p>Tür: Kalıcı depolama (localStorage, <code>pb:locale</code>)</p>
           <p>Yöneten: Biz</p>
           <p>
-            Amaç: Bu Çerezler, Web Sitesi aracılığıyla size sunulan hizmetleri
-            sağlamak ve Web Sitesinin bazı özelliklerini kullanmanızı sağlamak
-            için gereklidir. Kullanıcıları kimlik doğrulamada ve kullanıcı
-            hesaplarının hileli kullanımlarını önlemeye yardımcı olurlar. Bu
-            Çerezler olmadan, talep ettiğiniz hizmetler sağlanamaz ve bu
-            Çerezleri yalnızca size bu hizmetleri sağlamak için kullanırız.
+            Amaç: Web Sitesinde dil seçimini kullandığınızda seçtiğiniz dili
+            hatırlamak ve her ziyaretinizde dil seçimini yeniden yapmanızı
+            önlemek. Bu kayıt yalnızca dil seçimini kullandığınızda oluşturulur
+            ve tarayıcınızın site verilerini silene kadar Cihazınızda kalır.
           </p>
         </li>
         <li>
-          <p><strong>Çerez Politikası / Bildirim Kabul Çerezleri</strong></p>
-          <p>Tür: Kalıcı Çerezler</p>
+          <p><strong>Ülkeye Göre Dil Tespiti Önbelleği</strong></p>
+          <p>
+            Tür: Oturum depolaması (sessionStorage, <code>pb:geo-locale</code>)
+          </p>
           <p>Yöneten: Biz</p>
           <p>
-            Amaç: Bu Çerezler, kullanıcıların Web Sitesinde Çerez kullanımını
-            kabul edip etmediklerini belirler.
+            Amaç: Kayıtlı bir dil tercihiniz yoksa, aşağıda açıklanan ülkeye
+            göre dil tespitinin sonucunu aynı tarayıcı oturumu boyunca
+            saklayarak tespitin her sayfa yüklemesinde yinelenmesini önlemek.
+            Bu kayıt tarayıcınızı kapattığınızda silinir.
           </p>
         </li>
       </ul>
+      <p>
+        Bu kayıtlar yalnızca bir dil kodu içerir; sizi tanımlayan hiçbir bilgi
+        barındırmaz. Tarayıcı ayarlarınızdan Web Sitesine ait site verilerini
+        istediğiniz zaman silebilirsiniz; bu durumda Web Sitesi dil tercihinizi
+        yeniden belirler.
+      </p>
+
+      <h4>Ülkeye Göre Dil Tespiti</h4>
+      <p>
+        Kayıtlı bir dil tercihiniz yoksa Web Sitesi, ilk yüklemede içerik
+        dağıtım sağlayıcımız Cloudflare'in Web Sitesiyle aynı alan adı
+        üzerinde sunduğu bir uç noktaya (<code>/cdn-cgi/trace</code>) istek
+        gönderir. Bu yanıt, IP adresinizden Cloudflare tarafından çözümlenen
+        ülke kodunu içerir. Web Sitesi bu yanıttan yalnızca ülke kodunu
+        kullanarak varsayılan dili seçer; IP adresinizi saklamaz. Tespit
+        başarısız olursa varsayılan dil olarak İngilizce kullanılır.
+      </p>
+
+      <h4>Üçüncü Taraf Hizmetler ve Kaynaklar</h4>
+      <p>
+        Web Sitesi, aşağıdaki Hizmet Sağlayıcıların altyapısı üzerinden sunulur
+        ve Web Sitesini ziyaret ettiğinizde tarayıcınız bu sağlayıcılara
+        doğrudan istek gönderir:
+      </p>
+      <ul>
+        <li>
+          <p>
+            <strong>GitHub Pages</strong> (GitHub, Inc.): Web Sitesinin
+            barındırılması.
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Cloudflare</strong> (Cloudflare, Inc.): İçerik dağıtımı ve
+            yukarıda açıklanan ülkeye göre dil tespiti.
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Google Fonts</strong> (Google LLC): Web Sitesinde kullanılan
+            yazı tiplerinin <code>fonts.googleapis.com</code> ve
+            <code>fonts.gstatic.com</code> alan adlarından yüklenmesi.
+          </p>
+        </li>
+      </ul>
+      <p>
+        Bu istekler, her web isteğinde olduğu gibi, IP adresiniz ve tarayıcı
+        bilgileriniz gibi teknik verileri ilgili sağlayıcıya iletir. Bu veriler
+        söz konusu sağlayıcılar tarafından kendi gizlilik politikalarına göre
+        işlenir; Şirket bu verileri saklamaz.
+      </p>
 
       <h2>Bilgilerinizin Kullanımı</h2>
       <p>
-        Şirket, toplanan bilgileri aşağıdaki amaçlar doğrultusunda kullanabilir:
+        Şirket, bilgilerinizi yalnızca aşağıdaki amaçlar doğrultusunda
+        kullanır:
       </p>
       <ul>
         <li>
           <p>Hizmeti sağlamak ve sürdürmek.</p>
         </li>
         <li>
-          <p>Hizmeti kişiselleştirmek.</p>
-        </li>
-        <li>
-          <p>Hizmetimizi geliştirmek için analiz yapmak.</p>
-        </li>
-        <li>
           <p>
-            Kullanıcı deneyimini iyileştirmek ve yeni ürünler ve hizmetler
-            sunmak.
+            Dil tercihinizi uygulamak. Tarayıcı Depolamasındaki dil kodu ve
+            ülkeye göre dil tespitinin sonucu yalnızca Web Sitesini seçtiğiniz
+            veya ülkenize uygun dilde göstermek için kullanılır.
           </p>
         </li>
         <li>
-          <p>Size hizmetle ilgili haberler ve güncellemeler göndermek.</p>
-        </li>
-        <li>
-          <p>Hizmetimizle ilgili sorunları izlemek ve tespit etmek.</p>
+          <p>
+            Gönüllü e-posta iletişiminize yanıt vermek. E-posta adresiniz ve
+            iletinizin içeriği yalnızca sorunuzu, talebinizi veya bildirdiğiniz
+            sorunu yanıtlamak için kullanılır; size pazarlama iletisi, haber
+            veya güncelleme göndermek için kullanılmaz.
+          </p>
         </li>
       </ul>
 
@@ -257,31 +267,34 @@
       <ul>
         <li>
           <p>
-            <strong>Hizmet Sağlayıcıları</strong> ile. Kişisel bilgilerinizi,
-            Hizmetimizi sağlamak, yürütmek ve geliştirmek için hizmet veren
-            üçüncü taraflarla paylaşabiliriz.
+            <strong>Hizmet Sağlayıcıları</strong> ile. Yalnızca yukarıda
+            &quot;Üçüncü Taraf Hizmetler ve Kaynaklar&quot; bölümünde sayılan
+            Hizmet Sağlayıcılar, Web Sitesini sunabilmek için gereken teknik
+            verileri tarayıcınızdan doğrudan alır. Şirket, bu sağlayıcılara
+            ayrıca kişisel bilgi aktarmaz.
           </p>
         </li>
         <li>
           <p>
             <strong>Hukuki Gereklilikler</strong> doğrultusunda. Kişisel
-            bilgilerinizi, yasal yükümlülüklerimize uymak veya yasal talepleri,
-            süreçleri veya hükümet taleplerini cevaplamak amacıyla
-            paylaşabiliriz.
+            bilgilerinizi yalnızca yasal bir yükümlülüğe uymak veya bağlayıcı
+            bir yasal talebi, süreci ya da resmi makam talebini cevaplamak
+            zorunda olduğumuz durumlarda paylaşabiliriz.
           </p>
         </li>
         <li>
           <p>
             <strong>Şirketin Yeniden Yapılandırılması</strong> durumunda.
-            Şirketimiz bir birleşme, satın alma, varlık transferi veya iflas
-            durumunda kişisel bilgilerinizi devredebiliriz.
+            Yalnızca bir birleşme, satın alma, varlık transferi veya iflas
+            durumunda, elimizde bulunan e-posta yazışmalarınız devralan tarafa
+            devredilebilir.
           </p>
         </li>
         <li>
           <p>
             <strong>Rızanızla</strong> diğer durumlarda. Kişisel bilgilerinizi,
-            rızanızla veya sizinle başka bir şekilde paylaşılmasını kabul
-            ettiğiniz durumlarda paylaşabiliriz.
+            yalnızca açık rızanızla veya paylaşılmasını sizin talep ettiğiniz
+            durumlarda başka bir tarafla paylaşabiliriz.
           </p>
         </li>
       </ul>
@@ -300,7 +313,8 @@
         sınırlama haklarına sahipsiniz. Ayrıca, kişisel verilerinizin
         işlenmesini sınırlayabilir veya itiraz edebilirsiniz. Kişisel
         verilerinizin işlenmesiyle ilgili haklarınızı kullanmak için bizimle
-        iletişime geçebilirsiniz.
+        iletişime geçebilirsiniz. Tarayıcı Depolamasındaki dil kaydını ise
+        tarayıcı ayarlarınızdan istediğiniz zaman kendiniz silebilirsiniz.
       </p>
 
       <h2>Gizlilik Politikası Değişiklikleri</h2>
@@ -317,14 +331,13 @@
         Bu Gizlilik Politikası ile ilgili herhangi bir sorunuz varsa, bizimle
         iletişime geçmekten çekinmeyin:
       </p>
-      <p>
-        <a
-          href="https://playerberry.com/contact"
-          rel="external nofollow noopener"
-          target="_blank"
-          >https://playerberry.com/contact</a
-        >
-      </p>
+      <ul>
+        <li>
+          Web sitemizdeki
+          <RouterLink to="/contact">iletişim sayfamızı</RouterLink> ziyaret
+          ederek.
+        </li>
+      </ul>
     </div>
   </div>
 </template>

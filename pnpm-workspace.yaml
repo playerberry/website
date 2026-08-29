@@ -1,8 +1,16 @@
 # pnpm ayarları (pnpm v10+ ile "pnpm" package.json alanı yerine burada tutulur).
-# picomatch <2.3.2 sürümlerindeki ReDoS açığını (GHSA-3v7f-55p6-f55p) kapatmak
-# için geçişli bağımlılığı yamalı sürüme zorlar.
-# rollup <4.59.0 sürümlerindeki dizin aşımıyla dosya yazma açığını
-# (GHSA-mw96-cpmx-2vgc) kapatır.
+#
+# Geçişli bağımlılıklardaki bilinen açıkları yamalı sürümlere zorlayan
+# override'lar. Bir üst paket güncellenip açık kapandığında ilgili satır
+# etkisiz kalır ama zararsızdır; aynı paket ileride başka bir yoldan tekrar
+# gelirse koruma yerinde durur.
+#
+# - picomatch <2.3.2: ReDoS (GHSA-3v7f-55p6-f55p)
+# - rollup <4.59.0: dizin aşımıyla dosya yazma (GHSA-mw96-cpmx-2vgc)
+# - brace-expansion <5.0.9: sınırsız genişlemeyle DoS
+#   (GHSA-mh99-v99m-4gvg, GHSA-rgw5-rvv9-x895) — minimatch üzerinden
+#   @typescript-eslint/typescript-estree ile gelir.
 overrides:
   "picomatch@<2.3.2": ">=2.3.2"
   "rollup@>=4.0.0 <4.59.0": ">=4.59.0"
+  "brace-expansion@>=4.0.0 <5.0.9": ">=5.0.9"

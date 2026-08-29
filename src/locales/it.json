@@ -7,6 +7,9 @@
     "contact": "Contatti"
   },
   "a11y": {
+    "language": "Lingua",
+    "menu": "Menu",
+    "close": "Chiudi",
     "skipToContent": "Salta al contenuto"
   },
   "redirect": {
@@ -20,19 +23,28 @@
     "tiktok": "Ti stiamo reindirizzando al nostro profilo TikTok..."
   },
   "meta": {
-    "home": "PlayerBerry — uno studio software che progetta e costruisce prodotti digitali end-to-end per web, mobile e cloud.",
-    "projects": "Una selezione di lavori in produzione, usati da utenti reali: progetti web, mobile, design e DevOps.",
-    "blog": "Decisioni di architettura, note di design e lezioni dal campo — il diario di ingegneria di PlayerBerry.",
-    "store": "Gli strumenti che usiamo nei nostri progetti: template, set di componenti e starter kit.",
-    "contact": "Contatta PlayerBerry per parlare del tuo progetto, chiedere un preventivo o semplicemente salutare.",
-    "about": "La storia di PlayerBerry: uno studio software indipendente che porta le idee in produzione con un team piccolo e senior.",
-    "legal": "Documenti legali del sito web di PlayerBerry."
+    "titles": {
+      "home": "PlayerBerry — Studio software web, mobile e cloud",
+      "projects": "Progetti di app web e mobile",
+      "blog": "Blog software: architettura, design e ingegneria",
+      "store": "Template, set di componenti e app",
+      "contact": "Contatti: richiedi un preventivo software",
+      "about": "Chi siamo: studio software indipendente"
+    },
+    "ogAlt": "PlayerBerry — studio software web, mobile e cloud",
+    "home": "PlayerBerry: studio software indipendente che sviluppa app web e iOS e infrastrutture cloud con Vue, TypeScript e Swift. Trasformiamo la tua idea in prodotto.",
+    "projects": "I progetti web, mobile, design e DevOps di PlayerBerry: app iOS, dashboard SaaS e piattaforme e-commerce in produzione, usate ogni giorno da utenti reali.",
+    "blog": "Il blog software di PlayerBerry: decisioni di architettura, note di design e articoli con esempi di codice su Swift, Vue, TypeScript, C++ e performance web.",
+    "store": "Lo store di PlayerBerry: template Vue e SwiftUI, set di componenti UI, pacchetti di icone, starter kit per API e le nostre app, come Neredesin Co.",
+    "contact": "Richiedi a PlayerBerry un preventivo per il tuo sito web, app mobile o progetto cloud. Scrivi a hello@playerberry.com: di solito rispondiamo entro 24 ore.",
+    "about": "La storia di PlayerBerry: uno studio software indipendente con un team piccolo ed esperto che porta le idee in produzione dal 2018.",
+    "legal": "Documenti legali del sito web di PlayerBerry: informativa sulla privacy, politica sui cookie e termini di servizio dello studio software."
   },
   "hero": {
-    "titleTop": "Non software qualunque:",
+    "titleTop": "Non un software qualunque:",
     "titleHighlight": "esperienze epiche.",
-    "description": "Siamo uno studio software che costruisce prodotti digitali end-to-end per web, mobile e cloud. Trasformiamo la tua idea in prodotto insieme a te, lo lanciamo e continuiamo a farlo crescere.",
-    "ctaPrimary": "Guarda i Nostri Lavori",
+    "description": "Siamo uno studio software indipendente che sviluppa applicazioni web, app mobile iOS e infrastrutture cloud. Trasformiamo la tua idea in prodotto insieme a te, lo lanciamo e continuiamo a farlo crescere.",
+    "ctaPrimary": "Guarda i nostri lavori",
     "ctaSecondary": "Contattaci",
     "stats": {
       "years": { "value": "8+", "label": "Anni di esperienza" },
@@ -44,15 +56,15 @@
   "home": {
     "services": {
       "eyebrow": "// cosa facciamo",
-      "title": "Sviluppo prodotto end-to-end",
-      "lead": "Design, ingegneria e infrastruttura sotto lo stesso tetto: lavori con lo stesso team dall'idea al lancio.",
+      "title": "Servizi di sviluppo software end-to-end",
+      "lead": "Applicazioni web, app mobile, design UI/UX e infrastruttura cloud sotto lo stesso tetto: lavori con lo stesso team dall'idea al lancio.",
       "items": {
         "web": {
-          "title": "Applicazioni Web",
+          "title": "Applicazioni web",
           "description": "Applicazioni web scalabili, veloci e accessibili, costruite con Vue e TypeScript."
         },
         "mobile": {
-          "title": "App Mobile",
+          "title": "App mobile",
           "description": "Esperienze iOS davvero native, di qualità App Store, realizzate con Swift e SwiftUI."
         },
         "design": {
@@ -83,7 +95,7 @@
           "description": "Sprint brevi, preview continue e test; una versione funzionante ogni settimana."
         },
         "launch": {
-          "title": "Lancio & Supporto",
+          "title": "Lancio & supporto",
           "description": "Lanciamo, monitoriamo e facciamo crescere. Ce ne andiamo quando il prodotto è stabile, non quando finisce il lavoro."
         }
       }
@@ -91,25 +103,27 @@
     "work": {
       "eyebrow": "// progetti",
       "title": "Lavori selezionati",
-      "lead": "Uno spaccato di prodotti in produzione in diversi settori.",
+      "lead": "Una selezione di prodotti web e mobile in produzione, in settori diversi.",
       "viewAll": "Tutti i progetti"
     },
     "journal": {
       "eyebrow": "// blog",
       "title": "Ultimi articoli dal blog",
-      "lead": "Scriviamo ciò che impariamo: decisioni di architettura, note di design, esperienza sul campo.",
+      "lead": "Scriviamo ciò che impariamo: architettura software, note di design ed esperienza sul campo.",
       "viewAll": "Tutti gli articoli"
     },
     "cta": {
       "title": "Hai un progetto in mente?",
       "description": "Parliamone davanti a un caffè: definiremo insieme perimetro e roadmap.",
-      "button": "Richiedi un Preventivo"
+      "button": "Richiedi un preventivo"
     }
   },
   "projects": {
     "eyebrow": "// portfolio",
-    "title": "Progetti",
-    "lead": "Lavori selezionati in produzione, usati da utenti reali.",
+    "title": "Progetti di app web e mobile",
+    "lead": "Lavori selezionati di web, mobile, design e DevOps, in produzione e usati da utenti reali.",
+    "visit": "Visita il sito",
+    "filterLabel": "Filtra per categoria",
     "categories": {
       "all": "Tutti",
       "web": "Web",
@@ -118,6 +132,10 @@
       "devops": "DevOps"
     },
     "items": {
+      "neredesinco": {
+        "title": "Neredesin Co",
+        "description": "Piattaforma social con regole e moderazione per eventi dal vivo: app iOS in SwiftUI, API Fastify, worker media e console di moderazione."
+      },
       "nova": {
         "title": "Nova Analytics",
         "description": "Dashboard di analytics in tempo reale per team SaaS. Rende leggibili dati complessi in pochi secondi."
@@ -146,26 +164,34 @@
   },
   "blog": {
     "eyebrow": "// diario",
-    "title": "Blog",
-    "lead": "Decisioni di architettura, note di design e lezioni dal campo.",
+    "title": "Blog software",
+    "lead": "Decisioni di architettura, note di design e lezioni dal campo su Swift, Vue e TypeScript.",
     "readingTime": "{minutes} min di lettura",
     "back": "Tutti gli articoli",
     "copy": "Copia",
+    "copyFailed": "Copia non riuscita",
     "copied": "Copiato"
   },
   "store": {
     "eyebrow": "// prodotti digitali",
-    "title": "Store",
-    "lead": "Confezioniamo gli strumenti che usiamo nei nostri progetti: template, set di componenti e starter kit.",
+    "title": "Prodotti digitali e app",
+    "lead": "Offriamo gli strumenti che usiamo nei nostri progetti e le app che sviluppiamo: template, set di componenti, starter kit e Neredesin Co.",
     "buy": "Acquista",
     "soon": "In arrivo",
+    "free": "Gratis",
+    "get": "Scopri l'app",
     "badges": {
       "popular": "Popolare",
       "new": "Nuovo"
     },
     "items": {
+      "neredesinco": {
+        "category": "App iOS",
+        "title": "Neredesin Co",
+        "description": "Scopri gli eventi intorno a te, partecipa e chatta con le persone che incontri lì. Con regole, moderazione e rispetto della privacy."
+      },
       "berry-ui": {
-        "category": "Design System",
+        "category": "Design system",
         "title": "Berry UI Kit",
         "description": "Design system Less a tema scuro costruito su UIkit; oltre 40 blocchi pronti e un'architettura a token."
       },
@@ -180,7 +206,7 @@
         "description": "Pacchetto di componenti SwiftUI: grafici, card e controlli animati. Tutto con preview."
       },
       "icon-forge": {
-        "category": "Set di Icone",
+        "category": "Set di icone",
         "title": "Icon Forge",
         "description": "Oltre 400 icone pixel-perfect in formato SVG e font, in due pesi."
       },
@@ -198,14 +224,14 @@
   },
   "contact": {
     "eyebrow": "// contatti",
-    "title": "Saluta",
-    "lead": "Scrivici per parlare del tuo progetto, chiedere un preventivo o semplicemente salutare.",
+    "title": "Parliamo del tuo progetto software",
+    "lead": "Scrivici per parlare del tuo sito web, della tua app mobile o del tuo progetto cloud, chiedere un preventivo o semplicemente salutare.",
     "note": "Di solito rispondiamo entro 24 ore."
   },
   "about": {
     "eyebrow": "// chi siamo",
     "title": "Team piccolo, lavoro ambizioso",
-    "lead": "PlayerBerry è uno studio software indipendente che porta le idee in produzione. Niente folla da agenzia: parli con chi fa il lavoro.",
+    "lead": "PlayerBerry è uno studio software indipendente che porta le idee in produzione: sviluppiamo prodotti web, mobile e cloud. Niente folla da agenzia: parli con chi fa il lavoro.",
     "story": [
       "Siamo partiti nel 2018 con una sola domanda: buon design, ingegneria solida e comunicazione onesta possono convivere in un unico team? Da allora abbiamo portato decine di prodotti dall'idea al lancio su web, mobile e cloud.",
       "Invece di crescere fino a diventare una grande agenzia, abbiamo scelto di restare piccoli e senior. Su ogni progetto parli direttamente con la persona che lo costruisce — senza livelli intermedi. Le decisioni sono rapide e il feedback diventa codice in giornata.",
@@ -241,15 +267,15 @@
     "button": "Torna alla home"
   },
   "footer": {
-    "tagline": "Uno studio software che costruisce prodotti digitali end-to-end per web, mobile e cloud.",
+    "tagline": "Studio software indipendente che costruisce prodotti digitali end-to-end per web, mobile e cloud.",
     "nav": "Sito",
     "rss": "Feed RSS",
     "legal": "Note legali",
     "follow": "Seguici",
     "about": "Chi siamo",
-    "privacy": "Informativa sulla Privacy",
-    "cookies": "Politica sui Cookie",
-    "terms": "Termini di Servizio",
+    "privacy": "Informativa sulla privacy",
+    "cookies": "Politica sui cookie",
+    "terms": "Termini di servizio",
     "contact": "Contatti",
     "randomized": {
       "part0": "Nessun ",

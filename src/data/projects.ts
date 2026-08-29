@@ -17,6 +17,11 @@ export interface Project {
   tech: string[];
   /** CSS `background-image` gradient used for the card thumbnail. */
   gradient: string;
+  /**
+   * Public URL of the shipped product, when there is one. Rendered as an
+   * external "visit" link on the card; omitted for confidential work.
+   */
+  url?: string;
   /** When `true`, the project is surfaced in the home page's featured grid. */
   featured?: boolean;
 }
@@ -26,6 +31,15 @@ export interface Project {
  * `projects.items.<id>`; this array holds only the structural metadata.
  */
 export const projects: Project[] = [
+  {
+    id: "neredesinco",
+    category: "mobile",
+    year: 2026,
+    tech: ["Swift 6", "SwiftUI", "Fastify", "PostgreSQL"],
+    gradient: "linear-gradient(135deg, #ff3d77, #338aff)",
+    url: "https://neredesin.co",
+    featured: true,
+  },
   {
     id: "nova",
     category: "web",
@@ -40,7 +54,6 @@ export const projects: Project[] = [
     year: 2025,
     tech: ["Swift", "SwiftUI", "HealthKit"],
     gradient: "linear-gradient(135deg, #338aff, #3cf0c5)",
-    featured: true,
   },
   {
     id: "atlas",

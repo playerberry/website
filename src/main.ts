@@ -4,8 +4,9 @@
  * Boots the Vue application and wires up its global plugins and assets:
  * - UIkit (with its icon pack) for the component skeleton,
  * - vue-router for client-side navigation,
- * - vue-i18n for Turkish/English/Spanish localisation (the language is
- *   picked from the visitor's country before mount; see `i18n.ts`),
+ * - vue-i18n for localisation (the supported locales are defined in
+ *   `assets/js/locales.ts`; the language is picked from the visitor's
+ *   country before mount, see `i18n.ts`),
  * - the compiled Less theme and the global `Icon` component (inline SVGs —
  *   the site does not ship icon webfonts),
  * - the custom `v-spotlight` directive for pointer-reactive card glows.

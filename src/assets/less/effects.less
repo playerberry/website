@@ -95,11 +95,12 @@ body::after {
 }
 
 // Brand-consistent keyboard focus ring. Only shows for keyboard users, so it
-// never intrudes on pointer interactions.
+// never intrudes on pointer interactions. No `border-radius` here: the
+// outline already follows the element's own corner radius, and forcing one
+// would snap pill-shaped buttons to square corners while focused.
 :focus-visible {
   outline: 2px solid @pb-berry;
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 // Keyboard-only "skip to content" link: visually hidden until focused, then

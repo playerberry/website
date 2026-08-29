@@ -3,15 +3,18 @@
  * TosView (`/terms-and-conditions`)
  *
  * Static Terms & Conditions document. Content is presentational prose only —
- * there is no component logic.
+ * the only component dependency is `RouterLink` for the in-site links.
  */
+import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <div class="uk-margin-large-top">
+  <!-- The legal documents are published in Turkish only, so the root carries
+       an explicit `lang` regardless of the active UI locale. -->
+  <div class="uk-margin-large-top" lang="tr">
     <div class="uk-container">
       <h1>Şartlar ve Koşullar</h1>
-      <p>Son güncelleme: 8 Eylül 2024</p>
+      <p>Son güncelleme: 29 Ağustos 2026</p>
       <p>
         Lütfen Hizmetimizi kullanmadan önce bu şartlar ve koşulları dikkatlice
         okuyun.
@@ -46,12 +49,6 @@
           </p>
         </li>
         <li>
-          <p>
-            <strong>Aygıt</strong>, Hizmete erişebilen herhangi bir cihazı ifade
-            eder, örneğin bir bilgisayar, cep telefonu veya dijital tablet.
-          </p>
-        </li>
-        <li>
           <p><strong>Hizmet</strong> Web Sitesini ifade eder.</p>
         </li>
         <li>
@@ -64,21 +61,8 @@
         </li>
         <li>
           <p>
-            <strong>Üçüncü Taraf Sosyal Medya Servisi</strong>, Hizmet
-            tarafından görüntülenebilen, dahil edilebilen veya kullanılabilir
-            hale getirilen üçüncü tarafların sağladığı herhangi bir hizmet veya
-            içeriği (veri, bilgi, ürünler veya hizmetler dahil) ifade eder.
-          </p>
-        </li>
-        <li>
-          <p>
             <strong>Web Sitesi</strong>,
-            <a
-              href="https://playerberry.com"
-              rel="external nofollow noopener"
-              target="_blank"
-              >https://playerberry.com</a
-            >
+            <RouterLink to="/">https://playerberry.com</RouterLink>
             adresinden erişilebilen PlayerBerry'yi ifade eder.
           </p>
         </li>
@@ -114,11 +98,11 @@
       <p>
         Hizmete erişiminiz ve kullanımınız, ayrıca Şirketin Gizlilik
         Politikasını kabul etmenize ve buna uymanıza bağlıdır. Gizlilik
-        Politikamız, Uygulama veya Web Sitesini kullandığınızda kişisel
-        bilgilerinizin toplanması, kullanılması ve ifşası ile ilgili
-        politikalarımızı ve prosedürlerimizi açıklar ve gizlilik haklarınız ile
-        yasaların sizi nasıl koruduğunu anlatır. Hizmetimizi kullanmadan önce
-        Gizlilik Politikamızı dikkatlice okumanızı öneririz.
+        Politikamız, Hizmeti kullandığınızda kişisel bilgilerinizin toplanması,
+        kullanılması ve ifşası ile ilgili politikalarımızı ve prosedürlerimizi
+        açıklar ve gizlilik haklarınız ile yasaların sizi nasıl koruduğunu
+        anlatır. Hizmetimizi kullanmadan önce Gizlilik Politikamızı dikkatlice
+        okumanızı öneririz.
       </p>
       <h2>Diğer Web Sitelerine Bağlantılar</h2>
       <p>
@@ -162,11 +146,11 @@
         amacını yerine getirmese bile.
       </p>
       <p>
-        Bazı eyaletler, örtülü garantilerin hariç tutulmasına veya tesadüfi veya
-        sonuçsal zararlara karşı sorumluluğun sınırlandırılmasına izin vermez,
-        bu da bazı sınırlamaların geçerli olmayabileceği anlamına gelir. Bu tür
-        eyaletlerde, her tarafın sorumluluğu yasaların izin verdiği en yüksek
-        ölçüde sınırlanacaktır.
+        Bazı yargı bölgeleri, örtülü garantilerin hariç tutulmasına veya arızi
+        ya da dolaylı zararlara ilişkin sorumluluğun sınırlandırılmasına izin
+        vermez; bu nedenle yukarıdaki sınırlamaların bazıları sizin için
+        geçerli olmayabilir. Bu tür yargı bölgelerinde, her tarafın sorumluluğu
+        yasaların izin verdiği en geniş ölçüde sınırlandırılacaktır.
       </p>
       <h2>&quot;OLDUĞU GİBİ&quot; ve &quot;MEVCUT&quot; Feragatnamesi</h2>
       <p>
@@ -205,9 +189,9 @@
       </p>
       <h2>Yasalar ve Yetki</h2>
       <p>
-        Ülkenin yasaları, hukuk kuralları hariç, bu Şartları ve Hizmeti
-        kullanımınızı yönetir. Uygulamanın kullanımı ayrıca diğer yerel, eyalet,
-        ulusal veya uluslararası yasalara tabi olabilir.
+        Ülkenin yasaları, kanunlar ihtilafı kuralları hariç tutularak, bu
+        Şartları ve Hizmeti kullanımınızı yönetir. Hizmetin kullanımı ayrıca
+        diğer yerel, eyalet, ulusal veya uluslararası yasalara tabi olabilir.
       </p>
       <h2>Uyuşmazlıkların Çözümü</h2>
       <p>
@@ -245,11 +229,11 @@
         yeteneğini etkileyemez ve bir ihlalin feragati, herhangi bir sonraki
         ihlali feragat olarak kabul edilmez.
       </p>
-      <h2>Çeviri Yorumlama</h2>
+      <h2>Geçerli Metin ve Çeviriler</h2>
       <p>
-        Bu Şartlar ve Koşullar, Hizmetimizde size sunulmuş olabilir. Bir
-        uyuşmazlık durumunda, orijinal İngilizce metnin geçerli olacağını kabul
-        edersiniz.
+        Bu Şartlar ve Koşulların Türkçe metni esastır. Bu belgenin başka bir
+        dile yapılmış çevirileri yalnızca bilgilendirme amaçlıdır. Bir
+        uyuşmazlık durumunda, Türkçe metnin geçerli olacağını kabul edersiniz.
       </p>
       <h2>Bu Şartlar ve Koşullarda Yapılan Değişiklikler</h2>
       <p>
@@ -272,13 +256,9 @@
       </p>
       <ul>
         <li>
-          Web sitemizdeki bu sayfayı ziyaret ederek:
-          <a
-            href="https://playerberry.com/contact"
-            rel="external nofollow noopener"
-            target="_blank"
-            >https://playerberry.com/contact</a
-          >
+          Web sitemizdeki
+          <RouterLink to="/contact">iletişim sayfamızı</RouterLink> ziyaret
+          ederek.
         </li>
       </ul>
     </div>

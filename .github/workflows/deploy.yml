@@ -1,10 +1,12 @@
 name: Deploy
 
 # Quality gate + deploy. `check` (lint, typecheck, tests) runs on every push
-# to `stage` and on pull requests. `deploy` builds the site and publishes it
-# to the gh-pages branch, but only after `check` passes and only on `stage`
-# pushes — so no manual `pnpm release` is needed. Can also be run by hand
-# from the Actions tab (workflow_dispatch).
+# to `stage`, on pull requests and on manual runs. `deploy` builds the site
+# and publishes it to the gh-pages branch, but only after `check` passes and
+# only from the `stage` branch — a `stage` push does it automatically, and a
+# manual run from the Actions tab (workflow_dispatch) only deploys when
+# `stage` is the selected branch; any other branch just runs the checks.
+# No manual `pnpm release` is needed.
 on:
   push:
     branches: [stage]
@@ -14,13 +16,13 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: deploy-gh-pages-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   check:
     runs-on: ubuntu-latest
+    # A newer push to the same ref makes the running checks obsolete.
+    concurrency:
+      group: check-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,8 +50,13 @@ jobs:
 
   deploy:
     needs: check
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/stage'
     runs-on: ubuntu-latest
+    # Never cancel a publish half-way through its gh-pages push; queue deploys
+    # instead so each one lands completely and in order.
+    concurrency:
+      group: gh-pages
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4

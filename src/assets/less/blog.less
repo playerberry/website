@@ -26,7 +26,8 @@
     border-color 0.2s ease,
     background-color 0.2s ease;
 
-  i {
+  // The Icon component renders a `span.pb-icon`.
+  .pb-icon {
     color: @pb-amber;
   }
 
@@ -196,9 +197,11 @@
   background: transparent;
 }
 
+// Comments carry meaning in translated posts; @pb-muted keeps them at ~7:1
+// contrast on the #0c0c14 code background (WCAG AA needs 4.5:1).
 .hljs-comment,
 .hljs-quote {
-  color: #6f6f80;
+  color: @pb-muted;
   font-style: italic;
 }
 

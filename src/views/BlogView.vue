@@ -20,8 +20,18 @@ const { getPost } = usePostContent();
 /** `featured` is the newest post; `rest` are the remaining posts for the grid. */
 const [featured, ...rest] = posts;
 
-/** Raw (uncompiled) title and excerpt for the highlighted featured post. */
+/** Raw (uncompiled) content for the highlighted featured post. */
 const featuredContent = computed(() => getPost(featured.slug));
+
+/**
+ * The featured content's language when it differs from the active locale
+ * (fallback to English), or `undefined` to omit the `lang` attribute.
+ */
+const featuredLang = computed(() =>
+  featuredContent.value && featuredContent.value.lang !== locale.value
+    ? featuredContent.value.lang
+    : undefined,
+);
 
 /** The RSS feed matching the active locale. */
 const feedHref = computed(() => feedPathFor(locale.value));
@@ -62,15 +72,17 @@ const feedHref = computed(() => feedPathFor(locale.value));
                 <span>{{ formatPostDate(featured.date, locale) }}</span>
                 <span>·</span>
                 <span>{{
-                  t("blog.readingTime", { minutes: featured.minutes })
+                  t("blog.readingTime", { minutes: featuredContent?.minutes })
                 }}</span>
               </div>
-              <h2 class="uk-card-title pb-post-title">
-                <RouterLink :to="`/blog/${featured.slug}`">{{
-                  featuredContent?.title
-                }}</RouterLink>
-              </h2>
-              <p>{{ featuredContent?.excerpt }}</p>
+              <div :lang="featuredLang">
+                <h2 class="uk-card-title pb-post-title">
+                  <RouterLink :to="`/blog/${featured.slug}`">{{
+                    featuredContent?.title
+                  }}</RouterLink>
+                </h2>
+                <p>{{ featuredContent?.excerpt }}</p>
+              </div>
               <div class="pb-chip-row">
                 <span
                   v-for="tag in featured.tags"

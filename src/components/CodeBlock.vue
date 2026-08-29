@@ -3,14 +3,16 @@
  * CodeBlock
  *
  * A fenced code block for blog articles with a language label, syntax
- * highlighting and a one-click copy button.
+ * highlighting and a one-click copy button. The copy result ("copied" or
+ * "failed") is shown on the button for two seconds and announced to assistive
+ * technology through a visually hidden live region.
  *
  * Highlighting uses highlight.js with only the languages the blog needs
  * registered (to keep the bundle small). The highlighted markup is produced by
  * highlight.js from our own trusted content — highlight.js HTML-escapes the
  * source first — so rendering it with `v-html` is safe here.
  */
-import { computed, ref } from "vue";
+import { computed, onUnmounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import hljs from "highlight.js/lib/core";
 
@@ -104,8 +106,32 @@ const highlighted = computed(() => {
   return hljs.highlightAuto(props.code).value;
 });
 
-/** Whether the "copied" confirmation is currently showing. */
-const copied = ref(false);
+/** Outcome of the last copy attempt while its feedback is showing. */
+type CopyStatus = "idle" | "copied" | "failed";
+
+/** The copy feedback currently showing (`"idle"` when none). */
+const status = ref<CopyStatus>("idle");
+
+/** How long the copy feedback stays visible, in milliseconds. */
+const FEEDBACK_MS = 2000;
+
+/** Pending timer that resets `status`, or `0` when none is scheduled. */
+let feedbackTimer = 0;
+
+/** The button caption for the current status. */
+const buttonText = computed(() => {
+  if (status.value === "copied") return t("blog.copied");
+  if (status.value === "failed") return t("blog.copyFailed");
+  return t("blog.copy");
+});
+
+/**
+ * The live-region announcement: the feedback text while it shows, otherwise
+ * empty. The region itself is always rendered so the first change is heard.
+ */
+const announcement = computed(() =>
+  status.value === "idle" ? "" : buttonText.value,
+);
 
 /**
  * Legacy clipboard fallback for contexts where the async Clipboard API is
@@ -132,7 +158,11 @@ const fallbackCopy = (text: string): boolean => {
   }
 };
 
-/** Copy the raw (un-highlighted) source to the clipboard, then confirm. */
+/**
+ * Copy the raw (un-highlighted) source to the clipboard, then show the
+ * outcome for {@link FEEDBACK_MS}. A rapid second click restarts the timer
+ * instead of letting the earlier one cut the new feedback short.
+ */
 const copy = async (): Promise<void> => {
   let ok: boolean;
   try {
@@ -141,11 +171,15 @@ const copy = async (): Promise<void> => {
   } catch {
     ok = fallbackCopy(props.code);
   }
-  if (ok) {
-    copied.value = true;
-    window.setTimeout(() => (copied.value = false), 2000);
-  }
+  status.value = ok ? "copied" : "failed";
+  window.clearTimeout(feedbackTimer);
+  feedbackTimer = window.setTimeout(() => {
+    status.value = "idle";
+    feedbackTimer = 0;
+  }, FEEDBACK_MS);
 };
+
+onUnmounted(() => window.clearTimeout(feedbackTimer));
 </script>
 
 <template>
@@ -154,15 +188,18 @@ const copy = async (): Promise<void> => {
       <span class="pb-code-lang">{{ label }}</span>
       <button
         class="pb-code-copy"
-        :class="{ 'is-copied': copied }"
+        :class="{ 'is-copied': status === 'copied' }"
         type="button"
-        :aria-label="copied ? t('blog.copied') : t('blog.copy')"
         @click="copy"
       >
-        <Icon :name="copied ? 'check' : 'copy'" />
-        <span>{{ copied ? t("blog.copied") : t("blog.copy") }}</span>
+        <Icon :name="status === 'copied' ? 'check' : 'copy'" />
+        <span>{{ buttonText }}</span>
       </button>
     </div>
+    <!-- Always in the DOM so screen readers pick up the first announcement. -->
+    <span class="uk-hidden-visually" role="status" aria-live="polite">{{
+      announcement
+    }}</span>
     <!-- highlight.js escapes source text itself; its output is safe HTML. -->
     <!-- eslint-disable-next-line vue/no-v-html -->
     <pre class="pb-post-code"><code class="hljs" v-html="highlighted"></code></pre>

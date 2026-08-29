@@ -3,14 +3,14 @@
  *
  * The site picks its language from the visitor's country (resolved at the
  * Cloudflare edge via `/cdn-cgi/trace`), not from the browser language:
- * visitors from Türkiye get Turkish, visitors from Spain get Spanish and
- * everyone else gets English. A manually chosen language (the header switch)
- * always wins over detection.
+ * e.g. Türkiye → Turkish, Spain → Spanish; see {@link COUNTRY_LOCALES} for
+ * the full map. Unmapped countries get English, and a manually chosen
+ * language (the header switch) always wins over detection.
  *
- * Adding a language later is a three-step job: add its catalogue under
- * `src/locales/`, register it in `src/i18n.ts`, then list it in
- * {@link SUPPORTED_LOCALES} and map its countries in {@link COUNTRY_LOCALES}.
- * Countries not in the map fall back to English automatically.
+ * Adding a language: add its catalogue under `src/locales/` (`src/i18n.ts`
+ * picks it up automatically via `import.meta.glob`), then add it to
+ * {@link SUPPORTED_LOCALES}, {@link LOCALE_NAMES} and `FEED_PATHS`, and map
+ * its countries in {@link COUNTRY_LOCALES}.
  *
  * Kept free of Vue imports so the logic is unit-testable in isolation.
  */

@@ -5,11 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/playerberry.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a10" />
-    <title>PlayerBerry - 404</title>
+    <title>PlayerBerry — 404</title>
+    <meta name="robots" content="noindex" />
     <script>
       // GitHub Pages SPA fallback: remember the requested URL and let the
       // app router restore it (see the matching snippet in index.html).
-      sessionStorage.setItem("pb:redirect", location.pathname + location.search + location.hash);
+      // Storage access can throw (strict privacy modes); still go home.
+      try {
+        sessionStorage.setItem("pb:redirect", location.pathname + location.search + location.hash);
+      } catch (e) {}
       location.replace("/");
     </script>
     <style>
@@ -56,6 +60,7 @@
       // Localize the brief fallback copy for non-Turkish browsers. (The page
       // normally redirects instantly; this only matters if the redirect fails.)
       if (navigator.language && navigator.language.toLowerCase().indexOf("tr") !== 0) {
+        document.documentElement.lang = "en";
         document.getElementById("pb-404-text").textContent =
           "The page you are looking for no longer exists — or never did.";
         document.getElementById("pb-404-link").textContent = "Take me home.";

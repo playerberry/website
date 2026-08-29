@@ -7,6 +7,9 @@
     "contact": "联系我们"
   },
   "a11y": {
+    "language": "语言",
+    "menu": "菜单",
+    "close": "关闭",
     "skipToContent": "跳转到正文"
   },
   "redirect": {
@@ -20,18 +23,27 @@
     "tiktok": "正在跳转到我们的 TikTok 主页..."
   },
   "meta": {
-    "home": "PlayerBerry — 一家在 Web、移动端和云端设计并构建端到端数字产品的软件工作室。",
-    "projects": "精选正在生产环境中运行、服务真实用户的作品:Web、移动端、设计和 DevOps 项目。",
-    "blog": "架构决策、设计笔记和一线经验教训 — PlayerBerry 的工程日志。",
-    "store": "我们在自己项目中使用的工具:模板、组件集和入门套件。",
-    "contact": "联系 PlayerBerry,聊聊你的项目、获取报价,或者只是打个招呼。",
-    "about": "PlayerBerry 的故事:一家由精干资深团队把想法带到生产环境的独立软件工作室。",
-    "legal": "PlayerBerry 网站的法律文件。"
+    "titles": {
+      "home": "PlayerBerry — Web、移动与云端软件工作室",
+      "projects": "Web 与移动应用项目案例",
+      "blog": "软件博客：架构、设计与工程实践",
+      "store": "模板、组件集与应用",
+      "contact": "联系我们：为你的软件项目获取报价",
+      "about": "关于我们：一家独立软件工作室"
+    },
+    "ogAlt": "PlayerBerry — Web、移动与云端软件工作室",
+    "home": "PlayerBerry 是一家独立软件工作室，使用 Vue、TypeScript 和 Swift 构建 Web 应用、iOS 移动应用和云基础设施。让我们把你的想法变成产品。",
+    "projects": "PlayerBerry 的 Web、移动端、设计与 DevOps 项目案例：已在生产环境运行、服务真实用户的 iOS 应用、SaaS 后台和电商平台。",
+    "blog": "PlayerBerry 软件博客：围绕 Swift、Vue、TypeScript、C++ 和 Web 性能的架构决策、设计笔记与附带代码示例的工程文章。",
+    "store": "PlayerBerry 商店：Vue 和 SwiftUI 模板、UI 组件集、图标包、API 入门套件，以及 Neredesin Co 等我们自己开发的应用。",
+    "contact": "为你的网站、移动应用或云项目向 PlayerBerry 获取报价。写信至 hello@playerberry.com，我们通常会在 24 小时内回复。",
+    "about": "PlayerBerry 的故事：一家自 2018 年起把想法带到生产环境的独立软件工作室，由一支精干而资深的团队组成。",
+    "legal": "PlayerBerry 网站的法律文件：隐私政策、Cookie 政策和服务条款。"
   },
   "hero": {
-    "titleTop": "不是平庸的软件,",
+    "titleTop": "不是平庸的软件，",
     "titleHighlight": "而是非凡的体验。",
-    "description": "我们是一家在 Web、移动端和云端构建端到端数字产品的软件工作室。与你一起把想法变成产品,上线发布,并持续让它成长。",
+    "description": "我们是一家构建 Web 应用、iOS 移动应用和云基础设施的独立软件工作室。与你一起把想法变成产品，上线发布，并持续让它成长。",
     "ctaPrimary": "查看我们的作品",
     "ctaSecondary": "联系我们",
     "stats": {
@@ -44,8 +56,8 @@
   "home": {
     "services": {
       "eyebrow": "// 我们做什么",
-      "title": "端到端的产品开发",
-      "lead": "设计、工程和基础设施汇聚一处 — 从想法到上线,你始终与同一支团队合作。",
+      "title": "端到端的软件开发服务",
+      "lead": "Web 应用、移动应用、UI/UX 设计和云基础设施汇聚一处 — 从想法到上线，你始终与同一支团队合作。",
       "items": {
         "web": {
           "title": "Web 应用",
@@ -57,18 +69,18 @@
         },
         "design": {
           "title": "UI/UX 设计",
-          "description": "设计系统、原型和以用户为中心的界面,让你的产品脱颖而出。"
+          "description": "设计系统、原型和以用户为中心的界面，让你的产品脱颖而出。"
         },
         "devops": {
           "title": "云与 DevOps",
-          "description": "Docker、CI/CD 和云基础设施,让你的产品安全上线、持续运行。"
+          "description": "Docker、CI/CD 和云基础设施，让你的产品安全上线、持续运行。"
         }
       }
     },
     "process": {
       "eyebrow": "// 我们如何工作",
-      "title": "四步走,从想法到产品",
-      "lead": "每个项目都遵循同样的准则:范围清晰、反馈迅速、成果可衡量。",
+      "title": "四步走，从想法到产品",
+      "lead": "每个项目都遵循同样的准则：范围清晰、反馈迅速、成果可衡量。",
       "steps": {
         "discover": {
           "title": "探索",
@@ -80,36 +92,38 @@
         },
         "build": {
           "title": "开发",
-          "description": "短迭代、持续预览和测试;每周都有可运行的版本。"
+          "description": "短迭代、持续预览和测试；每周都有可运行的版本。"
         },
         "launch": {
           "title": "上线与支持",
-          "description": "我们上线、监控并持续打磨。产品稳定之时才是我们离开之日,而不是工作结束之时。"
+          "description": "我们上线、监控并持续打磨。产品稳定之时才是我们离开之日，而不是工作结束之时。"
         }
       }
     },
     "work": {
       "eyebrow": "// 项目",
       "title": "精选作品",
-      "lead": "来自不同行业、正在生产环境中运行的产品一览。",
+      "lead": "来自不同行业、正在生产环境中运行的 Web 与移动产品一览。",
       "viewAll": "全部项目"
     },
     "journal": {
       "eyebrow": "// 博客",
       "title": "博客最新文章",
-      "lead": "我们记录所学:架构决策、设计笔记、一线经验。",
+      "lead": "我们记录所学：软件架构、设计笔记、一线经验。",
       "viewAll": "全部文章"
     },
     "cta": {
-      "title": "有项目想法?",
+      "title": "有项目想法？",
       "description": "喝杯咖啡聊聊吧 — 我们与你一起确定范围和路线图。",
       "button": "获取报价"
     }
   },
   "projects": {
     "eyebrow": "// 作品集",
-    "title": "项目",
-    "lead": "精选正在生产环境中运行、服务真实用户的作品。",
+    "title": "Web 与移动应用项目",
+    "lead": "精选正在生产环境中运行、服务真实用户的 Web、移动端、设计与 DevOps 作品。",
+    "visit": "访问网站",
+    "filterLabel": "按类别筛选",
     "categories": {
       "all": "全部",
       "web": "Web",
@@ -118,9 +132,13 @@
       "devops": "DevOps"
     },
     "items": {
+      "neredesinco": {
+        "title": "Neredesin Co",
+        "description": "面向线下活动、基于规则并有审核机制的社交平台：SwiftUI iOS 应用、Fastify API、媒体处理服务与审核控制台。"
+      },
       "nova": {
         "title": "Nova Analytics",
-        "description": "面向 SaaS 团队的实时分析仪表盘,几秒钟内让复杂数据变得一目了然。"
+        "description": "面向 SaaS 团队的实时分析仪表盘，几秒钟内让复杂数据变得一目了然。"
       },
       "pulse": {
         "title": "Pulse Fit",
@@ -128,15 +146,15 @@
       },
       "atlas": {
         "title": "Atlas Commerce",
-        "description": "支持高并发流量的电商平台,内置 Stripe 支付和高级目录管理。"
+        "description": "支持高并发流量的电商平台，内置 Stripe 支付和高级目录管理。"
       },
       "echo": {
         "title": "Echo Chat",
-        "description": "毫秒级延迟的实时消息基础设施;WebSocket 与 Redis 扇出。"
+        "description": "毫秒级延迟的实时消息基础设施；WebSocket 与 Redis 扇出。"
       },
       "forge": {
         "title": "Forge CI",
-        "description": "轻量级自托管 CI/CD 编排器,基于容器的隔离构建。"
+        "description": "轻量级自托管 CI/CD 编排器，基于容器的隔离构建。"
       },
       "orbit": {
         "title": "Orbit DS",
@@ -146,83 +164,91 @@
   },
   "blog": {
     "eyebrow": "// 日志",
-    "title": "博客",
-    "lead": "架构决策、设计笔记和一线经验教训。",
+    "title": "软件博客",
+    "lead": "关于 Swift、Vue 和 TypeScript 的架构决策、设计笔记和一线经验教训。",
     "readingTime": "阅读约 {minutes} 分钟",
     "back": "全部文章",
     "copy": "复制",
+    "copyFailed": "复制失败",
     "copied": "已复制"
   },
   "store": {
     "eyebrow": "// 数字产品",
-    "title": "商店",
-    "lead": "我们把自己项目中使用的工具打包出售:模板、组件集和入门套件。",
+    "title": "数字产品与应用",
+    "lead": "我们提供自己项目中使用的工具和自己开发的应用：模板、组件集、入门套件，以及 Neredesin Co。",
     "buy": "立即购买",
     "soon": "即将推出",
+    "free": "免费",
+    "get": "查看应用",
     "badges": {
       "popular": "热门",
       "new": "新品"
     },
     "items": {
+      "neredesinco": {
+        "category": "iOS 应用",
+        "title": "Neredesin Co",
+        "description": "发现身边的活动，报名参加，并与在活动中结识的人聊天。有规则、有审核、尊重隐私。"
+      },
       "berry-ui": {
         "category": "设计系统",
         "title": "Berry UI Kit",
-        "description": "基于 UIkit 的深色主题 Less 设计系统;40 多个现成模块和令牌架构。"
+        "description": "基于 UIkit 的深色主题 Less 设计系统；40 多个现成模块和令牌架构。"
       },
       "vue-launch": {
         "category": "模板",
         "title": "Vue Launch",
-        "description": "Vue 3 + TypeScript + Vite 入门模板;自带 i18n、路由和测试配置。"
+        "description": "Vue 3 + TypeScript + Vite 入门模板；自带 i18n、路由和测试配置。"
       },
       "swift-components": {
         "category": "iOS",
         "title": "Swift Components",
-        "description": "SwiftUI 组件包:图表、卡片和动画控件,全部支持预览。"
+        "description": "SwiftUI 组件包：图表、卡片和动画控件，全部支持预览。"
       },
       "icon-forge": {
         "category": "图标集",
         "title": "Icon Forge",
-        "description": "400 多个像素级精准的图标,提供 SVG 和字体格式、两种粗细。"
+        "description": "400 多个像素级精准的图标，提供 SVG 和字体格式、两种粗细。"
       },
       "api-boiler": {
         "category": "后端",
         "title": "API Boiler",
-        "description": "Fastify + PostgreSQL API 骨架;内置身份认证、模式校验和 OpenAPI。"
+        "description": "Fastify + PostgreSQL API 骨架；内置身份认证、模式校验和 OpenAPI。"
       },
       "berry-blocks": {
         "category": "模板",
         "title": "Berry Blocks",
-        "description": "25 个面向营销网站的现成落地页模块;复制、调整、发布。"
+        "description": "25 个面向营销网站的现成落地页模块；复制、调整、发布。"
       }
     }
   },
   "contact": {
     "eyebrow": "// 联系我们",
-    "title": "打个招呼",
-    "lead": "写信给我们,聊聊你的项目、获取报价,或者只是打个招呼。",
+    "title": "就你的软件项目联系我们",
+    "lead": "写信给我们，聊聊你的网站、移动应用或云项目，获取报价，或者只是打个招呼。",
     "note": "我们通常会在 24 小时内回复。"
   },
   "about": {
     "eyebrow": "// 关于我们",
-    "title": "小团队,大作品",
-    "lead": "PlayerBerry 是一家把想法带到生产环境的独立软件工作室。没有代理公司式的人海 — 你直接和做事的人对话。",
+    "title": "小团队，大作品",
+    "lead": "PlayerBerry 是一家把想法带到生产环境的独立软件工作室，专注于 Web、移动和云端产品。没有代理公司式的人海 — 你直接和做事的人对话。",
     "story": [
-      "2018 年,我们带着一个问题出发:好的设计、扎实的工程和坦诚的沟通,能否共存于同一支团队?从那时起,我们已在 Web、移动端和云端把数十个产品从想法带到上线。",
-      "我们没有扩张成大型代理公司,而是选择保持精干和资深。每个项目里,你都直接与构建它的人对话 — 中间没有任何层级。决策迅速,反馈当天就变成代码。",
-      "产品稳定之时才是我们离开之日,而不是工作结束之时。对我们而言,成功不是交付的代码,而是一个服务用户、易于维护、随时间持续成长的产品。"
+      "2018 年，我们带着一个问题出发：好的设计、扎实的工程和坦诚的沟通，能否共存于同一支团队？从那时起，我们已在 Web、移动端和云端把数十个产品从想法带到上线。",
+      "我们没有扩张成大型代理公司，而是选择保持精干和资深。每个项目里，你都直接与构建它的人对话 — 中间没有任何层级。决策迅速，反馈当天就变成代码。",
+      "产品稳定之时才是我们离开之日，而不是工作结束之时。对我们而言，成功不是交付的代码，而是一个服务用户、易于维护、随时间持续成长的产品。"
     ],
     "values": {
       "craft": {
         "title": "匠心",
-        "description": "每个细节都重要。从像素对齐到数据库索引,我们认真对待每件小事。"
+        "description": "每个细节都重要。从像素对齐到数据库索引，我们认真对待每件小事。"
       },
       "clarity": {
         "title": "透明",
-        "description": "范围、周期和成本从第一天起就清清楚楚。没有意外账单,没有隐藏假设。"
+        "description": "范围、周期和成本从第一天起就清清楚楚。没有意外账单，没有隐藏假设。"
       },
       "partnership": {
         "title": "伙伴关系",
-        "description": "我们以你团队一员的身份工作,而不是供应商。你的目标就是我们的目标。"
+        "description": "我们以你团队一员的身份工作，而不是供应商。你的目标就是我们的目标。"
       },
       "longevity": {
         "title": "长久",
@@ -230,18 +256,18 @@
       }
     },
     "cta": {
-      "title": "一起合作吧?",
-      "description": "告诉我们你的想法,我们与你一起确定范围和路线图。",
+      "title": "一起合作吧？",
+      "description": "告诉我们你的想法，我们与你一起确定范围和路线图。",
       "button": "联系我们"
     }
   },
   "notFound": {
     "title": "页面未找到",
-    "description": "你要找的页面可能已被移动,或者从未存在过。",
+    "description": "你要找的页面可能已被移动，或者从未存在过。",
     "button": "返回首页"
   },
   "footer": {
-    "tagline": "一家在 Web、移动端和云端构建端到端数字产品的软件工作室。",
+    "tagline": "一家在 Web、移动端和云端构建端到端数字产品的独立软件工作室。",
     "nav": "网站",
     "rss": "RSS 订阅",
     "legal": "法律信息",
@@ -252,7 +278,7 @@
     "terms": "服务条款",
     "contact": "联系我们",
     "randomized": {
-      "part0": "在本网站的制作过程中,没有任何",
+      "part0": "在本网站的制作过程中，没有任何",
       "part1": "受到伤害。"
     },
     "rights": "版权所有"

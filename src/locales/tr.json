@@ -7,6 +7,9 @@
     "contact": "İletişim"
   },
   "a11y": {
+    "language": "Dil",
+    "menu": "Menü",
+    "close": "Kapat",
     "skipToContent": "İçeriğe atla"
   },
   "redirect": {
@@ -20,32 +23,41 @@
     "tiktok": "TikTok profilimize yönlendiriliyorsunuz..."
   },
   "meta": {
-    "home": "PlayerBerry — web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren yazılım stüdyosu.",
-    "projects": "Üretimde olan, gerçek kullanıcılara dokunan projelerimizden seçkiler: web, mobil, tasarım ve DevOps işleri.",
-    "blog": "Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz — PlayerBerry mühendislik günlüğü.",
-    "store": "Kendi projelerimizde kullandığımız araçlar: şablonlar, bileşen setleri ve başlangıç kitleri.",
-    "contact": "Projenizi konuşmak, teklif almak ya da selam vermek için PlayerBerry ile iletişime geçin.",
-    "about": "PlayerBerry'nin hikâyesi: küçük ve deneyimli bir ekiple fikirleri üretime taşıyan bağımsız yazılım stüdyosu.",
-    "legal": "PlayerBerry web sitesinin yasal belgeleri."
+    "titles": {
+      "home": "PlayerBerry — Web, Mobil ve Bulut Yazılım Stüdyosu",
+      "projects": "Web ve Mobil Uygulama Projeleri",
+      "blog": "Yazılım Blogu: Mimari, Tasarım ve Mühendislik",
+      "store": "Şablonlar, Bileşen Setleri ve Uygulamalar",
+      "contact": "İletişim: Yazılım Projeniz İçin Teklif Alın",
+      "about": "Hakkımızda: Bağımsız Yazılım Stüdyosu"
+    },
+    "ogAlt": "PlayerBerry — web, mobil ve bulut yazılım stüdyosu",
+    "home": "PlayerBerry; Vue, TypeScript ve Swift ile web uygulaması, iOS uygulaması ve bulut altyapısı geliştiren bağımsız yazılım stüdyosu. Fikrinizi ürüne dönüştürelim.",
+    "projects": "PlayerBerry'nin web, mobil, tasarım ve DevOps projeleri: üretimde olan, gerçek kullanıcılara ulaşan iOS uygulamaları, SaaS panelleri ve e-ticaret platformları.",
+    "blog": "PlayerBerry yazılım blogu: Swift, Vue, TypeScript, C++ ve web performansı üzerine mimari kararlar, tasarım notları ve kod örnekli mühendislik yazıları.",
+    "store": "PlayerBerry mağazası: Vue ve SwiftUI şablonları, UI bileşen setleri, ikon paketleri, API başlangıç kitleri ve Neredesin Co gibi kendi uygulamalarımız.",
+    "contact": "Web sitesi, mobil uygulama veya bulut projeniz için PlayerBerry'den teklif alın. hello@playerberry.com adresine yazın; genellikle 24 saat içinde dönüş yaparız.",
+    "about": "PlayerBerry'nin hikâyesi: 2018'den beri fikirleri üretime taşıyan, küçük ve deneyimli bir ekipten oluşan bağımsız yazılım stüdyosu.",
+    "legal": "PlayerBerry web sitesinin yasal belgeleri: gizlilik politikası, çerez politikası ve hizmet şartları."
   },
   "hero": {
     "titleTop": "Sıradan yazılım değil,",
     "titleHighlight": "epik deneyimler.",
-    "description": "Web, mobil ve bulutta uçtan uca dijital ürünler geliştiren bir yazılım stüdyosuyuz. Fikrinizi birlikte ürüne dönüştürür, yayına alır, büyütmeye devam ederiz.",
+    "description": "Web uygulamaları, iOS mobil uygulamalar ve bulut altyapısı geliştiren bağımsız bir yazılım stüdyosuyuz. Fikrinizi birlikte ürüne dönüştürür, yayına alır, büyütmeye devam ederiz.",
     "ctaPrimary": "Projelerimizi İnceleyin",
     "ctaSecondary": "Bize Ulaşın",
     "stats": {
       "years": { "value": "8+", "label": "Yıl deneyim" },
       "projects": { "value": "40+", "label": "Tamamlanan proje" },
       "clients": { "value": "25+", "label": "Mutlu müşteri" },
-      "uptime": { "value": "%99,9", "label": "Çalışma süresi" }
+      "uptime": { "value": "%99,9", "label": "Erişilebilirlik" }
     }
   },
   "home": {
     "services": {
       "eyebrow": "// neler yapıyoruz",
-      "title": "Uçtan uca ürün geliştirme",
-      "lead": "Tasarım, geliştirme ve altyapı tek çatı altında; fikir aşamasından yayına kadar aynı ekiple çalışırsınız.",
+      "title": "Uçtan uca yazılım geliştirme hizmetleri",
+      "lead": "Web uygulaması, mobil uygulama, UI/UX tasarım ve bulut altyapısı tek çatı altında; fikir aşamasından yayına kadar aynı ekiple çalışırsınız.",
       "items": {
         "web": {
           "title": "Web Uygulamaları",
@@ -91,13 +103,13 @@
     "work": {
       "eyebrow": "// projeler",
       "title": "Seçili işlerimiz",
-      "lead": "Farklı sektörlerden, üretimde olan ürünlerden bir kesit.",
+      "lead": "Farklı sektörlerden, üretimde olan web ve mobil ürünlerden bir kesit.",
       "viewAll": "Tüm projeler"
     },
     "journal": {
       "eyebrow": "// blog",
       "title": "Blogdan son yazılar",
-      "lead": "Öğrendiklerimizi yazıyoruz: mimari kararlar, tasarım notları, saha deneyimi.",
+      "lead": "Öğrendiklerimizi yazıyoruz: yazılım mimarisi, tasarım notları ve saha deneyimi.",
       "viewAll": "Tüm yazılar"
     },
     "cta": {
@@ -108,8 +120,10 @@
   },
   "projects": {
     "eyebrow": "// portfolyo",
-    "title": "Projeler",
-    "lead": "Üretimde olan, gerçek kullanıcılara dokunan işlerimizden seçtiklerimiz.",
+    "title": "Web ve Mobil Uygulama Projeleri",
+    "lead": "Üretimde olan, gerçek kullanıcılara dokunan web, mobil, tasarım ve DevOps işlerimizden seçtiklerimiz.",
+    "visit": "Siteyi ziyaret et",
+    "filterLabel": "Kategoriye göre filtrele",
     "categories": {
       "all": "Tümü",
       "web": "Web",
@@ -118,6 +132,10 @@
       "devops": "DevOps"
     },
     "items": {
+      "neredesinco": {
+        "title": "Neredesin Co",
+        "description": "Yüz yüze etkinlikler için kurallı ve moderasyonlu sosyal platform: SwiftUI ile iOS uygulaması, Fastify API, medya işleme servisi ve moderasyon konsolu."
+      },
       "nova": {
         "title": "Nova Analytics",
         "description": "SaaS ekipleri için gerçek zamanlı analitik paneli. Karmaşık veriyi saniyeler içinde okunur hâle getirir."
@@ -146,11 +164,12 @@
   },
   "blog": {
     "eyebrow": "// günlük",
-    "title": "Blog",
-    "lead": "Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.",
+    "title": "Yazılım Blogu",
+    "lead": "Swift, Vue ve TypeScript üzerine mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.",
     "readingTime": "{minutes} dk okuma",
     "back": "Tüm yazılar",
     "copy": "Kopyala",
+    "copyFailed": "Kopyalanamadı",
     "copied": "Kopyalandı",
     "posts": {
       "swift-concurrency": {
@@ -395,15 +414,22 @@
   },
   "store": {
     "eyebrow": "// dijital ürünler",
-    "title": "Mağaza",
-    "lead": "Kendi projelerimizde kullandığımız araçları paketleyip sunuyoruz: şablonlar, bileşen setleri ve başlangıç kitleri.",
+    "title": "Dijital Ürünler ve Uygulamalar",
+    "lead": "Kendi projelerimizde kullandığımız araçları ve geliştirdiğimiz uygulamaları sunuyoruz: şablonlar, bileşen setleri, başlangıç kitleri ve Neredesin Co.",
     "buy": "Satın Al",
     "soon": "Çok yakında",
+    "free": "Ücretsiz",
+    "get": "Uygulamayı İncele",
     "badges": {
       "popular": "Popüler",
       "new": "Yeni"
     },
     "items": {
+      "neredesinco": {
+        "category": "iOS Uygulaması",
+        "title": "Neredesin Co",
+        "description": "Çevrendeki etkinlikleri keşfet, katıl ve etkinlikte tanıştığın kişilerle sohbet et. Kurallı, moderasyonlu ve gizliliğe saygılı."
+      },
       "berry-ui": {
         "category": "Tasarım Sistemi",
         "title": "Berry UI Kit",
@@ -438,14 +464,14 @@
   },
   "contact": {
     "eyebrow": "// iletişim",
-    "title": "Merhaba deyin",
-    "lead": "Projenizi konuşmak, teklif almak ya da sadece selam vermek için bize yazın.",
+    "title": "Yazılım projeniz için bize ulaşın",
+    "lead": "Web sitesi, mobil uygulama ya da bulut projenizi konuşmak, teklif almak ya da sadece selam vermek için bize yazın.",
     "note": "Genellikle 24 saat içinde dönüş yaparız."
   },
   "about": {
     "eyebrow": "// hakkımızda",
     "title": "Küçük ekip, iddialı işler",
-    "lead": "PlayerBerry, fikirleri üretime taşıyan bağımsız bir yazılım stüdyosudur. Ajans kalabalığı değil; işi yapan kişilerle konuşursunuz.",
+    "lead": "PlayerBerry, fikirleri üretime taşıyan bağımsız bir yazılım stüdyosudur; web, mobil ve bulut ürünleri geliştiririz. Ajans kalabalığı değil; işi yapan kişilerle konuşursunuz.",
     "story": [
       "2018'de tek bir soruyla yola çıktık: iyi tasarım, sağlam mühendislik ve dürüst iletişim aynı ekipte buluşabilir mi? O günden beri web, mobil ve bulut alanında onlarca ürünü fikir aşamasından yayına taşıdık.",
       "Büyük bir ajansa dönüşmek yerine küçük ve deneyimli kalmayı seçtik. Her projede işi yapan kişiyle doğrudan konuşursunuz; arada katman yok. Kararlar hızlı alınır, geri bildirim aynı gün koda döner.",
@@ -481,7 +507,7 @@
     "button": "Ana sayfaya dön"
   },
   "footer": {
-    "tagline": "Web, mobil ve bulutta uçtan uca dijital ürünler üreten yazılım stüdyosu.",
+    "tagline": "Web, mobil ve bulutta uçtan uca dijital ürünler geliştiren bağımsız yazılım stüdyosu.",
     "nav": "Site",
     "rss": "RSS Akışı",
     "legal": "Yasal",

@@ -5,13 +5,18 @@
  * other catalogue lives in its own lazy chunk and is loaded on demand the
  * first time its locale is activated, keeping the main bundle small.
  *
- * The initial locale is country-based rather than browser-based: a manual
- * choice saved from the header switch wins, otherwise the visitor's country
- * (resolved at the Cloudflare edge via `/cdn-cgi/trace`) picks the language
- * through {@link localeForCountry}, and English is the fallback for unmapped
- * countries or failed detection. Catalogues without a `blog.posts` section
- * fall back to the English articles per post. See `assets/js/locales.ts`
- * for the country → locale map and the steps to add a new language.
+ * The initial locale is resolved in this order:
+ * 1. a `?lang=<code>` query parameter — the language-specific URLs that
+ *    search engines index (see `assets/js/seo.ts`); it applies to this visit
+ *    only and is not persisted,
+ * 2. the choice saved from the header switch (`pb:locale` in `localStorage`),
+ * 3. the visitor's country (resolved at the Cloudflare edge via
+ *    `/cdn-cgi/trace`) through {@link localeForCountry},
+ * 4. English, for unmapped countries or failed detection.
+ *
+ * Catalogues without a `blog.posts` section fall back to the English
+ * articles per post. See `assets/js/locales.ts` for the country → locale map
+ * and the steps to add a new language.
  */
 import { createI18n } from "vue-i18n";
 import en from "./locales/en.json";
@@ -23,17 +28,26 @@ import {
   type Locale,
 } from "./assets/js/locales";
 
+/** `localStorage` key holding the language chosen from the header switch. */
+export const LOCALE_STORAGE_KEY = "pb:locale";
+
 /** `sessionStorage` key caching the geo-detected locale for this visit. */
 const GEO_CACHE_KEY = "pb:geo-locale";
+
+/** Query parameter selecting a language version of a page. */
+export const LOCALE_QUERY_PARAM = "lang";
 
 /** How long to wait for the geolocation lookup before falling back (ms). */
 const GEO_TIMEOUT_MS = 1500;
 
-/** Lazy loaders for every locale catalogue, keyed by module path. */
-const catalogues = import.meta.glob("./locales/*.json") as Record<
-  string,
-  () => Promise<{ default: typeof en }>
->;
+/**
+ * Lazy loaders for every locale catalogue except English (bundled above),
+ * keyed by module path.
+ */
+const catalogues = import.meta.glob([
+  "./locales/*.json",
+  "!./locales/en.json",
+]) as Record<string, () => Promise<{ default: typeof en }>>;
 
 const i18n = createI18n({
   locale: DEFAULT_LOCALE as string,
@@ -43,6 +57,54 @@ const i18n = createI18n({
   // by `loadLocaleMessages` the first time their locale is activated.
   messages: { en } as Record<Locale, typeof en>,
 });
+
+/**
+ * Read a key from web storage, treating a blocked or unavailable store
+ * (strict privacy modes, some embedded contexts) as "nothing saved".
+ *
+ * @param store - Which store to read.
+ * @param key - The key to read.
+ * @returns The stored value, or `null`.
+ */
+const readStorage = (
+  store: "localStorage" | "sessionStorage",
+  key: string,
+): string | null => {
+  try {
+    return window[store].getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Write a key to web storage, ignoring a blocked or full store — persistence
+ * is a convenience, never a requirement.
+ *
+ * @param store - Which store to write.
+ * @param key - The key to write.
+ * @param value - The value to store.
+ */
+const writeStorage = (
+  store: "localStorage" | "sessionStorage",
+  key: string,
+  value: string,
+): void => {
+  try {
+    window[store].setItem(key, value);
+  } catch {
+    // Storage unavailable; nothing to do.
+  }
+};
+
+/**
+ * Remember a manually chosen language so it wins over detection on later
+ * visits.
+ *
+ * @param locale - The chosen locale.
+ */
+export const saveLocaleChoice = (locale: Locale): void =>
+  writeStorage("localStorage", LOCALE_STORAGE_KEY, locale);
 
 /**
  * Ensure a locale's message catalogue is registered, fetching its lazy chunk
@@ -59,6 +121,9 @@ const loadLocaleMessages = async (locale: Locale): Promise<void> => {
 /**
  * Activate a locale: load its catalogue if needed, switch vue-i18n over and
  * keep `<html lang>` in sync for assistive tech and search engines.
+ *
+ * Rejects if the catalogue chunk cannot be fetched; the current locale is
+ * left untouched in that case.
  *
  * @param locale - The locale to activate.
  */
@@ -80,7 +145,7 @@ export const activateLocale = async (locale: Locale): Promise<void> => {
  * @returns The locale for this visitor.
  */
 const detectGeoLocale = async (): Promise<Locale> => {
-  const cached = sessionStorage.getItem(GEO_CACHE_KEY);
+  const cached = readStorage("sessionStorage", GEO_CACHE_KEY);
   if (cached && isSupportedLocale(cached)) return cached;
 
   try {
@@ -92,7 +157,7 @@ const detectGeoLocale = async (): Promise<Locale> => {
     clearTimeout(timer);
     const country = parseTraceCountry(await response.text());
     const locale = localeForCountry(country);
-    sessionStorage.setItem(GEO_CACHE_KEY, locale);
+    writeStorage("sessionStorage", GEO_CACHE_KEY, locale);
     return locale;
   } catch {
     return DEFAULT_LOCALE;
@@ -100,17 +165,30 @@ const detectGeoLocale = async (): Promise<Locale> => {
 };
 
 /**
+ * The locale requested by the page URL's `?lang=` parameter, if valid.
+ *
+ * @returns The requested locale, or `null`.
+ */
+const localeFromUrl = (): Locale | null => {
+  const value = new URLSearchParams(window.location.search).get(
+    LOCALE_QUERY_PARAM,
+  );
+  return value && isSupportedLocale(value) ? value : null;
+};
+
+/**
  * Resolve and activate the initial locale before the app mounts.
  *
- * Preference order: the choice saved from the language switch (`pb:locale`
- * in `localStorage`), then the country-based detection, then English. Never
- * rejects.
+ * Preference order: the `?lang=` URL parameter, the choice saved from the
+ * language switch, the country-based detection, then English. Never rejects
+ * — English is bundled and always activates.
  */
 export const initLocale = async (): Promise<void> => {
-  const saved = localStorage.getItem("pb:locale");
-  const locale =
-    saved && isSupportedLocale(saved) ? saved : await detectGeoLocale();
   try {
+    const saved = readStorage("localStorage", LOCALE_STORAGE_KEY);
+    const locale =
+      localeFromUrl() ??
+      (saved && isSupportedLocale(saved) ? saved : await detectGeoLocale());
     await activateLocale(locale);
   } catch {
     // A failed catalogue fetch must not block the app; English is bundled.

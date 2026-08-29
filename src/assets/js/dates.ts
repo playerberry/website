@@ -8,6 +8,10 @@ const formatters = new Map<string, Intl.DateTimeFormat>();
 /**
  * Get (or lazily create) the long-date formatter for a locale.
  *
+ * Formatters are pinned to UTC: date-only ISO strings (`"2026-06-18"`) parse
+ * as UTC midnight, so formatting them in the visitor's local zone would show
+ * the previous day anywhere west of Greenwich.
+ *
  * @param tag - A BCP-47 locale tag such as `"tr-TR"`.
  * @returns The shared formatter for that tag.
  */
@@ -18,6 +22,7 @@ const formatterFor = (tag: string): Intl.DateTimeFormat => {
       day: "numeric",
       month: "long",
       year: "numeric",
+      timeZone: "UTC",
     });
     formatters.set(tag, formatter);
   }
@@ -42,11 +47,14 @@ const localeTags: Record<string, string> = {
  * Format an ISO date string as a long, localised date.
  *
  * Uses the platform `Intl.DateTimeFormat`, so month names and ordering follow
- * the visitor's locale (e.g. `18 Haziran 2026` vs `June 18, 2026`).
+ * the visitor's locale (e.g. `18 Haziran 2026` vs `June 18, 2026`). The date
+ * is treated as a UTC calendar day, so the output is the same in every time
+ * zone.
  *
  * @param iso - An ISO 8601 date string, such as `"2026-06-18"`.
- * @param locale - The active app locale (`"tr"`, `"en"` or `"es"`); unknown
- *   locales fall back to US English formatting.
+ * @param locale - The active app locale code (any key of `localeTags`, e.g.
+ *   `"tr"`, `"fr"`, `"ja"`); `"en"` and unknown locales fall back to US
+ *   English formatting.
  * @returns The date rendered as a long date for the given locale.
  *
  * @example

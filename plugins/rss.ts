@@ -1,8 +1,10 @@
 import type { Plugin } from "vite";
-import { posts } from "../src/data/posts";
-import trMessages from "../src/locales/tr.json";
-import enMessages from "../src/locales/en.json";
-import esMessages from "../src/locales/es.json";
+import { posts } from "../src/data/posts.ts";
+import { localizedUrl } from "../src/assets/js/seo.ts";
+import { parseBlocks, type InlineSpan } from "../src/assets/js/postBlocks.ts";
+import trMessages from "../src/locales/tr.json" with { type: "json" };
+import enMessages from "../src/locales/en.json" with { type: "json" };
+import esMessages from "../src/locales/es.json" with { type: "json" };
 
 /** Absolute site origin used for feed and item links. */
 const SITE = "https://playerberry.com";
@@ -22,10 +24,31 @@ interface FeedMessages {
   };
 }
 
-const locales: Record<string, { messages: FeedMessages; file: string }> = {
-  tr: { messages: trMessages as unknown as FeedMessages, file: "rss.xml" },
-  en: { messages: enMessages as unknown as FeedMessages, file: "rss-en.xml" },
-  es: { messages: esMessages as unknown as FeedMessages, file: "rss-es.xml" },
+/** A feed locale: its catalogue, output file and native-language label. */
+interface FeedLocale {
+  messages: FeedMessages;
+  /** Output file name under the site root. */
+  file: string;
+  /** Native language name shown in the channel title (matches index.html). */
+  label: string;
+}
+
+const locales: Record<string, FeedLocale> = {
+  tr: {
+    messages: trMessages as unknown as FeedMessages,
+    file: "rss.xml",
+    label: "Türkçe",
+  },
+  en: {
+    messages: enMessages as unknown as FeedMessages,
+    file: "rss-en.xml",
+    label: "English",
+  },
+  es: {
+    messages: esMessages as unknown as FeedMessages,
+    file: "rss-es.xml",
+    label: "Español",
+  },
 };
 
 /** Escape a string for safe inclusion in XML/HTML text and attributes. */
@@ -36,31 +59,40 @@ const escapeHtml = (text: string): string =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-/** Render a line's inline `code` spans, escaping everything else. */
-const inline = (text: string): string =>
-  text
-    .split("`")
-    .map((part, i) =>
-      i % 2 === 1 ? `<code>${escapeHtml(part)}</code>` : escapeHtml(part),
+/** Render a line's spans: inline `code` spans wrapped, everything escaped. */
+const inline = (spans: readonly InlineSpan[]): string =>
+  spans
+    .map((span) =>
+      span.code
+        ? `<code>${escapeHtml(span.text)}</code>`
+        : escapeHtml(span.text),
     )
     .join("");
 
 /**
- * Convert a post body (the same `## ` / `> ` / ``` block convention used on
- * the site) into a self-contained HTML fragment for `content:encoded`.
+ * Convert a post body into a self-contained HTML fragment for
+ * `content:encoded`, using the same block parser as the site so the feed
+ * cannot drift from the rendered article. Code blocks keep their fence
+ * language as a `language-*` class (the convention feed readers and
+ * highlighters understand).
  */
 const bodyToHtml = (body: string[]): string =>
-  body
-    .map((raw) => {
-      if (raw.startsWith("```")) {
-        const code = raw.replace(/^```[^\n]*\n?/, "").replace(/\n?```\s*$/, "");
-        return `<pre><code>${escapeHtml(code)}</code></pre>`;
+  parseBlocks(body)
+    .map((block) => {
+      switch (block.kind) {
+        case "code": {
+          const cls = block.lang
+            ? ` class="language-${escapeHtml(block.lang)}"`
+            : "";
+          return `<pre><code${cls}>${escapeHtml(block.code)}</code></pre>`;
+        }
+        case "h2":
+          return `<h2>${inline(block.spans)}</h2>`;
+        case "quote":
+          return `<blockquote><p>${inline(block.spans)}</p></blockquote>`;
+        default:
+          return `<p>${inline(block.spans)}</p>`;
       }
-      if (raw.startsWith("## ")) return `<h2>${inline(raw.slice(3))}</h2>`;
-      if (raw.startsWith("> ")) {
-        return `<blockquote><p>${inline(raw.slice(2))}</p></blockquote>`;
-      }
-      return `<p>${inline(raw)}</p>`;
     })
     .join("\n");
 
@@ -75,13 +107,13 @@ const cdata = (text: string): string =>
  * @returns The complete feed XML.
  */
 const buildFeed = (locale: "tr" | "en" | "es"): string => {
-  const { messages, file } = locales[locale];
+  const { messages, file, label } = locales[locale];
 
   const items = posts
     .map((post) => {
       const content = messages.blog.posts[post.slug];
       if (!content) return "";
-      const url = `${SITE}/blog/${post.slug}`;
+      const url = localizedUrl(`/blog/${post.slug}`, locale);
       const pubDate = new Date(`${post.date}T09:00:00Z`).toUTCString();
       const categories = post.tags
         .map((tag) => `      <category>${escapeHtml(tag)}</category>`)
@@ -102,8 +134,8 @@ ${categories}
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>PlayerBerry — Blog</title>
-    <link>${SITE}/blog</link>
+    <title>PlayerBerry — Blog (${label})</title>
+    <link>${localizedUrl("/blog", locale)}</link>
     <atom:link href="${SITE}/${file}" rel="self" type="application/rss+xml" />
     <description>${escapeHtml(messages.blog.lead)}</description>
     <language>${locale}</language>

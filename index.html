@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/playerberry.svg" />
@@ -7,37 +7,113 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="PlayerBerry — web, mobil ve bulutta uçtan uca dijital ürünler üreten yazılım stüdyosu."
-    />
     <meta name="author" content="PlayerBerry" />
     <meta name="theme-color" content="#0a0a10" />
-    <link rel="canonical" href="https://playerberry.com/" />
 
-    <!-- Open Graph / social sharing -->
+    <!--
+      Per-page SEO block. The build (plugins/prerender.ts) rewrites everything
+      between the markers for each route's static shell, and the app
+      (src/assets/js/meta.ts) keeps the same tags in sync at runtime — so
+      only the default-language home page values belong here.
+    -->
+    <!-- seo:start -->
+    <title>PlayerBerry — Web, Mobile &amp; Cloud Software Studio</title>
+    <meta
+      name="description"
+      content="PlayerBerry is an independent software studio building web apps, iOS mobile apps and cloud infrastructure with Vue, TypeScript and Swift. Let's turn your idea into a product."
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://playerberry.com/" />
+    <link rel="alternate" hreflang="tr" href="https://playerberry.com/?lang=tr" />
+    <link rel="alternate" hreflang="en" href="https://playerberry.com/" />
+    <link rel="alternate" hreflang="es" href="https://playerberry.com/?lang=es" />
+    <link rel="alternate" hreflang="fr" href="https://playerberry.com/?lang=fr" />
+    <link rel="alternate" hreflang="de" href="https://playerberry.com/?lang=de" />
+    <link rel="alternate" hreflang="ru" href="https://playerberry.com/?lang=ru" />
+    <link rel="alternate" hreflang="ko" href="https://playerberry.com/?lang=ko" />
+    <link rel="alternate" hreflang="it" href="https://playerberry.com/?lang=it" />
+    <link rel="alternate" hreflang="el" href="https://playerberry.com/?lang=el" />
+    <link rel="alternate" hreflang="ja" href="https://playerberry.com/?lang=ja" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://playerberry.com/?lang=zh" />
+    <link rel="alternate" hreflang="x-default" href="https://playerberry.com/" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="PlayerBerry" />
-    <meta property="og:locale" content="tr_TR" />
-    <meta property="og:title" content="PlayerBerry — Yazılım Stüdyosu" />
+    <meta property="og:title" content="PlayerBerry — Web, Mobile &amp; Cloud Software Studio" />
     <meta
       property="og:description"
-      content="Web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren bir yazılım stüdyosu."
+      content="PlayerBerry is an independent software studio building web apps, iOS mobile apps and cloud infrastructure with Vue, TypeScript and Swift. Let's turn your idea into a product."
     />
     <meta property="og:url" content="https://playerberry.com/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="el_GR" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:image:alt" content="PlayerBerry — web, mobile and cloud software studio" />
+    <meta name="twitter:title" content="PlayerBerry — Web, Mobile &amp; Cloud Software Studio" />
+    <meta
+      name="twitter:description"
+      content="PlayerBerry is an independent software studio building web apps, iOS mobile apps and cloud infrastructure with Vue, TypeScript and Swift. Let's turn your idea into a product."
+    />
+    <meta name="twitter:image:alt" content="PlayerBerry — web, mobile and cloud software studio" />
+    <!-- seo:end -->
+
+    <!-- Site-wide social card image and identity (same on every page) -->
+    <meta property="og:site_name" content="PlayerBerry" />
     <meta property="og:image" content="https://playerberry.com/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-
-    <!-- Twitter / X card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="PlayerBerry — Yazılım Stüdyosu" />
-    <meta
-      name="twitter:description"
-      content="Web, mobil ve bulutta uçtan uca dijital ürünler tasarlayan ve geliştiren bir yazılım stüdyosu."
-    />
     <meta name="twitter:image" content="https://playerberry.com/og-image.jpg" />
+
+    <!-- Organisation / website structured data (site-wide) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://playerberry.com/#organization",
+            "name": "PlayerBerry",
+            "url": "https://playerberry.com/",
+            "logo": "https://playerberry.com/icon-512.png",
+            "email": "hello@playerberry.com",
+            "foundingDate": "2018",
+            "description": "Independent software studio building web apps, iOS mobile apps and cloud infrastructure.",
+            "sameAs": [
+              "https://instagram.com/playerberry",
+              "https://x.com/playerberry",
+              "https://youtube.com/@playerberry",
+              "https://twitch.tv/playerberry",
+              "https://facebook.com/playerberry",
+              "https://tiktok.com/@playerberry",
+              "https://kick.com/playerberry",
+              "https://github.com/playerberry"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "email": "hello@playerberry.com",
+              "availableLanguage": ["tr", "en", "es", "fr", "de", "ru", "ko", "it", "el", "ja", "zh"]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://playerberry.com/#website",
+            "url": "https://playerberry.com/",
+            "name": "PlayerBerry",
+            "publisher": { "@id": "https://playerberry.com/#organization" },
+            "inLanguage": ["tr", "en", "es", "fr", "de", "ru", "ko", "it", "el", "ja", "zh"]
+          }
+        ]
+      }
+    </script>
 
     <!-- RSS feeds -->
     <link
@@ -65,13 +141,16 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>PlayerBerry</title>
     <script>
       // GitHub Pages SPA fallback: restore the deep link captured by 404.html
-      // before the router boots.
+      // before the router boots. Storage access can throw (strict privacy
+      // modes); a failure simply leaves the visitor on the home page.
       (function () {
-        var redirect = sessionStorage.getItem("pb:redirect");
-        sessionStorage.removeItem("pb:redirect");
+        var redirect = null;
+        try {
+          redirect = sessionStorage.getItem("pb:redirect");
+          sessionStorage.removeItem("pb:redirect");
+        } catch (e) {}
         if (redirect && redirect !== location.pathname + location.search + location.hash) {
           history.replaceState(null, "", redirect);
         }

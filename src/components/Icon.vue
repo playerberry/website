@@ -2,7 +2,7 @@
 /**
  * Icon
  *
- * Renders one of the site's icons as inline SVG. Only the ~23 icons the site
+ * Renders one of the site's icons as inline SVG. Only the ~25 icons the site
  * actually uses are bundled (imported as raw strings and inlined by Vite),
  * replacing the full Font Awesome CSS + webfonts (~350 KB) with a few KB.
  *
@@ -27,6 +27,7 @@ import copy from "@fortawesome/fontawesome-free/svgs/regular/copy.svg?raw";
 // Solid
 import arrowLeft from "@fortawesome/fontawesome-free/svgs/solid/arrow-left.svg?raw";
 import arrowRight from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg?raw";
+import arrowUpRightFromSquare from "@fortawesome/fontawesome-free/svgs/solid/arrow-up-right-from-square.svg?raw";
 import check from "@fortawesome/fontawesome-free/svgs/solid/check.svg?raw";
 import cloud from "@fortawesome/fontawesome-free/svgs/solid/cloud.svg?raw";
 import code from "@fortawesome/fontawesome-free/svgs/solid/code.svg?raw";
@@ -36,6 +37,7 @@ import gem from "@fortawesome/fontawesome-free/svgs/solid/gem.svg?raw";
 import handshake from "@fortawesome/fontawesome-free/svgs/solid/handshake.svg?raw";
 import icons from "@fortawesome/fontawesome-free/svgs/solid/icons.svg?raw";
 import layerGroup from "@fortawesome/fontawesome-free/svgs/solid/layer-group.svg?raw";
+import locationDot from "@fortawesome/fontawesome-free/svgs/solid/location-dot.svg?raw";
 import mobileScreen from "@fortawesome/fontawesome-free/svgs/solid/mobile-screen.svg?raw";
 import palette from "@fortawesome/fontawesome-free/svgs/solid/palette.svg?raw";
 import rocket from "@fortawesome/fontawesome-free/svgs/solid/rocket.svg?raw";
@@ -53,6 +55,7 @@ const svgs: Record<string, string> = {
   copy,
   "arrow-left": arrowLeft,
   "arrow-right": arrowRight,
+  "arrow-up-right-from-square": arrowUpRightFromSquare,
   check,
   cloud,
   code,
@@ -62,6 +65,7 @@ const svgs: Record<string, string> = {
   handshake,
   icons,
   "layer-group": layerGroup,
+  "location-dot": locationDot,
   "mobile-screen": mobileScreen,
   palette,
   rocket,

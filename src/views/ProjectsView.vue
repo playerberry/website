@@ -37,13 +37,18 @@ const filtered = computed(() =>
         <h1>{{ t("projects.title") }}</h1>
         <p class="pb-section-lead">{{ t("projects.lead") }}</p>
       </div>
-      <div class="pb-filter">
+      <div
+        class="pb-filter"
+        role="group"
+        :aria-label="t('projects.filterLabel')"
+      >
         <button
           v-for="cat in categories"
           :key="cat"
           class="pb-filter-btn"
           :class="{ 'is-active': active === cat }"
           type="button"
+          :aria-pressed="active === cat"
           @click="active = cat"
         >
           {{ t(`projects.categories.${cat}`) }}

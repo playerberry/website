@@ -7,11 +7,13 @@
  * each language's native name) and a contact call-to-action. On narrow
  * screens the menu collapses into a UIkit off-canvas drawer.
  */
-import { RouterLink } from "vue-router";
+import { onMounted, onUnmounted, ref } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import UIkit from "uikit";
-import { activateLocale } from "../i18n";
+import { LOCALE_QUERY_PARAM, activateLocale, saveLocaleChoice } from "../i18n";
 import {
+  DEFAULT_LOCALE,
   LOCALE_NAMES,
   SUPPORTED_LOCALES,
   isSupportedLocale,
@@ -19,20 +21,67 @@ import {
 } from "../assets/js/locales";
 
 const { locale } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+/** DOM id of the off-canvas drawer. */
+const MENU_ID = "sidenav";
+
+/** Whether the mobile off-canvas menu is open (mirrors UIkit's state). */
+const menuOpen = ref(false);
 
 /** Close the mobile off-canvas menu (used after a nav link is tapped). */
-const closeMenu = () => UIkit.offcanvas("#sidenav").hide();
+const closeMenu = () => UIkit.offcanvas(`#${MENU_ID}`).hide();
+
+/** Keep `menuOpen` in step with UIkit's show/hide events for `aria-expanded`. */
+const onMenuShow = () => (menuOpen.value = true);
+const onMenuHide = () => (menuOpen.value = false);
+
+onMounted(() => {
+  const menu = document.getElementById(MENU_ID);
+  menu?.addEventListener("show", onMenuShow);
+  menu?.addEventListener("hide", onMenuHide);
+});
+
+onUnmounted(() => {
+  const menu = document.getElementById(MENU_ID);
+  menu?.removeEventListener("show", onMenuShow);
+  menu?.removeEventListener("hide", onMenuHide);
+});
 
 /**
- * Switch the active UI language (loading its catalogue on first use) and
- * persist the choice — a manual choice overrides the country-based
- * detection on later visits.
+ * Language switches queue up so that, when the visitor changes the selection
+ * several times before a catalogue has finished loading, they are applied in
+ * the order chosen and the last choice wins.
+ */
+let switching: Promise<void> = Promise.resolve();
+
+/**
+ * Switch the active UI language (loading its catalogue on first use),
+ * persist the choice — a manual choice overrides the country-based detection
+ * on later visits — and mirror it into the URL's `?lang=` parameter so the
+ * address bar matches the page's canonical, shareable language URL.
+ *
+ * A failed catalogue download leaves the current language in place and
+ * resets the `<select>` to it, so the control never shows a language the
+ * page is not actually in.
  *
  * @param value - The locale to activate.
+ * @param select - The `<select>` that requested the change.
  */
-const setLocale = async (value: Locale) => {
-  await activateLocale(value);
-  localStorage.setItem("pb:locale", value);
+const setLocale = (value: Locale, select: HTMLSelectElement): void => {
+  switching = switching
+    .then(async () => {
+      await activateLocale(value);
+      saveLocaleChoice(value);
+      const query = { ...route.query };
+      if (value === DEFAULT_LOCALE) delete query[LOCALE_QUERY_PARAM];
+      else query[LOCALE_QUERY_PARAM] = value;
+      await router.replace({ path: route.path, query, hash: route.hash });
+    })
+    .catch(() => {
+      select.value = locale.value;
+    });
 };
 
 /**
@@ -41,8 +90,8 @@ const setLocale = async (value: Locale) => {
  * @param event - The change event whose target holds the chosen locale.
  */
 const onLocaleChange = (event: Event) => {
-  const value = (event.target as HTMLSelectElement).value;
-  if (isSupportedLocale(value)) void setLocale(value);
+  const select = event.target as HTMLSelectElement;
+  if (isSupportedLocale(select.value)) setLocale(select.value, select);
 };
 </script>
 
@@ -71,7 +120,7 @@ const onLocaleChange = (event: Event) => {
           <div class="pb-lang uk-navbar-item uk-visible@m">
             <select
               class="pb-lang-select"
-              aria-label="Language"
+              :aria-label="$t('a11y.language')"
               :value="locale"
               @change="onLocaleChange"
             >
@@ -79,6 +128,7 @@ const onLocaleChange = (event: Event) => {
                 v-for="code in SUPPORTED_LOCALES"
                 :key="code"
                 :value="code"
+                :lang="code"
               >
                 {{ LOCALE_NAMES[code] }}
               </option>
@@ -91,20 +141,27 @@ const onLocaleChange = (event: Event) => {
               >{{ $t("menu.contact") }}</RouterLink
             >
           </div>
-          <a
-            href="#"
+          <button
             class="uk-navbar-toggle uk-hidden@m"
+            type="button"
             uk-navbar-toggle-icon
-            uk-toggle="target: #sidenav"
-            aria-label="Menu"
-          ></a>
+            :uk-toggle="`target: #${MENU_ID}`"
+            :aria-label="$t('a11y.menu')"
+            :aria-controls="MENU_ID"
+            :aria-expanded="menuOpen"
+          ></button>
         </div>
       </nav>
     </div>
   </header>
-  <div id="sidenav" uk-offcanvas="flip: true; overlay: true">
+  <div :id="MENU_ID" uk-offcanvas="flip: true; overlay: true">
     <div class="uk-offcanvas-bar">
-      <button class="uk-offcanvas-close" type="button" uk-close></button>
+      <button
+        class="uk-offcanvas-close"
+        type="button"
+        uk-close
+        :aria-label="$t('a11y.close')"
+      ></button>
       <ul class="uk-nav uk-margin-large-top">
         <li>
           <RouterLink to="/" @click="closeMenu">{{
@@ -135,11 +192,16 @@ const onLocaleChange = (event: Event) => {
       <div class="pb-lang pb-lang-mobile uk-margin-top">
         <select
           class="pb-lang-select"
-          aria-label="Language"
+          :aria-label="$t('a11y.language')"
           :value="locale"
           @change="onLocaleChange"
         >
-          <option v-for="code in SUPPORTED_LOCALES" :key="code" :value="code">
+          <option
+            v-for="code in SUPPORTED_LOCALES"
+            :key="code"
+            :value="code"
+            :lang="code"
+          >
             {{ LOCALE_NAMES[code] }}
           </option>
         </select>

@@ -34,6 +34,7 @@ const feedHref = computed(() => feedPathFor(locale.value));
             ><span class="pb-logo-cursor">_</span>
           </div>
           <p class="pb-footer-tagline">{{ $t("footer.tagline") }}</p>
+          <h2 class="pb-footer-heading">{{ $t("footer.follow") }}</h2>
           <div class="pb-social">
             <a
               href="https://instagram.com/playerberry"
@@ -66,7 +67,7 @@ href="https://x.com/playerberry" target="_blank"
           </div>
         </div>
         <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
-          <h4 class="pb-footer-heading">{{ $t("footer.nav") }}</h4>
+          <h2 class="pb-footer-heading">{{ $t("footer.nav") }}</h2>
           <ul class="pb-footer-links">
             <li>
               <RouterLink to="/">{{ $t("menu.home") }}</RouterLink>
@@ -88,7 +89,7 @@ href="https://x.com/playerberry" target="_blank"
           </ul>
         </div>
         <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
-          <h4 class="pb-footer-heading">{{ $t("footer.legal") }}</h4>
+          <h2 class="pb-footer-heading">{{ $t("footer.legal") }}</h2>
           <ul class="pb-footer-links">
             <li>
               <RouterLink to="/privacy-policy">{{
@@ -108,7 +109,7 @@ href="https://x.com/playerberry" target="_blank"
           </ul>
         </div>
         <div class="uk-width-1-1 uk-width-1-3@s uk-width-1-5@m">
-          <h4 class="pb-footer-heading">{{ $t("footer.contact") }}</h4>
+          <h2 class="pb-footer-heading">{{ $t("footer.contact") }}</h2>
           <ul class="pb-footer-links">
             <li>
               <RouterLink to="/about-us">{{ $t("footer.about") }}</RouterLink>
@@ -123,7 +124,10 @@ href="https://x.com/playerberry" target="_blank"
         <p>
           {{ $t("footer.randomized.part0")
           }}<a
-            :href="'https://www.google.com/search?q=' + randomizedFunny"
+            :href="
+              'https://www.google.com/search?q=' +
+              encodeURIComponent(randomizedFunny)
+            "
             target="_blank"
             rel="noopener"
             ><span class="sentence">{{ randomizedFunny }}</span></a

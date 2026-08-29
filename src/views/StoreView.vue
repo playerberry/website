@@ -2,8 +2,10 @@
 /**
  * StoreView (`/store`)
  *
- * Grid of digital products (templates, component kits, starter kits). Purchase
- * buttons are intentionally inert for now and show a "coming soon" tooltip.
+ * Grid of digital products (templates, component kits, starter kits, apps).
+ * Products with a `url` link out to their own page; for the rest the purchase
+ * button is intentionally inert for now and shows a "coming soon" tooltip.
+ * A price of `0` is shown as the localised "free" label.
  */
 import { useI18n } from "vue-i18n";
 import { products } from "../data/products";
@@ -45,8 +47,20 @@ const { t } = useI18n();
             </h3>
             <p>{{ t(`store.items.${prod.id}.description`) }}</p>
             <div class="pb-price-row">
-              <span class="pb-price">${{ prod.price }}</span>
+              <span class="pb-price">{{
+                prod.price > 0 ? `$${prod.price}` : t("store.free")
+              }}</span>
+              <a
+                v-if="prod.url"
+                :href="prod.url"
+                class="uk-button uk-button-primary uk-button-small"
+                target="_blank"
+                rel="noopener"
+              >
+                {{ t("store.get") }}
+              </a>
               <button
+                v-else
                 class="uk-button uk-button-primary uk-button-small"
                 type="button"
                 :uk-tooltip="`title: ${t('store.soon')}`"

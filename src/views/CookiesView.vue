@@ -2,31 +2,34 @@
 /**
  * CookiesView (`/cookies-policy`)
  *
- * Static Cookie Policy document. Content is presentational prose only — there
- * is no component logic.
+ * Static Cookie Policy document. Content is presentational prose only — the
+ * only component dependency is `RouterLink` for the in-site links.
  */
+import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <div class="uk-margin-large-top">
+  <!-- The legal documents are published in Turkish only, so the root carries
+       an explicit `lang` regardless of the active UI locale. -->
+  <div class="uk-margin-large-top" lang="tr">
     <div class="uk-container">
       <h1>Çerez Politikası</h1>
-      <p>Son güncelleme: 08 Eylül 2024</p>
+      <p>Son güncelleme: 29 Ağustos 2026</p>
       <p>
-        Bu Çerez Politikası, çerezlerin ne olduğunu ve nasıl kullandığımızı
-        açıklar. Hangi tür çerezleri kullandığımızı anlamak için bu politikayı
-        okumalısınız.
+        Bu Çerez Politikası, çerezlerin ne olduğunu, Web Sitesinin çerez
+        kullanıp kullanmadığını ve bunun yerine hangi tarayıcı depolamasını
+        hangi amaçla kullandığını açıklar. Bu politikayı okuyarak Cihazınızda
+        hangi verilerin saklandığını öğrenebilirsiniz.
       </p>
       <p>
         Çerezler genellikle bir kullanıcıyı kişisel olarak tanımlayan bilgiler
-        içermez, ancak sakladığımız kişisel bilgiler, çerezlerde saklanan ve
-        çerezlerden elde edilen bilgilerle ilişkilendirilebilir. Kişisel
-        verilerinizi nasıl kullandığımız, sakladığımız ve güvende tuttuğumuz
-        hakkında daha fazla bilgi için Gizlilik Politikamıza bakınız.
+        içermez. Kişisel verilerinizi nasıl kullandığımız, sakladığımız ve
+        güvende tuttuğumuz hakkında daha fazla bilgi için Gizlilik Politikamıza
+        bakınız.
       </p>
       <p>
-        Kullandığımız çerezlerde posta adresleri, hesap şifreleri gibi hassas
-        kişisel bilgileri saklamıyoruz.
+        Tarayıcı depolamasında yalnızca bir dil kodu saklanır; e-posta adresi
+        veya şifre gibi hassas kişisel bilgiler saklanmaz.
       </p>
       <h2>Yorumlama ve Tanımlar</h2>
       <h3>Yorumlama</h3>
@@ -49,76 +52,84 @@
           geçmişinizin detaylarını içeren küçük dosyalar anlamına gelir.
         </li>
         <li>
+          <strong>Cihaz</strong>, bilgisayar, cep telefonu veya dijital tablet
+          gibi Web Sitesine erişim sağlayabilen herhangi bir cihaz anlamına
+          gelir.
+        </li>
+        <li>
+          <strong>Tarayıcı Depolaması</strong>, tarayıcınızın Web Sitesi için
+          Cihazınızda sakladığı ve yalnızca Web Sitesi tarafından okunabilen
+          küçük veri kayıtlarını (localStorage ve sessionStorage) ifade eder.
+        </li>
+        <li>
           <strong>Web Sitesi</strong>, PlayerBerry'yi ifade eder,
-          <a
-            href="https://playerberry.com"
-            rel="external nofollow noopener"
-            target="_blank"
-          >
-            https://playerberry.com</a
-          >
+          <RouterLink to="/">https://playerberry.com</RouterLink>
           adresinden erişilebilir.
         </li>
         <li>
-          <strong>Sen</strong>, Web Sitesine erişen veya onu kullanan bireyi, ya
+          <strong>Siz</strong>, Web Sitesine erişen veya onu kullanan bireyi, ya
           da bu bireyin adına hareket eden bir şirketi veya herhangi bir tüzel
           kişiliği ifade eder.
         </li>
       </ul>
-      <h2>Çerezlerin Kullanımı</h2>
-      <h3>Kullandığımız Çerez Türleri</h3>
+      <h2>Çerezlerin ve Tarayıcı Depolamasının Kullanımı</h2>
+      <h3>Çerez Kullanmıyoruz</h3>
       <p>
-        Çerezler &quot;Kalıcı&quot; veya &quot;Oturum&quot; çerezleri olabilir.
-        Kalıcı çerezler çevrimdışıyken bilgisayarınızda veya mobil cihazınızda
-        kalırken, oturum çerezleri web tarayıcınızı kapatır kapatmaz silinir.
+        Web Sitesi kendi adına Çerez yerleştirmez. Hesap, giriş, kimlik
+        doğrulama, çerez onayı veya reklam amacıyla herhangi bir Çerez ya da
+        izleme teknolojisi kullanılmaz.
+      </p>
+      <h3>Kullandığımız Tarayıcı Depolaması</h3>
+      <p>
+        Tarayıcı Depolaması &quot;Kalıcı&quot; veya &quot;Oturum&quot;
+        depolaması olabilir. Kalıcı depolama, siz silene kadar Cihazınızda
+        kalırken, oturum depolaması web tarayıcınızı kapatır kapatmaz silinir.
       </p>
       <p>
         Aşağıda belirtilen amaçlar doğrultusunda hem oturum hem de kalıcı
-        çerezleri kullanıyoruz:
+        depolamayı kullanıyoruz:
       </p>
       <ul>
         <li>
-          <p><strong>Gerekli / Temel Çerezler</strong></p>
-          <p>Tür: Oturum Çerezleri</p>
+          <p><strong>Dil Tercihi</strong></p>
+          <p>Tür: Kalıcı depolama (localStorage, <code>pb:locale</code>)</p>
           <p>Yönetici: Biz</p>
           <p>
-            Amaç: Bu çerezler, Web Sitesi üzerinden sunulan hizmetleri size
-            sağlamak ve bazı özellikleri kullanmanıza olanak tanımak için
-            gereklidir. Kullanıcıları doğrulamak ve kullanıcı hesaplarının
-            dolandırıcılık amaçlı kullanılmasını engellemek için yardımcı
-            olurlar. Bu çerezler olmadan, talep ettiğiniz hizmetler sağlanamaz
-            ve biz sadece bu hizmetleri sağlamak için bu çerezleri kullanırız.
+            Amaç: Web Sitesinde dil seçimini kullandığınızda seçtiğiniz dili
+            hatırlamak ve Web Sitesini her kullandığınızda dil seçimini yeniden
+            yapmanızı önlemek. Bu kayıt yalnızca dil seçimini kullandığınızda
+            oluşturulur.
           </p>
         </li>
         <li>
-          <p><strong>İşlevsellik Çerezleri</strong></p>
-          <p>Tür: Kalıcı Çerezler</p>
+          <p><strong>Ülkeye Göre Dil Tespiti Önbelleği</strong></p>
+          <p>
+            Tür: Oturum depolaması (sessionStorage, <code>pb:geo-locale</code>)
+          </p>
           <p>Yönetici: Biz</p>
           <p>
-            Amaç: Bu çerezler, Web Sitesini kullandığınızda yaptığınız seçimleri
-            hatırlamamıza olanak tanır, örneğin giriş bilgilerinizi veya dil
-            tercihinizi hatırlamak gibi. Bu çerezlerin amacı, size daha kişisel
-            bir deneyim sunmak ve Web Sitesini her kullandığınızda
-            tercihlerinizi yeniden girmenizi önlemektir.
+            Amaç: Kayıtlı bir dil tercihiniz yoksa, ülkenize göre belirlenen
+            varsayılan dili aynı tarayıcı oturumu boyunca saklayarak tespitin
+            her sayfa yüklemesinde yinelenmesini önlemek. Ülke tespitinin nasıl
+            yapıldığı Gizlilik Politikamızda açıklanmıştır.
           </p>
         </li>
       </ul>
-      <h3>Çerezlerle İlgili Seçenekleriniz</h3>
+      <h3>Tarayıcı Depolamasıyla İlgili Seçenekleriniz</h3>
       <p>
-        Web Sitesinde çerez kullanımını tercih etmiyorsanız, önce tarayıcınızda
-        çerez kullanımını devre dışı bırakmalısınız ve ardından bu web sitesi
-        ile ilişkili tarayıcınızda saklanan çerezleri silmelisiniz. Çerez
-        kullanımını önlemek için bu seçeneği istediğiniz zaman
-        kullanabilirsiniz.
+        Web Sitesinin Cihazınızda veri saklamasını istemiyorsanız, tarayıcınızın
+        ayarlarından bu web sitesine ait site verilerini silebilir veya site
+        verilerinin saklanmasını engelleyebilirsiniz. Bu seçeneği istediğiniz
+        zaman kullanabilirsiniz.
       </p>
       <p>
-        Çerezlerimizi kabul etmezseniz, Web Sitesini kullanımınızda bazı
-        rahatsızlıklar yaşayabilir ve bazı özellikler düzgün çalışmayabilir.
+        Site verilerini silerseniz veya engellerseniz, dil tercihiniz
+        hatırlanmaz ve Web Sitesi her ziyaretinizde dili yeniden belirler.
       </p>
       <p>
-        Çerezleri silmek veya web tarayıcınızı çerezleri silmeye veya reddetmeye
-        yönlendirmek istiyorsanız, lütfen web tarayıcınızın yardım sayfalarına
-        bakın.
+        Çerezleri ve site verilerini silmek veya web tarayıcınızı bunları
+        reddetmeye yönlendirmek istiyorsanız, lütfen web tarayıcınızın yardım
+        sayfalarına bakın.
       </p>
       <ul>
         <li>
@@ -135,13 +146,13 @@
         </li>
         <li>
           <p>
-            Internet Explorer web tarayıcısı için lütfen Microsoft'un bu
-            sayfasını ziyaret edin:
+            Microsoft Edge web tarayıcısı için lütfen Microsoft'un bu sayfasını
+            ziyaret edin:
             <a
-              href="http://support.microsoft.com/kb/278835"
+              href="https://support.microsoft.com/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-6e7c-3dc2-6b71-6a0a14a3a1b6"
               rel="external nofollow noopener"
               target="_blank"
-              >http://support.microsoft.com/kb/278835</a
+              >https://support.microsoft.com/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-6e7c-3dc2-6b71-6a0a14a3a1b6</a
             >
           </p>
         </li>
@@ -174,20 +185,16 @@
         Diğer herhangi bir web tarayıcısı için lütfen web tarayıcınızın resmi
         web sayfalarını ziyaret edin.
       </p>
-      <h3>Bize Ulaşın</h3>
+      <h2>Bize Ulaşın</h2>
       <p>
         Bu Çerez Politikası hakkında herhangi bir sorunuz varsa, bize şu
         yollarla ulaşabilirsiniz:
       </p>
       <ul>
         <li>
-          Web sitemizde bu sayfayı ziyaret ederek:
-          <a
-            href="https://playerberry.com/contact"
-            rel="external nofollow noopener"
-            target="_blank"
-            >https://playerberry.com/contact</a
-          >
+          Web sitemizdeki
+          <RouterLink to="/contact">iletişim sayfamızı</RouterLink> ziyaret
+          ederek.
         </li>
       </ul>
     </div>
