@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/playerberry.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="PlayerBerry" />
+    <meta name="theme-color" content="#0a0a10" />
+
+    <!--
+      Per-page SEO block. The build (plugins/prerender.ts) rewrites everything
+      between the markers for each route's static shell, and the app
+      (src/assets/js/meta.ts) keeps the same tags in sync at runtime — so
+      only the default-language home page values belong here.
+    -->
+    <!-- seo:start -->
+    <title>技術ブログ：アーキテクチャ・デザイン・開発 — PlayerBerry</title>
+    <meta name="description" content="PlayerBerryの技術ブログ：Swift、Vue、TypeScript、C++、Webパフォーマンスをテーマに、アーキテクチャの意思決定、デザインノート、コード例つきのエンジニアリング記事をお届けします。" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://playerberry.com/ja/blog" />
+    <link rel="alternate" hreflang="tr" href="https://playerberry.com/tr/blog" />
+    <link rel="alternate" hreflang="en" href="https://playerberry.com/blog" />
+    <link rel="alternate" hreflang="es" href="https://playerberry.com/es/blog" />
+    <link rel="alternate" hreflang="fr" href="https://playerberry.com/fr/blog" />
+    <link rel="alternate" hreflang="de" href="https://playerberry.com/de/blog" />
+    <link rel="alternate" hreflang="ru" href="https://playerberry.com/ru/blog" />
+    <link rel="alternate" hreflang="ko" href="https://playerberry.com/ko/blog" />
+    <link rel="alternate" hreflang="it" href="https://playerberry.com/it/blog" />
+    <link rel="alternate" hreflang="el" href="https://playerberry.com/el/blog" />
+    <link rel="alternate" hreflang="ja" href="https://playerberry.com/ja/blog" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://playerberry.com/zh/blog" />
+    <link rel="alternate" hreflang="x-default" href="https://playerberry.com/blog" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="技術ブログ：アーキテクチャ・デザイン・開発 — PlayerBerry" />
+    <meta property="og:description" content="PlayerBerryの技術ブログ：Swift、Vue、TypeScript、C++、Webパフォーマンスをテーマに、アーキテクチャの意思決定、デザインノート、コード例つきのエンジニアリング記事をお届けします。" />
+    <meta property="og:url" content="https://playerberry.com/ja/blog" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="el_GR" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:image:alt" content="PlayerBerry — Web・モバイル・クラウド開発のソフトウェアスタジオ" />
+    <meta name="twitter:title" content="技術ブログ：アーキテクチャ・デザイン・開発 — PlayerBerry" />
+    <meta name="twitter:description" content="PlayerBerryの技術ブログ：Swift、Vue、TypeScript、C++、Webパフォーマンスをテーマに、アーキテクチャの意思決定、デザインノート、コード例つきのエンジニアリング記事をお届けします。" />
+    <meta name="twitter:image:alt" content="PlayerBerry — Web・モバイル・クラウド開発のソフトウェアスタジオ" />
+    <script type="application/ld+json" id="pb-ld-page">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://playerberry.com/ja/"},{"@type":"ListItem","position":2,"name":"技術ブログ：アーキテクチャ・デザイン・開発","item":"https://playerberry.com/ja/blog"}]}]</script>
+    <!-- seo:end -->
+
+    <!-- Site-wide social card image and identity (same on every page) -->
+    <meta property="og:site_name" content="PlayerBerry" />
+    <meta property="og:image" content="https://playerberry.com/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://playerberry.com/og-image.jpg" />
+
+    <!-- Organisation / website structured data (site-wide) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://playerberry.com/#organization",
+            "name": "PlayerBerry",
+            "url": "https://playerberry.com/",
+            "logo": "https://playerberry.com/icon-512.png",
+            "email": "hello@playerberry.com",
+            "foundingDate": "2018",
+            "description": "Independent software studio building web apps, iOS mobile apps and cloud infrastructure.",
+            "sameAs": [
+              "https://instagram.com/playerberry",
+              "https://x.com/playerberry",
+              "https://youtube.com/@playerberry",
+              "https://twitch.tv/playerberry",
+              "https://facebook.com/playerberry",
+              "https://tiktok.com/@playerberry",
+              "https://kick.com/playerberry",
+              "https://github.com/playerberry"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "sales",
+              "email": "hello@playerberry.com",
+              "availableLanguage": ["tr", "en", "es", "fr", "de", "ru", "ko", "it", "el", "ja", "zh"]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://playerberry.com/#website",
+            "url": "https://playerberry.com/",
+            "name": "PlayerBerry",
+            "publisher": { "@id": "https://playerberry.com/#organization" },
+            "inLanguage": ["tr", "en", "es", "fr", "de", "ru", "ko", "it", "el", "ja", "zh"]
+          }
+        ]
+      }
+    </script>
+
+    <!-- RSS feeds -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="PlayerBerry Blog (Türkçe)"
+      href="/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="PlayerBerry Blog (English)"
+      href="/rss-en.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="PlayerBerry Blog (Español)"
+      href="/rss-es.xml"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // GitHub Pages SPA fallback: restore the deep link captured by 404.html
+      // before the router boots. Storage access can throw (strict privacy
+      // modes); a failure simply leaves the visitor on the home page.
+      (function () {
+        var redirect = null;
+        try {
+          redirect = sessionStorage.getItem("pb:redirect");
+          sessionStorage.removeItem("pb:redirect");
+        } catch (e) {}
+        if (redirect && redirect !== location.pathname + location.search + location.hash) {
+          history.replaceState(null, "", redirect);
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-Dj1PAX8T.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vue-i18n-DUiKy6pr.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-PvU-sDuF.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

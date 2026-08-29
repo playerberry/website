@@ -2,15 +2,15 @@
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PlayerBerry — Blog (Türkçe)</title>
-    <link>https://playerberry.com/blog?lang=tr</link>
+    <link>https://playerberry.com/tr/blog</link>
     <atom:link href="https://playerberry.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Swift, Vue ve TypeScript üzerine mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.</description>
     <language>tr</language>
-    <lastBuildDate>Sat, 29 Aug 2026 08:48:25 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 08:55:19 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: async/await ile Callback Cehennemine Veda</title>
-      <link>https://playerberry.com/blog/swift-concurrency?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/swift-concurrency</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/swift-concurrency</guid>
       <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Bakımını devraldığımız bir uygulamada altı seviye iç içe closure saymıştık. async/await aynı akışı düz bir hikâye gibi okutuyor; nasıl olduğunu adım adım anlatalım.]]></description>
       <content:encoded><![CDATA[<p>Birkaç yıl önce bakımını devraldığımız bir iOS uygulamasında oturup saydık: tek bir fonksiyonda altı seviye iç içe completion handler. En içteki closure'da hangi hatanın hangi katmana ait olduğunu kimse bilmiyordu; dokunmaya korkulduğu için fonksiyonun başına 'buraya girmeyin' diye yorum yazılmıştı. Şaka değil.</p>
@@ -81,8 +81,8 @@ let hit = await cache.image(for: url)</code></pre>
     </item>
     <item>
       <title>Modern C++: Belleği Elle Yönetmeyi Bırakın</title>
-      <link>https://playerberry.com/blog/modern-cpp-bellek?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/modern-cpp-bellek</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/modern-cpp-bellek</guid>
       <pubDate>Sun, 12 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Gece ikide valgrind çıktısında sızıntı aramak da bir deneyim; tavsiye etmiyoruz. RAII ve akıllı işaretçilerle bu avların çoğu tarihe karışıyor.]]></description>
       <content:encoded><![CDATA[<p>Bir oyun sunucusunda gece ikide valgrind çıktısı okuyarak bellek sızıntısı aradıysanız, bu yazının derdini biliyorsunuz. Suçlu neredeyse her seferinde aynıydı: bir yerlerde <code>new</code> yazılmış, dönüş yollarından biri <code>delete</code>'i atlamış. C++'ın belleğe doğrudan hükmetme gücü, bedelini böyle ödetiyor.</p>
@@ -142,8 +142,8 @@ useConfig(config);</code></pre>
     </item>
     <item>
       <title>C'de İşaretçiler: Korkulan Ama Yanlış Anlaşılan</title>
-      <link>https://playerberry.com/blog/c-isaretciler?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/c-isaretciler</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/c-isaretciler</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[İşaretçi dediğin tek fikir: değeri değil, adresi tut. Gerisi — diziler, fonksiyona referans geçmek, const — hep bu fikrin sonuçları.]]></description>
       <content:encoded><![CDATA[<p>C öğrenen herkesin duvara tosladığı hafta bellidir: işaretçi haftası. Yıldızlar, ampersandlar, derleyicinin esrarengiz uyarıları... Oysa perdenin arkasında tek bir fikir var: bir değişkenin değerini değil, o değerin bellekte nerede durduğunu tutmak. Gerisi, bu fikrin sonuçları.</p>
@@ -185,8 +185,8 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — birebir aynı şey</code></pre>
     </item>
     <item>
       <title>Ürününüze LLM Eklerken: Demo ile Ürün Arasındaki Uçurum</title>
-      <link>https://playerberry.com/blog/llm-urun-entegrasyonu?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/llm-urun-entegrasyonu</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/llm-urun-entegrasyonu</guid>
       <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Cuma günü demo alkış aldı; pazartesi ilk gerçek kullanıcı sistemi üç dakikada köşeye sıkıştırdı. Aradaki mesafeyi kapatan dört disiplin.]]></description>
       <content:encoded><![CDATA[<p>Cuma öğleden sonra demoyu gösterdik, toplantıdakiler alkışladı. Pazartesi sabahı ilk gerçek kullanıcı sisteme fatura yerine ekran görüntüsü yükledi, yanıtın ortasında sayfayı yeniledi ve üç dakika içinde demoda hiç görmediğimiz dört ayrı hata çıkardı. LLM ürünleştirmenin özeti, bu iki gün arasındaki mesafedir.</p>
@@ -230,8 +230,8 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>Core Web Vitals: Kullanıcı Hızı Nasıl Hisseder?</title>
-      <link>https://playerberry.com/blog/core-web-vitals?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/core-web-vitals</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/core-web-vitals</guid>
       <pubDate>Fri, 03 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Lighthouse 90 gösteriyordu; kullanıcılar 'site yavaş' diyordu. İkisi de haklıydı. Üç metriğin sahada ne anlama geldiği ve gerçekte nasıl düzeltildiği.]]></description>
       <content:encoded><![CDATA[<p>Bir e-ticaret müşterimiz 'site yavaş' şikâyetiyle geldi. Lighthouse'u açtık: 90 üstü, yemyeşil. Gerçek kullanıcı verisine bakınca tablo değişti — orta segment Android telefonlarda LCP dört saniyeyi aşıyordu. İkisi de doğruydu: laboratuvar hızlıydı, saha yavaştı. Core Web Vitals'ın değeri tam burada: kullanıcının gerçekte ne hissettiğini ölçüyor.</p>
@@ -277,8 +277,8 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>TypeScript ile 'Geçersiz Durum İmkânsız' Modelleme</title>
-      <link>https://playerberry.com/blog/typescript-tip-guvenligi?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/typescript-tip-guvenligi</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/typescript-tip-guvenligi</guid>
       <pubDate>Sat, 27 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Refaktörden korkuyorsanız sorun cesaretinizde değil, tiplerinizde olabilir. Tip sistemini etiket makinesi olarak değil, tasarım aracı olarak kullanmak üzerine.]]></description>
       <content:encoded><![CDATA[<p>Ekipte 'şu alanı yeniden adlandıralım' dendiğinde oda sessizleşiyorsa, sorun cesarette değil tiplerdedir. İyi modellenmiş bir kod tabanında refaktör korkusuzdur: değişikliği yaparsınız, kırılan her yer kırmızı yanar, listeyi temizlersiniz, biter. TypeScript'i 'JavaScript'e etiket eklemek' olarak kullanan ekipler bu rahatlığı hiç tatmıyor.</p>
@@ -333,8 +333,8 @@ const user = User.parse(await res.json()); // uymuyorsa burada patlar</code></pr
     </item>
     <item>
       <title>Erişilebilirlik Sonradan Eklenen Bir Şey Değildir</title>
-      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/erisilebilirlik-varsayilan</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/erisilebilirlik-varsayilan</guid>
       <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Fareyi çekmeceye koyun ve sitenizde yalnızca Tab'la gezmeyi deneyin. Bu beş dakikalık test, çoğu arayüz hakkında aylık analizden fazlasını söylüyor.]]></description>
       <content:encoded><![CDATA[<p>Bir kullanıcı testinde, ekran okuyucu kullanan bir katılımcının sitemizde gezinmesini izlemiştik. On dakikada, aylardır fark etmediğimiz beş sorun ortaya çıktı. En acısı da şuydu: bizim 'Sepete ekle' düğmesi sandığımız şey, onun için yalnızca 'tıklanabilir bir şey'di — ne işe yaradığını söylemeyen, isimsiz bir kutu. Erişilebilirliğin bir uyumluluk maddesi değil, düpedüz ürün kalitesi olduğunu o gün anladık.</p>
@@ -367,8 +367,8 @@ const user = User.parse(await res.json()); // uymuyorsa burada patlar</code></pr
     </item>
     <item>
       <title>Vue 3.5 ile Reaktivitede Performans İpuçları</title>
-      <link>https://playerberry.com/blog/vue-3-5-performans?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/vue-3-5-performans</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/vue-3-5-performans</guid>
       <pubDate>Thu, 18 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[5.000 satırlık tabloda yazarken donan bir panel, üç değişiklikle akıcı hâle geldi. Sihir yok; reaktivitenin nasıl çalıştığını bilmek var.]]></description>
       <content:encoded><![CDATA[<p>Geçtiğimiz aylarda bir analitik panelinde klasik bir şikâyetle uğraştık: 5.000 satırlık tablo güncellenirken arayüz donuyor. Vue 3.5'e geçiş tek başına iyi geldi — yeni reaktivite altyapısı bellek kullanımını ciddi azaltıyor — ama asıl farkı üç bilinçli değişiklik yarattı. Üçü de aynı sorunun cevabında saklı: reaktivite gerçekte nasıl çalışıyor?</p>
@@ -408,8 +408,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Sıfırdan Tasarım Sistemi Kurmak: Token'lardan Bileşenlere</title>
-      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/tasarim-sistemi-kurmak</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/tasarim-sistemi-kurmak</guid>
       <pubDate>Sat, 02 May 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Renk paletiyle başlayan ilk sistemimiz üç ayda 14 buton varyantına ulaşıp dağıldı. İkincisini ayakta tutan şey renkler değil; üç katmanlı token mimarisi ve tek sert kural.]]></description>
       <content:encoded><![CDATA[<p>İlk tasarım sistemimizi renk paleti seçerek kurmuştuk. Altı hafta sonra ilk 'özel durum' geldi: bir kampanya sayfası, butonun 'birazcık daha koyu' olmasını istiyordu. Sonra bir tane daha. Üç ay sonra sistemde 14 buton varyantı vardı ve hangisinin ne zaman kullanılacağını kimse bilmiyordu. İkinci denemede işe renkten değil, karardan başladık.</p>
@@ -440,8 +440,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>SwiftUI ile Native Hissettiren Arayüzler</title>
-      <link>https://playerberry.com/blog/swiftui-ile-native?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/swiftui-ile-native</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/swiftui-ile-native</guid>
       <pubDate>Fri, 27 Mar 2026 09:00:00 GMT</pubDate>
       <description><![CDATA['Flutter'la olmaz mı?' sorusunun dürüst cevabı: olur, ama o his olmaz. Native hissi yaratan üç detay ve bunları SwiftUI'da nasıl işlediğimiz.]]></description>
       <content:encoded><![CDATA[<p>Hemen her proje başlangıcında aynı soru gelir: 'Cross-platform yazsak olmaz mı?' Dürüst cevap: olur — ama o his olmaz. Bir uygulamanın native hissetmesi üç detayda saklıdır: geçiş animasyonlarının eğrisi, dokunsal geri bildirimin zamanlaması ve kaydırma fiziği. Kullanıcı bunları adlandıramaz ama farkı anında hisseder. SwiftUI'ın kozu, bu üçünü platformdan hazır almasıdır; taklit etmez, kullanır.</p>
@@ -476,8 +476,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Monorepo Mimarisi: Tek Depo, Çok Ürün</title>
-      <link>https://playerberry.com/blog/monorepo-mimarisi?lang=tr</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi?lang=tr</guid>
+      <link>https://playerberry.com/tr/blog/monorepo-mimarisi</link>
+      <guid isPermaLink="true">https://playerberry.com/tr/blog/monorepo-mimarisi</guid>
       <pubDate>Tue, 10 Feb 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[API'de bir alan adı değişti; web güncellendi, mobil unutuldu, hata üç gün sonra üretimde patladı. O hafta üç depoyu teke indirmeye karar verdik.]]></description>
       <content:encoded><![CDATA[<p>Kararı verdiren olay şuydu: API'de bir alanın adı değişti. Web ekibi aynı gün güncelledi; mobil deposundaki karşılığı gözden kaçtı. Hata üç gün sonra, üretimde, müşteri desteğine düşen 'profil sayfam boş' mesajlarıyla ortaya çıktı. Üç depo, üç sürüm, birbirini bekleyen pull request'ler... O hafta, sözleşme paylaşan her şeyi tek depoya taşıma kararı aldık.</p>

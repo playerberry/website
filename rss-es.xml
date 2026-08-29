@@ -2,15 +2,15 @@
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PlayerBerry — Blog (Español)</title>
-    <link>https://playerberry.com/blog?lang=es</link>
+    <link>https://playerberry.com/es/blog</link>
     <atom:link href="https://playerberry.com/rss-es.xml" rel="self" type="application/rss+xml" />
     <description>Decisiones de arquitectura, notas de diseño y lecciones del terreno sobre Swift, Vue y TypeScript.</description>
     <language>es</language>
-    <lastBuildDate>Sat, 29 Aug 2026 08:48:25 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 08:55:19 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: adiós al callback hell con async/await</title>
-      <link>https://playerberry.com/blog/swift-concurrency?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency?lang=es</guid>
+      <link>https://playerberry.com/es/blog/swift-concurrency</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/swift-concurrency</guid>
       <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[En una app que heredamos llegamos a contar seis niveles de closures anidados. async/await lee el mismo flujo como una historia lineal — te contamos cómo.]]></description>
       <content:encoded><![CDATA[<p>Hace unos años heredamos una app de iOS para mantenimiento y nos sentamos a contar: seis niveles de completion handlers anidados en una sola función. Nadie sabía qué error pertenecía a qué capa en el closure más profundo; daba tanto miedo tocarla que alguien había dejado un comentario arriba: 'no entrar'. No es broma.</p>
@@ -81,8 +81,8 @@ let hit = await cache.image(for: url)</code></pre>
     </item>
     <item>
       <title>C++ moderno: deja de gestionar la memoria a mano</title>
-      <link>https://playerberry.com/blog/modern-cpp-bellek?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek?lang=es</guid>
+      <link>https://playerberry.com/es/blog/modern-cpp-bellek</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/modern-cpp-bellek</guid>
       <pubDate>Sun, 12 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Cazar una fuga leyendo la salida de valgrind a las dos de la madrugada es toda una experiencia; no la recomendamos. RAII y los punteros inteligentes jubilan casi todas esas cacerías.]]></description>
       <content:encoded><![CDATA[<p>Si alguna vez has cazado una fuga de memoria leyendo la salida de valgrind a las dos de la madrugada en un servidor de juegos, ya sabes de qué va este artículo. El culpable era casi siempre el mismo: un <code>new</code> en alguna parte y una ruta de retorno que se saltaba el <code>delete</code>. El poder directo de C++ sobre la memoria cobra su peaje exactamente así.</p>
@@ -142,8 +142,8 @@ useConfig(config);</code></pre>
     </item>
     <item>
       <title>Punteros en C: temidos, pero malentendidos</title>
-      <link>https://playerberry.com/blog/c-isaretciler?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler?lang=es</guid>
+      <link>https://playerberry.com/es/blog/c-isaretciler</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/c-isaretciler</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Un puntero se reduce a una sola idea: guarda la dirección, no el valor. Todo lo demás — arrays, paso por referencia, const — se deduce de ahí.]]></description>
       <content:encoded><![CDATA[<p>Todo el que aprende C choca contra el muro la misma semana: la semana de los punteros. Asteriscos, ampersands, avisos crípticos del compilador... Y sin embargo, detrás del telón hay una sola idea: guardar no el valor de una variable, sino dónde vive ese valor en memoria. Todo lo demás son consecuencias.</p>
@@ -185,8 +185,8 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — exactamente lo mismo</code></pre
     </item>
     <item>
       <title>Añadir un LLM a tu producto: el abismo entre la demo y producción</title>
-      <link>https://playerberry.com/blog/llm-urun-entegrasyonu?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu?lang=es</guid>
+      <link>https://playerberry.com/es/blog/llm-urun-entegrasyonu</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/llm-urun-entegrasyonu</guid>
       <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[La demo del viernes se llevó aplausos; el lunes, el primer usuario real acorraló al sistema en tres minutos. Cuatro disciplinas que cierran esa distancia.]]></description>
       <content:encoded><![CDATA[<p>Enseñamos la demo el viernes por la tarde y la sala aplaudió. El lunes por la mañana, el primer usuario real subió una captura de pantalla en lugar de una factura, recargó la página a mitad de respuesta y sacó a la luz cuatro fallos distintos que jamás habíamos visto en la demo — en tres minutos. Llevar un LLM a producción es, en resumen, la distancia entre esos dos días.</p>
@@ -230,8 +230,8 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>Core Web Vitals: cómo sienten los usuarios la velocidad</title>
-      <link>https://playerberry.com/blog/core-web-vitals?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals?lang=es</guid>
+      <link>https://playerberry.com/es/blog/core-web-vitals</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/core-web-vitals</guid>
       <pubDate>Fri, 03 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Lighthouse decía 90; los usuarios decían que el sitio iba lento. Ambos tenían razón. Qué significan las tres métricas en el terreno y cómo se arreglaron de verdad.]]></description>
       <content:encoded><![CDATA[<p>Un cliente de e-commerce llegó con la queja de 'el sitio va lento'. Abrimos Lighthouse: más de 90, todo verde. Luego miramos los datos de usuarios reales y el cuadro se dio la vuelta — en móviles Android de gama media, el LCP superaba los cuatro segundos. Ambas cosas eran ciertas: el laboratorio era rápido, el terreno era lento. Ahí es exactamente donde los Core Web Vitals se ganan el sueldo: miden lo que los usuarios sienten de verdad.</p>
@@ -277,8 +277,8 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>Hacer imposibles los estados inválidos con TypeScript</title>
-      <link>https://playerberry.com/blog/typescript-tip-guvenligi?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi?lang=es</guid>
+      <link>https://playerberry.com/es/blog/typescript-tip-guvenligi</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/typescript-tip-guvenligi</guid>
       <pubDate>Sat, 27 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Si refactorizar te da miedo, puede que el problema no sea tu valentía — sino tus tipos. Sobre usar el sistema de tipos como herramienta de diseño, no como máquina de etiquetar.]]></description>
       <content:encoded><![CDATA[<p>Si la sala se queda en silencio cuando alguien dice 'vamos a renombrar este campo', el problema no es la valentía — son los tipos. En una base de código bien modelada, refactorizar no da miedo: haces el cambio, todo lo roto se enciende en rojo, limpias la lista y listo. Los equipos que usan TypeScript como 'JavaScript con etiquetas' nunca llegan a sentir esa tranquilidad.</p>
@@ -333,8 +333,8 @@ const user = User.parse(await res.json()); // revienta aquí si no encaja</code>
     </item>
     <item>
       <title>La accesibilidad no es una capa que se añade después</title>
-      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=es</guid>
+      <link>https://playerberry.com/es/blog/erisilebilirlik-varsayilan</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/erisilebilirlik-varsayilan</guid>
       <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Guarda el ratón en un cajón e intenta navegar tu sitio solo con Tab. Ese test de cinco minutos dice más sobre la mayoría de interfaces que un mes de analítica.]]></description>
       <content:encoded><![CDATA[<p>En un test de usuarios observamos a un participante navegar nuestro sitio con un lector de pantalla. Diez minutos sacaron a la luz cinco problemas que llevábamos meses sin ver. El más doloroso: lo que nosotros creíamos un botón de 'Añadir al carrito' era, para él, solo 'algo clicable' — una caja sin nombre que nunca decía qué hacía. Ese día entendimos que la accesibilidad no es un punto de cumplimiento; es calidad de producto, sin más.</p>
@@ -367,8 +367,8 @@ const user = User.parse(await res.json()); // revienta aquí si no encaja</code>
     </item>
     <item>
       <title>Reactividad en Vue 3.5: notas prácticas de rendimiento</title>
-      <link>https://playerberry.com/blog/vue-3-5-performans?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans?lang=es</guid>
+      <link>https://playerberry.com/es/blog/vue-3-5-performans</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/vue-3-5-performans</guid>
       <pubDate>Thu, 18 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Un panel que se congelaba al escribir sobre una tabla de 5.000 filas quedó fluido con tres cambios. Sin magia — solo saber cómo funciona la reactividad.]]></description>
       <content:encoded><![CDATA[<p>Hace unos meses trabajamos en una queja clásica en un panel de analítica: la interfaz se congelaba mientras se actualizaba una tabla de 5.000 filas. Pasar a Vue 3.5 ayudó por sí solo — el nuevo motor de reactividad recorta bastante la memoria — pero la diferencia real vino de tres cambios deliberados. Los tres se esconden en la respuesta a la misma pregunta: ¿cómo funciona la reactividad en realidad?</p>
@@ -408,8 +408,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Construir un sistema de diseño desde cero: de tokens a componentes</title>
-      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=es</guid>
+      <link>https://playerberry.com/es/blog/tasarim-sistemi-kurmak</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/tasarim-sistemi-kurmak</guid>
       <pubDate>Sat, 02 May 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Nuestro primer sistema empezó con una paleta de colores y colapsó en 14 variantes de botón en tres meses. Lo que mantiene en pie al segundo no son los colores — es una arquitectura de tokens de tres capas y una regla dura.]]></description>
       <content:encoded><![CDATA[<p>Construimos nuestro primer sistema de diseño eligiendo una paleta de colores. Seis semanas después llegó el primer 'caso especial': una página de campaña quería el botón 'un pelín más oscuro'. Luego otro. A los tres meses el sistema tenía 14 variantes de botón y nadie sabía cuál usar cuándo. En el segundo intento no empezamos por el color, sino por las decisiones.</p>
@@ -440,8 +440,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Interfaces que se sienten nativas con SwiftUI</title>
-      <link>https://playerberry.com/blog/swiftui-ile-native?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native?lang=es</guid>
+      <link>https://playerberry.com/es/blog/swiftui-ile-native</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/swiftui-ile-native</guid>
       <pubDate>Fri, 27 Mar 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[La respuesta honesta a '¿no podríamos usar Flutter?' — poder, se puede, pero esa sensación no estará. Los tres detalles detrás de la sensación nativa y cómo los tratamos en SwiftUI.]]></description>
       <content:encoded><![CDATA[<p>Casi todos los arranques de proyecto incluyen la misma pregunta: '¿No podríamos ir a cross-platform?' La respuesta honesta: poder, se puede — pero esa sensación no estará. Que una app se sienta nativa se reduce a tres detalles: la curva de sus animaciones de transición, el timing de su respuesta háptica y la física de su scroll. Los usuarios no saben nombrarlos, pero notan la diferencia al instante. La baza de SwiftUI es que toma los tres directamente de la plataforma; no los imita, los usa.</p>
@@ -476,8 +476,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Arquitectura monorepo: un repositorio, muchos productos</title>
-      <link>https://playerberry.com/blog/monorepo-mimarisi?lang=es</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi?lang=es</guid>
+      <link>https://playerberry.com/es/blog/monorepo-mimarisi</link>
+      <guid isPermaLink="true">https://playerberry.com/es/blog/monorepo-mimarisi</guid>
       <pubDate>Tue, 10 Feb 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Renombraron un campo en la API; web se actualizó, móvil se olvidó, y el bug estalló en producción tres días después. Esa semana decidimos fundir tres repositorios en uno.]]></description>
       <content:encoded><![CDATA[<p>El suceso que tomó la decisión por nosotros: renombraron un campo en la API. El equipo web se actualizó el mismo día; el equivalente en el repositorio móvil se escapó. El bug afloró tres días después, en producción, como mensajes de 'mi página de perfil está vacía' cayendo en soporte. Tres repositorios, tres versiones, pull requests esperándose unos a otros... Esa semana decidimos mover a un único repositorio todo lo que comparte un contrato.</p>
