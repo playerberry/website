@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>PlayerBerry — Blog</title>
+    <title>PlayerBerry — Blog (English)</title>
     <link>https://playerberry.com/blog</link>
     <atom:link href="https://playerberry.com/rss-en.xml" rel="self" type="application/rss+xml" />
-    <description>Architecture decisions, design notes and lessons from the field.</description>
+    <description>Architecture decisions, design notes and lessons from the field on Swift, Vue and TypeScript.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Jul 2026 15:41:23 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 08:48:25 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: Goodbye Callback Hell with async/await</title>
       <link>https://playerberry.com/blog/swift-concurrency</link>
@@ -16,7 +16,7 @@
       <content:encoded><![CDATA[<p>A few years back we inherited an iOS app for maintenance and sat down to count: six levels of nested completion handlers in a single function. Nobody could tell which error belonged to which layer in the innermost closure; people were so afraid to touch it that someone had left a comment at the top saying 'do not enter'. Not a joke.</p>
 <h2>How the Ladder Gets Built</h2>
 <p>The interesting part: whoever built that ladder wasn't a bad developer. In the old world, even the most innocent flow — fetch a user, then their avatar — inevitably ended up looking like this:</p>
-<pre><code>func loadProfile(id: String,
+<pre><code class="language-swift">func loadProfile(id: String,
                  completion: @escaping (Result&lt;Profile, Error&gt;) -&gt; Void) {
     fetchUser(id) { result in
         switch result {
@@ -37,7 +37,7 @@
 <p>Twenty lines for two requests. The actual logic is three words — get user, get avatar, combine — yet it's nowhere to be seen. Every layer carries its own error handling, and if you forget to call <code>completion</code> on one branch, the app silently hangs. No compiler will ever tell you.</p>
 <h2>await: Wait, but Don't Block</h2>
 <p>The same function with async/await:</p>
-<pre><code>func loadProfile(id: String) async throws -&gt; Profile {
+<pre><code class="language-swift">func loadProfile(id: String) async throws -&gt; Profile {
     let user = try await fetchUser(id)
     let avatar = try await fetchAvatar(user.avatarURL)
     return Profile(user: user, avatar: avatar)
@@ -45,7 +45,7 @@
 <p>Wherever you see <code>await</code>, the function pauses without blocking the thread; the system runs other work in the meantime. Error handling moved from closures to <code>throws</code>: no more unwrapping <code>Result</code> by hand, no more forgotten <code>completion</code>. If a branch is missing, you find out at compile time, not in production.</p>
 <h2>Don't Queue Up Independent Work</h2>
 <p>In the code above the avatar depends on the user, so waiting in order is fair. But awaiting three independent requests one after another is plain waste. <code>async let</code> starts them all at once:</p>
-<pre><code>func loadDashboard(for id: String) async throws -&gt; Dashboard {
+<pre><code class="language-swift">func loadDashboard(for id: String) async throws -&gt; Dashboard {
     async let profile = fetchProfile(id)
     async let feed = fetchFeed(id)
     async let badges = fetchBadges(id)
@@ -57,7 +57,7 @@
 <p>Total time is now the slowest request, not the sum of all three. In that inherited project, this one change took the home screen from 1.8 seconds to 700 milliseconds. We wouldn't have believed it without measuring.</p>
 <h2>Shared State: Enter the Actor</h2>
 <p>The part of concurrency that actually burns you is data races: two tasks writing to the same dictionary at the same time — sometimes a crash, sometimes silently corrupted data. Swift's answer is the <code>actor</code>: only one task can touch its state at a time, and the compiler guarantees it:</p>
-<pre><code>actor ImageCache {
+<pre><code class="language-swift">actor ImageCache {
     private var store: [URL: Image] = [:]
 
     func image(for url: URL) -&gt; Image? {
@@ -88,7 +88,7 @@ let hit = await cache.image(for: url)</code></pre>
       <content:encoded><![CDATA[<p>If you've ever hunted a memory leak through valgrind output at two in the morning on a game server, you already know what this post is about. The culprit was almost always the same: a <code>new</code> somewhere, and one of the return paths skipping the <code>delete</code>. C++'s raw power over memory collects its toll exactly like this.</p>
 <h2>How a Leak Is Born</h2>
 <p>Look at this function — it could be from a textbook:</p>
-<pre><code>void process() {
+<pre><code class="language-cpp">void process() {
     Widget* w = new Widget();
 
     if (!w-&gt;init()) {
@@ -101,7 +101,7 @@ let hit = await cache.image(for: url)</code></pre>
 <p>If <code>init()</code> fails, <code>delete</code> never runs and the <code>Widget</code> is orphaned in memory. If <code>run()</code> throws, same story. The problem isn't carelessness — it's entrusting 'clean up on every exit path' to a human. Humans forget. The bigger the codebase, the more they forget.</p>
 <h2>RAII: Let the Object Do the Cleanup</h2>
 <p>C++'s answer has a bureaucratic-sounding name — Resource Acquisition Is Initialization — but the idea is one sentence: tie the resource to an object's lifetime. When the object leaves scope, its destructor runs and releases the resource. How you leave doesn't matter — normal flow, early <code>return</code>, an exception... the destructor always runs:</p>
-<pre><code>class FileHandle {
+<pre><code class="language-cpp">class FileHandle {
 public:
     explicit FileHandle(const char* path)
         : file_(std::fopen(path, &quot;r&quot;)) {}
@@ -122,7 +122,7 @@ private:
 <p>There's no 'remember to close the file' task anymore; the moment a <code>FileHandle</code> leaves scope, the file closes. <code>std::lock_guard</code>, <code>std::vector</code>, <code>std::string</code> — the standard library is built on this same pattern. You've probably been using RAII for years without naming it.</p>
 <h2>Smart Pointers: Life Without new/delete</h2>
 <p>The same pattern comes prepackaged for pointers: <code>unique_ptr</code> for single ownership, <code>shared_ptr</code> for shared ownership.</p>
-<pre><code>#include &lt;memory&gt;
+<pre><code class="language-cpp">#include &lt;memory&gt;
 
 auto w = std::make_unique&lt;Widget&gt;();
 if (!w-&gt;init()) {
@@ -148,14 +148,14 @@ useConfig(config);</code></pre>
       <description><![CDATA[A pointer boils down to a single idea: store the address, not the value. Everything else — arrays, pass-by-reference, const — follows from it.]]></description>
       <content:encoded><![CDATA[<p>Everyone learning C hits the wall in the same week: pointer week. Asterisks, ampersands, cryptic compiler warnings... Yet behind the curtain there's a single idea: store not a variable's value, but where that value lives in memory. Everything else is a consequence.</p>
 <h2>&amp; Gives the Address, * Follows It</h2>
-<pre><code>int x = 42;
+<pre><code class="language-c">int x = 42;
 int *p = &amp;x;          // p holds x's address
 
 printf(&quot;%d\n&quot;, *p);   // 42 — the value p points at
 *p = 7;               // x is now 7; p points at it</code></pre>
 <p><code>&amp;x</code> answers 'where does x live'; <code>*p</code> answers 'what's at the place p points to'. They're inverses. When you write <code>*p = 7</code>, you're changing <code>x</code> directly, because both look at the same address.</p>
 <p>The first real payoff of this idea is functions that can modify outside variables. Every argument in C is passed by copy — but pass an address and the function reaches the real data:</p>
-<pre><code>void swap(int *a, int *b) {
+<pre><code class="language-c">void swap(int *a, int *b) {
     int tmp = *a;
     *a = *b;
     *b = tmp;
@@ -166,7 +166,7 @@ swap(&amp;i, &amp;j);         // i == 2, j == 1</code></pre>
 <p>If you've ever wondered why <code>scanf</code> needs <code>&amp;num</code>: that's the answer. You hand it the address so it can write the value it reads into your variable.</p>
 <h2>Arrays: Closer Kin Than They Look</h2>
 <p>The fact that surprises C beginners the most: an array name, in most contexts, turns into the address of its first element. This is called 'decay':</p>
-<pre><code>int nums[3] = {10, 20, 30};
+<pre><code class="language-c">int nums[3] = {10, 20, 30};
 int *p = nums;              // same as &amp;nums[0]
 
 printf(&quot;%d\n&quot;, *(p + 2));   // 30
@@ -174,7 +174,7 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — exactly the same thing</code></p
 <p><code>p[2]</code> and <code>*(p + 2)</code> are two spellings of the same expression; the brackets are just shorthand. The subtlety people miss: <code>p + 2</code> advances two <code>int</code>s, not two bytes. Pointer arithmetic accounts for the element size on your behalf.</p>
 <h2>const: A Promise to the Compiler</h2>
 <p>Every function that takes a pointer also receives the power to modify the data. <code>const</code> is how you hand that power back:</p>
-<pre><code>void printName(const char *name) {
+<pre><code class="language-c">void printName(const char *name) {
     // *name = 'X';  -&gt; compile error
     printf(&quot;Hello, %s\n&quot;, name);
 }</code></pre>
@@ -192,7 +192,7 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — exactly the same thing</code></p
       <content:encoded><![CDATA[<p>We showed the demo on Friday afternoon and the room applauded. On Monday morning the first real user uploaded a screenshot instead of an invoice, refreshed the page mid-response, and surfaced four distinct failures we'd never seen in the demo — in three minutes. Productizing an LLM is, in short, the distance between those two days.</p>
 <h2>Same Question, Two Different Answers</h2>
 <p>The software we're used to produces the same output for the same input. A language model doesn't — and instead of fighting that, you build the architecture around it. Rule one: never trust the model's output raw. If you expect structured data, validate against a schema and retry on mismatch:</p>
-<pre><code>const Invoice = z.object({
+<pre><code class="language-ts">const Invoice = z.object({
   vendor: z.string(),
   total: z.number().positive(),
   currency: z.enum([&quot;TRY&quot;, &quot;USD&quot;, &quot;EUR&quot;]),
@@ -212,7 +212,7 @@ async function extractInvoice(text: string) {
 <p>Stuffing the context window isn't the fix either. Ten irrelevant documents distract the model and inflate the bill. In our measurements, two relevant paragraphs consistently beat twenty added 'just in case'. Less, but on target, wins.</p>
 <h2>Don't Change Prompts Blind</h2>
 <p>You changed three words in the prompt; is the system better now? Without measurement, the honest answer is 'no idea'. For every critical flow we keep an evaluation set compiled from real user questions — inputs and expected behaviors, an ordinary file in version control:</p>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;input&quot;: &quot;Who approved last month's AWS invoice?&quot;,
   &quot;expect&quot;: {
     &quot;must_cite_source&quot;: true,
@@ -237,14 +237,14 @@ async function extractInvoice(text: string) {
       <content:encoded><![CDATA[<p>An e-commerce client came to us with a 'the site is slow' complaint. We opened Lighthouse: above 90, all green. Then we looked at real user data and the picture flipped — on mid-range Android phones, LCP was over four seconds. Both were true: the lab was fast, the field was slow. That's exactly where Core Web Vitals earn their keep: they measure what users actually feel.</p>
 <h2>LCP: When Did the Page 'Arrive'</h2>
 <p>Largest Contentful Paint marks the moment the biggest piece of content — usually the hero image or the headline — shows up. In that project the culprit was a late-discovered hero image: the browser downloaded the CSS first and only then learned the image existed. The cure is telling it up front:</p>
-<pre><code>&lt;link
+<pre><code class="language-html">&lt;link
   rel=&quot;preload&quot;
   as=&quot;image&quot;
   href=&quot;/hero.avif&quot;
   imagesrcset=&quot;/hero-800.avif 800w, /hero-1600.avif 1600w&quot;
 /&gt;</code></pre>
 <p>Then there's the webfont classic: sites that hide text until the font arrives show users a long blank stare. <code>font-display: swap</code> renders with a system font first and switches when the brand font lands:</p>
-<pre><code>@font-face {
+<pre><code class="language-css">@font-face {
   font-family: &quot;Space Grotesk&quot;;
   src: url(&quot;/fonts/space-grotesk.woff2&quot;) format(&quot;woff2&quot;);
   font-display: swap;
@@ -252,7 +252,7 @@ async function extractInvoice(text: string) {
 <p>Those two changes plus converting images to AVIF took that site's LCP from 4.1 seconds to 1.9. Nothing exotic — just making the browser's job easier.</p>
 <h2>INP: I Clicked, Why Is Nothing Happening</h2>
 <p>Interaction to Next Paint measures the time from an interaction to the first visible response. The chief enemy is JavaScript that locks the main thread for hundreds of milliseconds: while the browser is busy with one long task, clicks queue up and the UI feels frozen. The cure is splitting the work:</p>
-<pre><code>async function processRows(rows) {
+<pre><code class="language-js">async function processRows(rows) {
   for (const [i, row] of rows.entries()) {
     handle(row);
     if (i % 100 === 0) {
@@ -264,7 +264,7 @@ async function extractInvoice(text: string) {
 <p>Crude but effective: the long loop now yields the main thread periodically, and pending clicks get processed. There are nicer tools — <code>scheduler.yield()</code>, Web Workers — but the principle never changes: the main thread belongs to the user; you're a guest there.</p>
 <h2>CLS: I Was About to Tap It, and It Moved</h2>
 <p>Cumulative Layout Shift measures how much content jumps around while loading. Everyone has lived it: the paragraph you're reading dives down because a banner popped in above. The cause is almost always the same — images and embeds with no declared size. In modern CSS the fix is two lines:</p>
-<pre><code>img {
+<pre><code class="language-css">img {
   aspect-ratio: 16 / 9; /* space is reserved before the image loads */
   width: 100%;
   height: auto;
@@ -284,13 +284,13 @@ async function extractInvoice(text: string) {
       <content:encoded><![CDATA[<p>If the room goes quiet when someone says 'let's rename this field', the problem isn't courage — it's the types. In a well-modeled codebase, refactoring is fearless: you make the change, everything broken lights up red, you clear the list, done. Teams that use TypeScript as 'JavaScript with labels' never get to feel that ease.</p>
 <h2>The Boolean Swamp</h2>
 <p>The classic example, because it's still everywhere: three separate fields — <code>isLoading</code>, <code>isError</code>, <code>data</code>. Three fields give you eight combinations; three of them are meaningful. A state that's both loading and failed doesn't logically exist — but it exists in the type system, and one day it shows up in production. Model the state as a discriminated union and the absurd combinations drop out of the language:</p>
-<pre><code>type State =
+<pre><code class="language-ts">type State =
   | { status: &quot;loading&quot; }
   | { status: &quot;error&quot;; error: Error }
   | { status: &quot;success&quot;; data: User };</code></pre>
 <p><code>data</code> is now reachable only on the <code>success</code> branch. Code that tries to read it while loading doesn't even compile; that whole bug class dies in the editor, long before production.</p>
 <p>The lesser-known bonus of this pattern: combined with <code>switch</code>, the compiler catches missing branches too:</p>
-<pre><code>function render(state: State) {
+<pre><code class="language-ts">function render(state: State) {
   switch (state.status) {
     case &quot;loading&quot;:
       return spinner();
@@ -307,7 +307,7 @@ async function extractInvoice(text: string) {
 <p>Six months later, when someone adds <code>{ status: &quot;empty&quot; }</code> to <code>State</code>, this <code>switch</code> fails to compile and every place that needs updating reports itself. The compiler writes your to-do list.</p>
 <h2>When Everything Is a string</h2>
 <p>User id: <code>string</code>. Email: <code>string</code>. Order number: <code>string</code>... When they're all the same type, nothing stops you from writing <code>sendEmail(user.id)</code>. Branded types turn that mix-up into a compile error:</p>
-<pre><code>type UserId = string &amp; { readonly __brand: &quot;UserId&quot; };
+<pre><code class="language-ts">type UserId = string &amp; { readonly __brand: &quot;UserId&quot; };
 type Email = string &amp; { readonly __brand: &quot;Email&quot; };
 
 function sendEmail(to: Email) {
@@ -318,7 +318,7 @@ sendEmail(user.id); // compile error — an id is not an Email</code></pre>
 <p>At runtime these are ordinary strings; the cost is zero. But for values where a mix-up is expensive — money, dates, units of measure — this zero-cost fence prevents real accidents. The Mars Climate Orbiter was lost to a metric-imperial mix-up; a well-shaped type system would have caught that before launch.</p>
 <h2>Validate at the Boundary, Trust Inside</h2>
 <p>Types only hold inside your own code. Calling <code>as User</code> on JSON from an API is not a fact — it's a wish. Do runtime validation at the boundary; inside, trust your types with a clear conscience:</p>
-<pre><code>const User = z.object({
+<pre><code class="language-ts">const User = z.object({
   id: z.string(),
   name: z.string(),
   age: z.number().int().min(0),
@@ -341,7 +341,7 @@ const user = User.parse(await res.json()); // blows up here if it doesn't fit</c
 <h2>The Five-Minute Test: Drop the Mouse</h2>
 <p>The fastest read on your site's state: put the mouse away and navigate with Tab, Enter and the arrow keys only. Can you see where focus is? Can you reach every button? Can you close that menu with Escape? An interface that fails this test is broken not just for disabled users but for everyone who prefers working from the keyboard.</p>
 <p>The mistake this test catches most often is well known: building buttons out of <code>div</code>s.</p>
-<pre><code>&lt;!-- Looks like a button, does none of the job: --&gt;
+<pre><code class="language-html">&lt;!-- Looks like a button, does none of the job: --&gt;
 &lt;div class=&quot;btn&quot; onclick=&quot;save()&quot;&gt;Save&lt;/div&gt;
 
 &lt;!-- Keyboard, focus, Enter, screen reader — all free: --&gt;
@@ -352,7 +352,7 @@ const user = User.parse(await res.json()); // blows up here if it doesn't fit</c
 <h2>Color Can't Speak Alone</h2>
 <p>If you marked invalid form fields with red alone, then for a color-blind user you marked nothing — and that's one in twelve men, not a rounding error. Color always needs a second channel: an icon, a label, a pattern. Contrast is equally non-negotiable; that elegant light-gray text disappears on a phone screen at noon.</p>
 <p>Motion is less talked about, but for some users it's not comfort — it's health: large parallax and sweeping transitions can trigger genuine physical nausea in people with vestibular disorders. Respecting the user who asked their system to reduce motion is one media query:</p>
-<pre><code>@media (prefers-reduced-motion: reduce) {
+<pre><code class="language-css">@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
@@ -374,7 +374,7 @@ const user = User.parse(await res.json()); // blows up here if it doesn't fit</c
       <content:encoded><![CDATA[<p>A few months ago we worked on a classic complaint in an analytics dashboard: the UI froze while a 5,000-row table updated. Moving to Vue 3.5 helped by itself — the new reactivity internals cut memory use substantially — but the real difference came from three deliberate changes. All three hide in the answer to the same question: how does reactivity actually work?</p>
 <h2>Don't Deep-Track Everything</h2>
 <p>By default Vue makes every level of an object reactive. Attaching a tracker to each of 5,000 chart points just burns memory — you never mutate those points individually anyway. If you replace the data wholesale, tracking the reference alone is enough:</p>
-<pre><code>import { shallowRef } from &quot;vue&quot;;
+<pre><code class="language-ts">import { shallowRef } from &quot;vue&quot;;
 
 const points = shallowRef&lt;Point[]&gt;([]);
 
@@ -385,7 +385,7 @@ async function refresh() {
 <p>The rule in practice: if you reassign rather than mutate, use <code>shallowRef</code>. In our dashboard this was the single biggest win; memory visibly dropped and the stutter on large updates disappeared.</p>
 <h2>Fat computed, Lazy Chain</h2>
 <p>The second culprit was one giant <code>computed</code> doing everything: filter, sort, group, sum — all in one. Any dependency twitching reran the whole chain. We split it:</p>
-<pre><code>// Before: everything in one computed, everything reruns on any change.
+<pre><code class="language-ts">// Before: everything in one computed, everything reruns on any change.
 // After: each link runs only when its own input changes.
 const filtered = computed(() =&gt; rows.value.filter(matches(query.value)));
 const sorted = computed(() =&gt; sortBy(filtered.value, sortKey.value));
@@ -393,7 +393,7 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>When the sort key changes, filtering no longer repeats; only <code>sorted</code> and downstream recompute. Small computeds are both faster and more readable — nobody could tell what was going on inside the giant one anyway.</p>
 <h2>v-memo: Powerful, but Sharp</h2>
 <p>The final touch: <code>v-memo</code> on the table rows. A row skips re-rendering as long as its dependencies haven't changed:</p>
-<pre><code>&lt;tr
+<pre><code class="language-html">&lt;tr
   v-for=&quot;row in rows&quot;
   :key=&quot;row.id&quot;
   v-memo=&quot;[row.id === selectedId, row.updatedAt]&quot;
@@ -417,7 +417,7 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>What a design system actually standardizes isn't colors — it's decisions: how many variants does a button need? When does a card get a shadow? When is the error color used — and more importantly, when is it not? A palette picked before answering those questions is a pretty color collection, nothing more. Values are the output of decisions, not the input.</p>
 <h2>Three Layers: Raw, Semantic, Component</h2>
 <p>Our token architecture has three layers, and components never look at raw values — only at semantic roles:</p>
-<pre><code>// 1) Raw values — no meaning, just constants:
+<pre><code class="language-less">// 1) Raw values — no meaning, just constants:
 @berry-500: #ff3d77;
 @ink-900: #0a0a10;
 
@@ -447,13 +447,13 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
       <content:encoded><![CDATA[<p>Nearly every project kickoff includes the same question: 'Couldn't we go cross-platform?' The honest answer: you could — but that feel won't be there. An app feeling native comes down to three details: the curve of its transition animations, the timing of its haptic feedback, and its scroll physics. Users can't name them, but they sense the difference instantly. SwiftUI's edge is that it takes all three straight from the platform; it doesn't imitate them, it uses them.</p>
 <h2>Don't Reinvent the Spring</h2>
 <p>iOS's spring animations are the product of a decade-plus of tuning. An animation with the right duration but the wrong curve leaves users with a 'something's off' feeling they can't explain. With the real thing available, there's no reason to draw curves by hand:</p>
-<pre><code>withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+<pre><code class="language-swift">withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
     isExpanded.toggle()
 }</code></pre>
 <p>Two parameters, and the animation speaks the platform's language. Haptic feedback lives in the same cheap-win category: a tiny, well-timed tap — <code>sensoryFeedback(.success, trigger:)</code> — gives an action the feeling that it 'really happened'. These aren't decoration; they're the building blocks of user trust.</p>
 <h2>Keep Views Dumb</h2>
 <p>The one principle we hold onto tightly in architecture: views are dumb. They know no business logic; they take data and draw. State management lives in the container layer, navigation in its own:</p>
-<pre><code>struct AvatarView: View {
+<pre><code class="language-swift">struct AvatarView: View {
     let user: User
 
     var body: some View {
@@ -485,11 +485,11 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>The real promise of a monorepo is one word: atomicity. Rename a field in the API schema and the web and mobile code consuming it update in the same pull request. Whatever breaks is right there in the diff, in front of your eyes. In separate repos the same job becomes a version-bump dance: publish the package, bump it in three repos, keep a table of which version is compatible with which. In one repo, the main branch is consistent with itself at every moment — for us, that was the sentence that ended the architecture debate.</p>
 <h2>The Setup: Less Than You'd Think</h2>
 <p>Our recipe is pnpm workspaces + Turborepo; the core is two small files:</p>
-<pre><code># pnpm-workspace.yaml
+<pre><code class="language-yaml"># pnpm-workspace.yaml
 packages:
   - &quot;apps/*&quot; # web, mobile, api
   - &quot;packages/*&quot; # shared: ui, config, api-client</code></pre>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;tasks&quot;: {
     &quot;build&quot;: {
       &quot;dependsOn&quot;: [&quot;^build&quot;],
@@ -501,7 +501,7 @@ packages:
 <p><code>^build</code> means: before building a package, build what it depends on. Turborepo works out the task graph and serves everything unchanged from cache. As the repo grows this cache becomes gold — the repo tripled in size and our CI is still faster than on day one.</p>
 <h2>The Real Issue: Layer Discipline</h2>
 <p>The bad news: tools won't save you. Where monorepos collapse isn't technical, it's disciplinary — boundaries blur, everyone reaches into every package, and six months later you're holding a dependency tangle the size of a repo. Our rule is one-directional: apps may depend on packages; packages never on apps. And we entrust the rule to lint, not to people:</p>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;rules&quot;: {
     &quot;import/no-restricted-paths&quot;: [&quot;error&quot;, {
       &quot;zones&quot;: [

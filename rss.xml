@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>PlayerBerry — Blog</title>
-    <link>https://playerberry.com/blog</link>
+    <title>PlayerBerry — Blog (Türkçe)</title>
+    <link>https://playerberry.com/blog?lang=tr</link>
     <atom:link href="https://playerberry.com/rss.xml" rel="self" type="application/rss+xml" />
-    <description>Mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.</description>
+    <description>Swift, Vue ve TypeScript üzerine mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.</description>
     <language>tr</language>
-    <lastBuildDate>Thu, 16 Jul 2026 15:41:23 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 08:48:25 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: async/await ile Callback Cehennemine Veda</title>
-      <link>https://playerberry.com/blog/swift-concurrency</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency</guid>
+      <link>https://playerberry.com/blog/swift-concurrency?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swift-concurrency?lang=tr</guid>
       <pubDate>Tue, 14 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Bakımını devraldığımız bir uygulamada altı seviye iç içe closure saymıştık. async/await aynı akışı düz bir hikâye gibi okutuyor; nasıl olduğunu adım adım anlatalım.]]></description>
       <content:encoded><![CDATA[<p>Birkaç yıl önce bakımını devraldığımız bir iOS uygulamasında oturup saydık: tek bir fonksiyonda altı seviye iç içe completion handler. En içteki closure'da hangi hatanın hangi katmana ait olduğunu kimse bilmiyordu; dokunmaya korkulduğu için fonksiyonun başına 'buraya girmeyin' diye yorum yazılmıştı. Şaka değil.</p>
 <h2>Merdiven Nasıl Kuruluyor</h2>
 <p>İşin ilginci, o merdiveni kuran kişi kötü bir geliştirici değildi. Eski dünyada bir kullanıcıyı, sonra avatarını çeken en masum akış bile ister istemez böyle görünüyordu:</p>
-<pre><code>func loadProfile(id: String,
+<pre><code class="language-swift">func loadProfile(id: String,
                  completion: @escaping (Result&lt;Profile, Error&gt;) -&gt; Void) {
     fetchUser(id) { result in
         switch result {
@@ -37,7 +37,7 @@
 <p>İki istek için yirmi satır. Asıl mantık üç kelime — kullanıcıyı al, avatarı al, birleştir — ama kodda görünmüyor bile. Her katman kendi hata yönetimini taşıyor ve <code>completion</code>'ı bir dalda çağırmayı unutursanız uygulama sessizce takılıyor; bunu size hiçbir derleyici söylemiyor.</p>
 <h2>await: Bekle, Ama Kilitleme</h2>
 <p>Aynı fonksiyonun async/await hâli şu:</p>
-<pre><code>func loadProfile(id: String) async throws -&gt; Profile {
+<pre><code class="language-swift">func loadProfile(id: String) async throws -&gt; Profile {
     let user = try await fetchUser(id)
     let avatar = try await fetchAvatar(user.avatarURL)
     return Profile(user: user, avatar: avatar)
@@ -45,7 +45,7 @@
 <p><code>await</code> gördüğünüz yerde fonksiyon duraklıyor ama iş parçacığı kilitlenmiyor; sistem o sırada başka işleri yürütüyor. Hata yönetimi closure'lardan <code>throws</code>'a taşındı: <code>Result</code> açıp kapatmak yok, unutulan <code>completion</code> yok. Bir dal eksikse bunu çalışma zamanında değil, derleme anında öğreniyorsunuz.</p>
 <h2>Bağımsız İşleri Sıraya Dizmeyin</h2>
 <p>Yukarıdaki kodda avatar, kullanıcı verisine muhtaç; sıralı beklemek zorundayız. Ama birbirinden bağımsız üç isteği art arda <code>await</code> etmek düpedüz israf. <code>async let</code> üçünü aynı anda başlatır:</p>
-<pre><code>func loadDashboard(for id: String) async throws -&gt; Dashboard {
+<pre><code class="language-swift">func loadDashboard(for id: String) async throws -&gt; Dashboard {
     async let profile = fetchProfile(id)
     async let feed = fetchFeed(id)
     async let badges = fetchBadges(id)
@@ -57,7 +57,7 @@
 <p>Toplam süre artık üç isteğin toplamı değil, en yavaşının süresi. O eski projede yalnızca bu değişiklik ana ekranın açılışını 1,8 saniyeden 700 milisaniyeye indirdi. Ölçmeden söyleseler inanmazdık.</p>
 <h2>Paylaşılan Duruma Gelince: Actor</h2>
 <p>Eşzamanlılığın gerçekten canımızı yakan kısmı yarış durumları (data race): iki görev aynı sözlüğe aynı anda yazmaya kalkınca bazen çöken, bazen sessizce yanlış veri üreten türden hatalar. Swift'in cevabı <code>actor</code> — içindeki duruma aynı anda tek görev erişebilir ve bunu derleyici garanti eder:</p>
-<pre><code>actor ImageCache {
+<pre><code class="language-swift">actor ImageCache {
     private var store: [URL: Image] = [:]
 
     func image(for url: URL) -&gt; Image? {
@@ -81,14 +81,14 @@ let hit = await cache.image(for: url)</code></pre>
     </item>
     <item>
       <title>Modern C++: Belleği Elle Yönetmeyi Bırakın</title>
-      <link>https://playerberry.com/blog/modern-cpp-bellek</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek</guid>
+      <link>https://playerberry.com/blog/modern-cpp-bellek?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/modern-cpp-bellek?lang=tr</guid>
       <pubDate>Sun, 12 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Gece ikide valgrind çıktısında sızıntı aramak da bir deneyim; tavsiye etmiyoruz. RAII ve akıllı işaretçilerle bu avların çoğu tarihe karışıyor.]]></description>
       <content:encoded><![CDATA[<p>Bir oyun sunucusunda gece ikide valgrind çıktısı okuyarak bellek sızıntısı aradıysanız, bu yazının derdini biliyorsunuz. Suçlu neredeyse her seferinde aynıydı: bir yerlerde <code>new</code> yazılmış, dönüş yollarından biri <code>delete</code>'i atlamış. C++'ın belleğe doğrudan hükmetme gücü, bedelini böyle ödetiyor.</p>
 <h2>Sızıntı Nasıl Doğar</h2>
 <p>Ders kitabı örneği gibi görünen şu fonksiyona bakın:</p>
-<pre><code>void process() {
+<pre><code class="language-cpp">void process() {
     Widget* w = new Widget();
 
     if (!w-&gt;init()) {
@@ -101,7 +101,7 @@ let hit = await cache.image(for: url)</code></pre>
 <p><code>init()</code> başarısız olursa <code>delete</code> çalışmaz, <code>Widget</code> bellekte öksüz kalır. <code>run()</code> bir istisna fırlatırsa yine aynı hikâye. Buradaki sorun dikkatsizlik değil; 'her çıkış yolunda temizlik yap' kuralını insana emanet etmek. İnsan unutur. Kod büyüdükçe daha çok unutur.</p>
 <h2>RAII: Temizliği Nesneye Emanet Edin</h2>
 <p>C++'ın cevabının adı kulağa bürokratik gelir — Resource Acquisition Is Initialization — ama fikir tek cümledir: kaynağı bir nesnenin ömrüne bağla. Nesne kapsamdan çıkarken yıkıcısı çalışır ve kaynağı o bırakır. Nasıl çıkıldığının önemi yoktur; normal akış, erken <code>return</code>, istisna... yıkıcı her koşulda çağrılır:</p>
-<pre><code>class FileHandle {
+<pre><code class="language-cpp">class FileHandle {
 public:
     explicit FileHandle(const char* path)
         : file_(std::fopen(path, &quot;r&quot;)) {}
@@ -122,7 +122,7 @@ private:
 <p>Artık 'dosyayı kapatmayı hatırlamak' diye bir iş yok; <code>FileHandle</code> kapsamdan çıktığı an dosya kapanıyor. Standart kütüphanedeki <code>std::lock_guard</code>, <code>std::vector</code>, <code>std::string</code> — hepsi aynı desenin ürünü. Muhtemelen yıllardır RAII kullanıyorsunuz, adını koymadan.</p>
 <h2>Akıllı İşaretçiler: new/delete'siz Hayat</h2>
 <p>İşaretçiler için de aynı desenin hazır hâli var: <code>unique_ptr</code> tek sahiplik, <code>shared_ptr</code> paylaşılan sahiplik demek.</p>
-<pre><code>#include &lt;memory&gt;
+<pre><code class="language-cpp">#include &lt;memory&gt;
 
 auto w = std::make_unique&lt;Widget&gt;();
 if (!w-&gt;init()) {
@@ -142,20 +142,20 @@ useConfig(config);</code></pre>
     </item>
     <item>
       <title>C'de İşaretçiler: Korkulan Ama Yanlış Anlaşılan</title>
-      <link>https://playerberry.com/blog/c-isaretciler</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler</guid>
+      <link>https://playerberry.com/blog/c-isaretciler?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/c-isaretciler?lang=tr</guid>
       <pubDate>Sat, 11 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[İşaretçi dediğin tek fikir: değeri değil, adresi tut. Gerisi — diziler, fonksiyona referans geçmek, const — hep bu fikrin sonuçları.]]></description>
       <content:encoded><![CDATA[<p>C öğrenen herkesin duvara tosladığı hafta bellidir: işaretçi haftası. Yıldızlar, ampersandlar, derleyicinin esrarengiz uyarıları... Oysa perdenin arkasında tek bir fikir var: bir değişkenin değerini değil, o değerin bellekte nerede durduğunu tutmak. Gerisi, bu fikrin sonuçları.</p>
 <h2>&amp; Adres Verir, * Adrese Gider</h2>
-<pre><code>int x = 42;
+<pre><code class="language-c">int x = 42;
 int *p = &amp;x;          // p, x'in adresini tutuyor
 
 printf(&quot;%d\n&quot;, *p);   // 42 — p'nin gösterdiği değer
 *p = 7;               // x artık 7; p onu gösteriyor</code></pre>
 <p><code>&amp;x</code>, 'x nerede duruyor' sorusunun cevabı; <code>*p</code> ise 'p'nin gösterdiği yerde ne var'. İkisi birbirinin tersi. <code>*p = 7</code> yazdığınızda <code>x</code>'i doğrudan değiştiriyorsunuz, çünkü ikisi aynı adrese bakıyor.</p>
 <p>Bu fikrin ilk gerçek meyvesi, fonksiyonların dışarıdaki değişkenleri değiştirebilmesi. C'de her argüman kopyalanarak geçer; ama adresi geçerseniz fonksiyon asıl veriye ulaşır:</p>
-<pre><code>void swap(int *a, int *b) {
+<pre><code class="language-c">void swap(int *a, int *b) {
     int tmp = *a;
     *a = *b;
     *b = tmp;
@@ -166,7 +166,7 @@ swap(&amp;i, &amp;j);         // i == 2, j == 1</code></pre>
 <p><code>scanf</code>'e neden <code>&amp;sayi</code> yazdığınızı hiç merak ettiyseniz, cevap bu: fonksiyon okuduğu değeri sizin değişkeninize yazabilsin diye ona adresi veriyorsunuz.</p>
 <h2>Diziler: Göründüğünden Yakın Akraba</h2>
 <p>C'nin yeni başlayanı en çok şaşırtan gerçeği: dizi adı, çoğu bağlamda ilk elemanının adresine dönüşür. Buna 'decay' deniyor:</p>
-<pre><code>int nums[3] = {10, 20, 30};
+<pre><code class="language-c">int nums[3] = {10, 20, 30};
 int *p = nums;              // &amp;nums[0] ile aynı
 
 printf(&quot;%d\n&quot;, *(p + 2));   // 30
@@ -174,7 +174,7 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — birebir aynı şey</code></pre>
 <p><code>p[2]</code> ile <code>*(p + 2)</code> aynı ifadenin iki yazımı; köşeli parantez yalnızca kısaltma. Gözden kaçan incelik şu: <code>p + 2</code> iki bayt değil, iki <code>int</code> ileri gider. İşaretçi aritmetiği, eleman boyutunu sizin yerinize hesaba katar.</p>
 <h2>const: Derleyiciye Verilen Söz</h2>
 <p>İşaretçi alan her fonksiyon, veriyi değiştirme gücünü de alır. <code>const</code>, bu gücü iade etmenin yolu:</p>
-<pre><code>void printName(const char *name) {
+<pre><code class="language-c">void printName(const char *name) {
     // *name = 'X';  -&gt; derleme hatası
     printf(&quot;Merhaba, %s\n&quot;, name);
 }</code></pre>
@@ -185,14 +185,14 @@ printf(&quot;%d\n&quot;, p[2]);       // 30 — birebir aynı şey</code></pre>
     </item>
     <item>
       <title>Ürününüze LLM Eklerken: Demo ile Ürün Arasındaki Uçurum</title>
-      <link>https://playerberry.com/blog/llm-urun-entegrasyonu</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu</guid>
+      <link>https://playerberry.com/blog/llm-urun-entegrasyonu?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/llm-urun-entegrasyonu?lang=tr</guid>
       <pubDate>Fri, 10 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Cuma günü demo alkış aldı; pazartesi ilk gerçek kullanıcı sistemi üç dakikada köşeye sıkıştırdı. Aradaki mesafeyi kapatan dört disiplin.]]></description>
       <content:encoded><![CDATA[<p>Cuma öğleden sonra demoyu gösterdik, toplantıdakiler alkışladı. Pazartesi sabahı ilk gerçek kullanıcı sisteme fatura yerine ekran görüntüsü yükledi, yanıtın ortasında sayfayı yeniledi ve üç dakika içinde demoda hiç görmediğimiz dört ayrı hata çıkardı. LLM ürünleştirmenin özeti, bu iki gün arasındaki mesafedir.</p>
 <h2>Aynı Soru, İki Farklı Cevap</h2>
 <p>Alışık olduğumuz yazılımda aynı girdi aynı çıktıyı üretir. Dil modelinde üretmez — ve bununla savaşmak yerine mimariyi buna göre kurmak gerekir. İlk kural: modelin çıktısına asla çıplak güvenmeyin. Yapılandırılmış veri bekliyorsanız şemayla doğrulayın, uymuyorsa yeniden isteyin:</p>
-<pre><code>const Invoice = z.object({
+<pre><code class="language-ts">const Invoice = z.object({
   vendor: z.string(),
   total: z.number().positive(),
   currency: z.enum([&quot;TRY&quot;, &quot;USD&quot;, &quot;EUR&quot;]),
@@ -212,7 +212,7 @@ async function extractInvoice(text: string) {
 <p>Bağlam penceresini doldurmak da çözüm değil. Alakasız on belge modelin dikkatini dağıtır, üstüne faturayı şişirir. Bizim ölçümlerimizde alakalı iki paragraf, 'ne olur ne olmaz' diye eklenmiş yirmi paragrafı istikrarlı biçimde geçti. Az ama isabetli bağlam kazanıyor.</p>
 <h2>Prompt Değişikliği Kör Uçuş Olmasın</h2>
 <p>Prompt'ta üç kelime değiştirdiniz; sistem şimdi daha mı iyi? Elinizde ölçüm yoksa dürüst cevap 'bilmiyorum'dur. Her kritik akış için gerçek kullanıcı sorularından derlenmiş bir değerlendirme seti tutuyoruz — girdiler ve beklenen davranışlar, sürüm kontrolünde sıradan bir dosya:</p>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;input&quot;: &quot;Geçen ayki AWS faturasını kim onayladı?&quot;,
   &quot;expect&quot;: {
     &quot;must_cite_source&quot;: true,
@@ -230,21 +230,21 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>Core Web Vitals: Kullanıcı Hızı Nasıl Hisseder?</title>
-      <link>https://playerberry.com/blog/core-web-vitals</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals</guid>
+      <link>https://playerberry.com/blog/core-web-vitals?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/core-web-vitals?lang=tr</guid>
       <pubDate>Fri, 03 Jul 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Lighthouse 90 gösteriyordu; kullanıcılar 'site yavaş' diyordu. İkisi de haklıydı. Üç metriğin sahada ne anlama geldiği ve gerçekte nasıl düzeltildiği.]]></description>
       <content:encoded><![CDATA[<p>Bir e-ticaret müşterimiz 'site yavaş' şikâyetiyle geldi. Lighthouse'u açtık: 90 üstü, yemyeşil. Gerçek kullanıcı verisine bakınca tablo değişti — orta segment Android telefonlarda LCP dört saniyeyi aşıyordu. İkisi de doğruydu: laboratuvar hızlıydı, saha yavaştı. Core Web Vitals'ın değeri tam burada: kullanıcının gerçekte ne hissettiğini ölçüyor.</p>
 <h2>LCP: Sayfa Ne Zaman 'Geldi'</h2>
 <p>Largest Contentful Paint, ekrandaki en büyük içeriğin — genelde kapak görselinin ya da başlığın — göründüğü an. O projede suçlu, geç keşfedilen kapak görseliydi: tarayıcı önce CSS'i indiriyor, görselin varlığını ondan sonra öğreniyordu. Çare, tarayıcıya baştan haber vermek:</p>
-<pre><code>&lt;link
+<pre><code class="language-html">&lt;link
   rel=&quot;preload&quot;
   as=&quot;image&quot;
   href=&quot;/hero.avif&quot;
   imagesrcset=&quot;/hero-800.avif 800w, /hero-1600.avif 1600w&quot;
 /&gt;</code></pre>
 <p>Bir de yazı tipi klasiği var: font inene kadar metni gizleyen siteler kullanıcıya uzun uzun boş ekran gösterir. <code>font-display: swap</code> önce sistem fontuyla metni basar, marka fontu gelince değiştirir:</p>
-<pre><code>@font-face {
+<pre><code class="language-css">@font-face {
   font-family: &quot;Space Grotesk&quot;;
   src: url(&quot;/fonts/space-grotesk.woff2&quot;) format(&quot;woff2&quot;);
   font-display: swap;
@@ -252,7 +252,7 @@ async function extractInvoice(text: string) {
 <p>Bu iki değişiklik ve görsellerin AVIF'e çevrilmesi, o sitede LCP'yi 4,1 saniyeden 1,9'a indirdi. Egzotik hiçbir şey yok; yalnızca tarayıcının işini kolaylaştırmak.</p>
 <h2>INP: Tıkladım, Neden Bir Şey Olmuyor</h2>
 <p>Interaction to Next Paint, etkileşimden ekrandaki ilk tepkiye kadar geçen süreyi ölçer. Baş düşman, ana iş parçacığını yüzlerce milisaniye kilitleyen JavaScript: tarayıcı tek uzun görevle meşgulken tıklamalar kuyruğa girer ve arayüz donmuş hisseder. Çare, işi bölmek:</p>
-<pre><code>async function processRows(rows) {
+<pre><code class="language-js">async function processRows(rows) {
   for (const [i, row] of rows.entries()) {
     handle(row);
     if (i % 100 === 0) {
@@ -264,7 +264,7 @@ async function extractInvoice(text: string) {
 <p>Kaba ama etkili: uzun döngü artık aralıklarla ana iş parçacığını bırakıyor, bekleyen tıklamalar işlenebiliyor. Daha şık araçlar da var — <code>scheduler.yield()</code>, Web Worker'lar — ama ilke hep aynı: ana iş parçacığı kullanıcınındır; siz orada misafirsiniz.</p>
 <h2>CLS: Tam Tıklayacaktım, Kaydı</h2>
 <p>Cumulative Layout Shift, yüklenme sırasında içeriğin ne kadar zıpladığını ölçer. Herkes yaşamıştır: okuduğunuz paragraf, üstte geç beliren bir banner yüzünden aşağı kaçar. Sebep neredeyse hep aynıdır — boyutu önceden bildirilmemiş görseller ve gömülü içerikler. Modern CSS'te çözüm iki satır:</p>
-<pre><code>img {
+<pre><code class="language-css">img {
   aspect-ratio: 16 / 9; /* yer, görsel inmeden ayrılır */
   width: 100%;
   height: auto;
@@ -277,20 +277,20 @@ async function extractInvoice(text: string) {
     </item>
     <item>
       <title>TypeScript ile 'Geçersiz Durum İmkânsız' Modelleme</title>
-      <link>https://playerberry.com/blog/typescript-tip-guvenligi</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi</guid>
+      <link>https://playerberry.com/blog/typescript-tip-guvenligi?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/typescript-tip-guvenligi?lang=tr</guid>
       <pubDate>Sat, 27 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Refaktörden korkuyorsanız sorun cesaretinizde değil, tiplerinizde olabilir. Tip sistemini etiket makinesi olarak değil, tasarım aracı olarak kullanmak üzerine.]]></description>
       <content:encoded><![CDATA[<p>Ekipte 'şu alanı yeniden adlandıralım' dendiğinde oda sessizleşiyorsa, sorun cesarette değil tiplerdedir. İyi modellenmiş bir kod tabanında refaktör korkusuzdur: değişikliği yaparsınız, kırılan her yer kırmızı yanar, listeyi temizlersiniz, biter. TypeScript'i 'JavaScript'e etiket eklemek' olarak kullanan ekipler bu rahatlığı hiç tatmıyor.</p>
 <h2>Boolean Bataklığı</h2>
 <p>Klasik örnek, çünkü hâlâ her yerde: <code>isLoading</code>, <code>isError</code>, <code>data</code> diye üç ayrı alan. Üç alan size sekiz kombinasyon verir; anlamlısı üç tane. Hem yükleniyor hem hatalı bir durum mantıken yok — ama tip sisteminde var ve bir gün üretimde karşınıza çıkıyor. Durumu ayrık birleşimle (discriminated union) modelleyince saçma kombinasyonlar dilden düşer:</p>
-<pre><code>type State =
+<pre><code class="language-ts">type State =
   | { status: &quot;loading&quot; }
   | { status: &quot;error&quot;; error: Error }
   | { status: &quot;success&quot;; data: User };</code></pre>
 <p><code>data</code>'ya artık yalnızca <code>success</code> dalında erişilebiliyor. Yükleme sırasında veriyi okumaya çalışan kod derlenmiyor bile; o hata sınıfı üretime gitmeden, daha editörde ölüyor.</p>
 <p>Bu desenin az bilinen ikramiyesi: <code>switch</code> ile birleşince derleyici eksik dalları da yakalıyor:</p>
-<pre><code>function render(state: State) {
+<pre><code class="language-ts">function render(state: State) {
   switch (state.status) {
     case &quot;loading&quot;:
       return spinner();
@@ -307,7 +307,7 @@ async function extractInvoice(text: string) {
 <p>Altı ay sonra biri <code>State</code>'e <code>{ status: &quot;empty&quot; }</code> eklediğinde bu <code>switch</code> derleme hatası verir ve güncellenmesi gereken her yer kendini ihbar eder. Yapılacaklar listenizi derleyici yazar.</p>
 <h2>Her Şey string Olunca</h2>
 <p>Kullanıcı kimliği <code>string</code>, e-posta <code>string</code>, sipariş numarası <code>string</code>... Hepsi aynı tipse, <code>sendEmail(user.id)</code> yazdığınızda sizi kimse durdurmaz. Markalı tipler (branded types) bu karışıklığı derleme hatasına çevirir:</p>
-<pre><code>type UserId = string &amp; { readonly __brand: &quot;UserId&quot; };
+<pre><code class="language-ts">type UserId = string &amp; { readonly __brand: &quot;UserId&quot; };
 type Email = string &amp; { readonly __brand: &quot;Email&quot; };
 
 function sendEmail(to: Email) {
@@ -318,7 +318,7 @@ sendEmail(user.id); // derleme hatası — id bir Email değil</code></pre>
 <p>Çalışma zamanında bunlar sıradan string; maliyet sıfır. Ama para tutarı, tarih, ölçü birimi gibi karışması pahalı değerlerde bu sıfır maliyetli çit gerçek kazaları önlüyor. Mars Climate Orbiter metrik-emperyal birim karışıklığına kurban gitmişti; iyi kurgulanmış bir tip sistemi o hatayı fırlatmadan önce yakalardı.</p>
 <h2>Sınırda Doğrula, İçeride Güven</h2>
 <p>Tipler yalnızca kendi kodunuzun içinde geçerlidir. API'den gelen JSON'a <code>as User</code> demek bir tespit değil, bir dilektir. Sınırda çalışma zamanı doğrulaması yapın; içeride tiplere gönül rahatlığıyla güvenin:</p>
-<pre><code>const User = z.object({
+<pre><code class="language-ts">const User = z.object({
   id: z.string(),
   name: z.string(),
   age: z.number().int().min(0),
@@ -333,15 +333,15 @@ const user = User.parse(await res.json()); // uymuyorsa burada patlar</code></pr
     </item>
     <item>
       <title>Erişilebilirlik Sonradan Eklenen Bir Şey Değildir</title>
-      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan</guid>
+      <link>https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/erisilebilirlik-varsayilan?lang=tr</guid>
       <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Fareyi çekmeceye koyun ve sitenizde yalnızca Tab'la gezmeyi deneyin. Bu beş dakikalık test, çoğu arayüz hakkında aylık analizden fazlasını söylüyor.]]></description>
       <content:encoded><![CDATA[<p>Bir kullanıcı testinde, ekran okuyucu kullanan bir katılımcının sitemizde gezinmesini izlemiştik. On dakikada, aylardır fark etmediğimiz beş sorun ortaya çıktı. En acısı da şuydu: bizim 'Sepete ekle' düğmesi sandığımız şey, onun için yalnızca 'tıklanabilir bir şey'di — ne işe yaradığını söylemeyen, isimsiz bir kutu. Erişilebilirliğin bir uyumluluk maddesi değil, düpedüz ürün kalitesi olduğunu o gün anladık.</p>
 <h2>Beş Dakikalık Test: Fareyi Bırakın</h2>
 <p>Sitenizin durumu hakkında en hızlı fikri şöyle edinirsiniz: fareyi bırakın, yalnızca Tab, Enter ve ok tuşlarıyla gezinin. Odağın nerede olduğunu görebiliyor musunuz? Her düğmeye ulaşabiliyor musunuz? Açılan menüden Escape ile çıkabiliyor musunuz? Bu testi geçemeyen arayüz yalnızca engelli kullanıcılar için değil, klavyeyle çalışmayı seven herkes için bozuktur.</p>
 <p>Testin en sık yakaladığı hata da bellidir: <code>div</code>'den düğme yapmak.</p>
-<pre><code>&lt;!-- Görünüşte düğme, işlevde hiçbir şey: --&gt;
+<pre><code class="language-html">&lt;!-- Görünüşte düğme, işlevde hiçbir şey: --&gt;
 &lt;div class=&quot;btn&quot; onclick=&quot;save()&quot;&gt;Kaydet&lt;/div&gt;
 
 &lt;!-- Klavye, odak, Enter, ekran okuyucu — hepsi bedava: --&gt;
@@ -352,7 +352,7 @@ const user = User.parse(await res.json()); // uymuyorsa burada patlar</code></pr
 <h2>Renk Tek Başına Konuşamaz</h2>
 <p>Formda hatalı alanları yalnızca kırmızıyla işaretlediyseniz, renk körü bir kullanıcı için hiçbir şey işaretlememişsinizdir — ki bu her 12 erkekten biri demek, azımsanacak kitle değil. Renge daima ikinci bir kanal eşlik etmeli: ikon, metin ya da desen. Kontrast da pazarlık kabul etmez; tasarımda çok şık duran o açık gri metin, öğlen güneşindeki telefon ekranında yok olur.</p>
 <p>Hareket konusu daha az bilinir ama bazı kullanıcılar için mesele konfor değil, sağlıktır: büyük paralaks ve geçiş animasyonları, vestibüler rahatsızlığı olanlarda gerçek fiziksel bulantı tetikleyebilir. Sistem genelinde 'hareketi azalt' demiş kullanıcıyı dinlemek tek medya sorgusu:</p>
-<pre><code>@media (prefers-reduced-motion: reduce) {
+<pre><code class="language-css">@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
@@ -367,14 +367,14 @@ const user = User.parse(await res.json()); // uymuyorsa burada patlar</code></pr
     </item>
     <item>
       <title>Vue 3.5 ile Reaktivitede Performans İpuçları</title>
-      <link>https://playerberry.com/blog/vue-3-5-performans</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans</guid>
+      <link>https://playerberry.com/blog/vue-3-5-performans?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/vue-3-5-performans?lang=tr</guid>
       <pubDate>Thu, 18 Jun 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[5.000 satırlık tabloda yazarken donan bir panel, üç değişiklikle akıcı hâle geldi. Sihir yok; reaktivitenin nasıl çalıştığını bilmek var.]]></description>
       <content:encoded><![CDATA[<p>Geçtiğimiz aylarda bir analitik panelinde klasik bir şikâyetle uğraştık: 5.000 satırlık tablo güncellenirken arayüz donuyor. Vue 3.5'e geçiş tek başına iyi geldi — yeni reaktivite altyapısı bellek kullanımını ciddi azaltıyor — ama asıl farkı üç bilinçli değişiklik yarattı. Üçü de aynı sorunun cevabında saklı: reaktivite gerçekte nasıl çalışıyor?</p>
 <h2>Her Şeyi Derin İzlemeyin</h2>
 <p>Vue, varsayılan olarak bir nesnenin her seviyesini reaktif yapar. Grafik için gelen 5.000 noktalık dizinin her elemanına tek tek izleyici takmaksa yalnızca bellek yakar — o noktaları tek tek değiştirmiyorsunuz ki. Veriyi bütün olarak değiştiriyorsanız, yalnızca referansı izlemek yeter:</p>
-<pre><code>import { shallowRef } from &quot;vue&quot;;
+<pre><code class="language-ts">import { shallowRef } from &quot;vue&quot;;
 
 const points = shallowRef&lt;Point[]&gt;([]);
 
@@ -385,7 +385,7 @@ async function refresh() {
 <p>Pratikteki kural şu: veriyi yerinde değiştirmiyor, yeniden atıyorsanız <code>shallowRef</code> kullanın. Bizim panelde en büyük tek kazanç buydu; bellek kullanımı gözle görülür düştü, büyük güncellemelerdeki takılma kayboldu.</p>
 <h2>Şişman computed, Tembel Zincir</h2>
 <p>İkinci suçlu, her şeyi tek başına hesaplayan dev bir <code>computed</code>'dı: filtrele, sırala, grupla, topla — hepsi bir arada. İçindeki herhangi bir bağımlılık kıpırdadığında koca zincir baştan çalışıyordu. Böldük:</p>
-<pre><code>// Önce: hepsi tek computed'da, her değişiklikte hepsi baştan.
+<pre><code class="language-ts">// Önce: hepsi tek computed'da, her değişiklikte hepsi baştan.
 // Sonra: her halka yalnızca kendi girdisi değişince çalışır.
 const filtered = computed(() =&gt; rows.value.filter(matches(query.value)));
 const sorted = computed(() =&gt; sortBy(filtered.value, sortKey.value));
@@ -393,7 +393,7 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>Sıralama anahtarı değiştiğinde artık filtreleme tekrarlanmıyor; yalnızca <code>sorted</code> ve sonrası hesaplanıyor. Küçük computed'lar hem daha hızlı hem daha okunur — dev olanın içinde ne döndüğünü zaten kimse bilmiyordu.</p>
 <h2>v-memo: Güçlü, Ama Keskin</h2>
 <p>Son dokunuş, tablo satırlarına <code>v-memo</code>. Bir satır, bağımlılıkları değişmediği sürece yeniden render edilmiyor:</p>
-<pre><code>&lt;tr
+<pre><code class="language-html">&lt;tr
   v-for=&quot;row in rows&quot;
   :key=&quot;row.id&quot;
   v-memo=&quot;[row.id === selectedId, row.updatedAt]&quot;
@@ -408,8 +408,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Sıfırdan Tasarım Sistemi Kurmak: Token'lardan Bileşenlere</title>
-      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak</guid>
+      <link>https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/tasarim-sistemi-kurmak?lang=tr</guid>
       <pubDate>Sat, 02 May 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[Renk paletiyle başlayan ilk sistemimiz üç ayda 14 buton varyantına ulaşıp dağıldı. İkincisini ayakta tutan şey renkler değil; üç katmanlı token mimarisi ve tek sert kural.]]></description>
       <content:encoded><![CDATA[<p>İlk tasarım sistemimizi renk paleti seçerek kurmuştuk. Altı hafta sonra ilk 'özel durum' geldi: bir kampanya sayfası, butonun 'birazcık daha koyu' olmasını istiyordu. Sonra bir tane daha. Üç ay sonra sistemde 14 buton varyantı vardı ve hangisinin ne zaman kullanılacağını kimse bilmiyordu. İkinci denemede işe renkten değil, karardan başladık.</p>
@@ -417,7 +417,7 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>Bir tasarım sisteminin asıl standartlaştırdığı şey renkler değil, kararlardır: buton kaç varyanta ihtiyaç duyar? Kart hangi durumda gölge alır? Hata rengi ne zaman kullanılır — ve daha önemlisi, ne zaman kullanılmaz? Bu sorulara cevap vermeden seçilen palet, güzel görünen bir renk koleksiyonundan ibarettir. Değerler kararların çıktısıdır, girdisi değil.</p>
 <h2>Üç Katman: Ham, Anlamsal, Bileşen</h2>
 <p>Token mimarimiz üç katmandan oluşuyor ve bileşenler asla ham değere bakmıyor, yalnızca anlamsal role:</p>
-<pre><code>// 1) Ham değerler — anlam yok, yalnızca sabitler:
+<pre><code class="language-less">// 1) Ham değerler — anlam yok, yalnızca sabitler:
 @berry-500: #ff3d77;
 @ink-900: #0a0a10;
 
@@ -440,20 +440,20 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>SwiftUI ile Native Hissettiren Arayüzler</title>
-      <link>https://playerberry.com/blog/swiftui-ile-native</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native</guid>
+      <link>https://playerberry.com/blog/swiftui-ile-native?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/swiftui-ile-native?lang=tr</guid>
       <pubDate>Fri, 27 Mar 2026 09:00:00 GMT</pubDate>
       <description><![CDATA['Flutter'la olmaz mı?' sorusunun dürüst cevabı: olur, ama o his olmaz. Native hissi yaratan üç detay ve bunları SwiftUI'da nasıl işlediğimiz.]]></description>
       <content:encoded><![CDATA[<p>Hemen her proje başlangıcında aynı soru gelir: 'Cross-platform yazsak olmaz mı?' Dürüst cevap: olur — ama o his olmaz. Bir uygulamanın native hissetmesi üç detayda saklıdır: geçiş animasyonlarının eğrisi, dokunsal geri bildirimin zamanlaması ve kaydırma fiziği. Kullanıcı bunları adlandıramaz ama farkı anında hisseder. SwiftUI'ın kozu, bu üçünü platformdan hazır almasıdır; taklit etmez, kullanır.</p>
 <h2>Yayı Yeniden İcat Etmeyin</h2>
 <p>iOS'un yay (spring) animasyonları on yılı aşkın ince ayarın ürünü. Süresi doğru ama eğrisi yanlış bir animasyon, kullanıcıda sebebini söyleyemediği bir 'bir şey yapay' hissi bırakır. Hazırı dururken elle eğri çizmeye gerek yok:</p>
-<pre><code>withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+<pre><code class="language-swift">withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
     isExpanded.toggle()
 }</code></pre>
 <p>İki parametre, platformun diliyle konuşan bir animasyon. Dokunsal geri bildirim de aynı ucuz-kazanç sınıfında: doğru anda gelen minik bir titreşim — <code>sensoryFeedback(.success, trigger:)</code> — bir eylemin 'gerçekten olduğu' hissini verir. Bunlar süsleme değil; kullanıcının güven duygusunun yapı taşları.</p>
 <h2>Görünümü Aptal Tutun</h2>
 <p>Mimaride sıkı sıkıya bağlı olduğumuz tek ilke: görünümler aptaldır. İş mantığı bilmezler; veri alır, çizerler. Durum yönetimi container katmanında, navigasyon kendi katmanında yaşar:</p>
-<pre><code>struct AvatarView: View {
+<pre><code class="language-swift">struct AvatarView: View {
     let user: User
 
     var body: some View {
@@ -476,8 +476,8 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
     </item>
     <item>
       <title>Monorepo Mimarisi: Tek Depo, Çok Ürün</title>
-      <link>https://playerberry.com/blog/monorepo-mimarisi</link>
-      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi</guid>
+      <link>https://playerberry.com/blog/monorepo-mimarisi?lang=tr</link>
+      <guid isPermaLink="true">https://playerberry.com/blog/monorepo-mimarisi?lang=tr</guid>
       <pubDate>Tue, 10 Feb 2026 09:00:00 GMT</pubDate>
       <description><![CDATA[API'de bir alan adı değişti; web güncellendi, mobil unutuldu, hata üç gün sonra üretimde patladı. O hafta üç depoyu teke indirmeye karar verdik.]]></description>
       <content:encoded><![CDATA[<p>Kararı verdiren olay şuydu: API'de bir alanın adı değişti. Web ekibi aynı gün güncelledi; mobil deposundaki karşılığı gözden kaçtı. Hata üç gün sonra, üretimde, müşteri desteğine düşen 'profil sayfam boş' mesajlarıyla ortaya çıktı. Üç depo, üç sürüm, birbirini bekleyen pull request'ler... O hafta, sözleşme paylaşan her şeyi tek depoya taşıma kararı aldık.</p>
@@ -485,11 +485,11 @@ const total = computed(() =&gt; sum(sorted.value, &quot;amount&quot;));</code></
 <p>Monorepo'nun asıl vaadi tek kelime: atomiklik. API şemasında bir alanı yeniden adlandırdığınızda, onu tüketen web ve mobil kod aynı pull request'te güncellenir. Kırılan ne varsa diff'te, gözünüzün önündedir. Ayrı depolarda aynı iş sürüm yükseltme dansına dönüşür: paketi yayınla, üç depoda ayrı ayrı yükselt, hangi sürümün hangisiyle uyumlu olduğunu bir tabloda tut. Tek depoda ana dal her an kendi içinde tutarlıdır — bizim için mimari tartışmayı bitiren cümle buydu.</p>
 <h2>Kurulum: Sandığınızdan Az</h2>
 <p>Reçetemiz pnpm workspace + Turborepo; özü iki küçük dosya:</p>
-<pre><code># pnpm-workspace.yaml
+<pre><code class="language-yaml"># pnpm-workspace.yaml
 packages:
   - &quot;apps/*&quot; # web, mobile, api
   - &quot;packages/*&quot; # paylaşılan: ui, config, api-client</code></pre>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;tasks&quot;: {
     &quot;build&quot;: {
       &quot;dependsOn&quot;: [&quot;^build&quot;],
@@ -501,7 +501,7 @@ packages:
 <p><code>^build</code> şu demek: bir paketi derlemeden önce bağımlı olduklarını derle. Turborepo görev grafiğini çıkarıyor ve değişmeyen her şeyi önbellekten getiriyor. Depo büyüdükçe bu önbellek altın değerinde — depo üç kat büyüdü, CI süremiz hâlâ ilk günkünden kısa.</p>
 <h2>Asıl Mesele: Katman Disiplini</h2>
 <p>Kötü haber: araçlar sizi kurtarmaz. Monorepo'ların çöktüğü yer teknik değil, disiplinseldir — sınırlar bulanır, herkes her pakete uzanır ve altı ay sonra elinizde tek depoluk bir bağımlılık yumağı kalır. Kuralımız tek yönlü: uygulamalar paketlere bağlanabilir; paketler uygulamalara asla. Ve bu kuralı insana değil, lint'e emanet ediyoruz:</p>
-<pre><code>{
+<pre><code class="language-json">{
   &quot;rules&quot;: {
     &quot;import/no-restricted-paths&quot;: [&quot;error&quot;, {
       &quot;zones&quot;: [

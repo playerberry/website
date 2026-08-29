@@ -1,7 +1,7 @@
 {
   "name": "PlayerBerry",
   "short_name": "PlayerBerry",
-  "description": "Web, mobil ve bulutta uçtan uca dijital ürünler üreten yazılım stüdyosu.",
+  "description": "Independent software studio building web apps, iOS mobile apps and cloud infrastructure.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#0a0a10",
