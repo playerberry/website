@@ -11,6 +11,7 @@ import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 import sentence from "../assets/js/random.ts";
 import { feedPathFor } from "../assets/js/locales";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const { locale } = useI18n();
 
@@ -22,6 +23,9 @@ const year = new Date().getFullYear();
 
 /** The RSS feed matching the active locale. */
 const feedHref = computed(() => feedPathFor(locale.value));
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -70,16 +74,16 @@ href="https://x.com/playerberry" target="_blank"
           <h2 class="pb-footer-heading">{{ $t("footer.nav") }}</h2>
           <ul class="pb-footer-links">
             <li>
-              <RouterLink to="/">{{ $t("menu.home") }}</RouterLink>
+              <RouterLink :to="lp('/')">{{ $t("menu.home") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/projects">{{ $t("menu.projects") }}</RouterLink>
+              <RouterLink :to="lp('/projects')">{{ $t("menu.projects") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/blog">{{ $t("menu.blog") }}</RouterLink>
+              <RouterLink :to="lp('/blog')">{{ $t("menu.blog") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/store">{{ $t("menu.store") }}</RouterLink>
+              <RouterLink :to="lp('/store')">{{ $t("menu.store") }}</RouterLink>
             </li>
             <li>
               <a :href="feedHref" target="_blank" rel="alternate noopener">{{
@@ -92,17 +96,17 @@ href="https://x.com/playerberry" target="_blank"
           <h2 class="pb-footer-heading">{{ $t("footer.legal") }}</h2>
           <ul class="pb-footer-links">
             <li>
-              <RouterLink to="/privacy-policy">{{
+              <RouterLink :to="lp('/privacy-policy')">{{
                 $t("footer.privacy")
               }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/cookies-policy">{{
+              <RouterLink :to="lp('/cookies-policy')">{{
                 $t("footer.cookies")
               }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/terms-and-conditions">{{
+              <RouterLink :to="lp('/terms-and-conditions')">{{
                 $t("footer.terms")
               }}</RouterLink>
             </li>
@@ -112,10 +116,10 @@ href="https://x.com/playerberry" target="_blank"
           <h2 class="pb-footer-heading">{{ $t("footer.contact") }}</h2>
           <ul class="pb-footer-links">
             <li>
-              <RouterLink to="/about-us">{{ $t("footer.about") }}</RouterLink>
+              <RouterLink :to="lp('/about-us')">{{ $t("footer.about") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/contact">{{ $t("footer.contact") }}</RouterLink>
+              <RouterLink :to="lp('/contact')">{{ $t("footer.contact") }}</RouterLink>
             </li>
           </ul>
         </div>

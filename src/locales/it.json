@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "Piattaforma social con regole e moderazione per eventi dal vivo: app iOS in SwiftUI, API Fastify, worker media e console di moderazione."
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "Dashboard di analytics in tempo reale per team SaaS. Rende leggibili dati complessi in pochi secondi."
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "App di tracciamento allenamenti con integrazione Apple Watch e sincronizzazione completa con HealthKit."

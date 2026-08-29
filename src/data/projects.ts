@@ -41,19 +41,12 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    id: "nova",
-    category: "web",
-    year: 2026,
-    tech: ["Vue 3", "TypeScript", "Node.js"],
-    gradient: "linear-gradient(135deg, #ff3d77, #8b5cf6)",
-    featured: true,
-  },
-  {
     id: "pulse",
     category: "mobile",
     year: 2025,
     tech: ["Swift", "SwiftUI", "HealthKit"],
     gradient: "linear-gradient(135deg, #338aff, #3cf0c5)",
+    featured: true,
   },
   {
     id: "atlas",

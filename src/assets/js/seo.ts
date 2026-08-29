@@ -9,13 +9,14 @@
  * `plugins/prerender.ts` renders it into the static HTML shells emitted at
  * build time (what crawlers and social scrapers see before JavaScript runs).
  *
- * URL scheme: the default language lives at the clean path; every other
- * language is addressed by `?lang=<code>` on the same path (see `i18n.ts`,
- * which honours the parameter). A page's canonical URL is its own language
+ * URL scheme: the default language lives at the clean path (`/projects`);
+ * every other language lives under its own prefix (`/tr/projects`, `/tr/`
+ * for the home page — see {@link localePath}). The router resolves the
+ * language from the prefix. A page's canonical URL is its own language
  * version and its hreflang cluster lists every version plus `x-default`
- * (the clean, default-language URL), so search engines can index each
- * language separately instead of only the version served to their crawler's
- * country.
+ * (the default-language URL), so search engines index each language
+ * separately instead of only the version served to their crawler's country.
+ * The former `?lang=<code>` addressing is still accepted and redirected.
  *
  * Kept free of Vue/DOM imports so it is unit-testable and usable from the
  * Vite config.
@@ -90,17 +91,51 @@ export const normalizePath = (path: string): string => {
   return trimmed === "" ? "/" : trimmed;
 };
 
+/** Matches a supported-locale prefix at the start of a path. */
+const LOCALE_PREFIX = new RegExp(`^/(${SUPPORTED_LOCALES.join("|")})(?=/|$)`);
+
+/**
+ * Route path of a page in a given language: the clean path for the default
+ * locale, `/<code>` + path otherwise (`/tr/projects`; the home page becomes
+ * `/tr/`, the directory form static hosting serves without a redirect).
+ *
+ * @param path - Language-neutral route path (any existing prefix is dropped).
+ * @param locale - Language version wanted.
+ * @returns The language-specific path.
+ */
+export const localePath = (path: string, locale: Locale): string => {
+  const clean = stripLocale(normalizePath(path));
+  if (locale === DEFAULT_LOCALE) return clean;
+  return clean === "/" ? `/${locale}/` : `/${locale}${clean}`;
+};
+
+/**
+ * The locale a path is prefixed with, if any.
+ *
+ * @param path - A route path such as `/tr/projects`.
+ * @returns The prefix locale, or `null` for a clean path.
+ */
+export const localeOfPath = (path: string): Locale | null =>
+  (LOCALE_PREFIX.exec(path)?.[1] as Locale | undefined) ?? null;
+
+/**
+ * Drop a locale prefix from a path.
+ *
+ * @param path - A route path such as `/tr/projects` or `/tr/`.
+ * @returns The language-neutral path (`/projects`, `/`).
+ */
+export const stripLocale = (path: string): string =>
+  normalizePath(path.replace(LOCALE_PREFIX, ""));
+
 /**
  * Absolute URL of a page in a given language.
  *
  * @param path - Route path.
  * @param locale - Language version wanted.
- * @returns The clean URL for the default locale, `?lang=<code>` otherwise.
+ * @returns The absolute, language-specific URL.
  */
-export const localizedUrl = (path: string, locale: Locale): string => {
-  const base = `${SITE}${normalizePath(path)}`;
-  return locale === DEFAULT_LOCALE ? base : `${base}?lang=${locale}`;
-};
+export const localizedUrl = (path: string, locale: Locale): string =>
+  `${SITE}${localePath(path, locale)}`;
 
 /**
  * The language version a page falls back to for visitors whose language it

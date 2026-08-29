@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "面向线下活动、基于规则并有审核机制的社交平台：SwiftUI iOS 应用、Fastify API、媒体处理服务与审核控制台。"
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "面向 SaaS 团队的实时分析仪表盘，几秒钟内让复杂数据变得一目了然。"
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "集成 Apple Watch、与 HealthKit 完全同步的训练记录应用。"

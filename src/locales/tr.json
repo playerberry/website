@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "Yüz yüze etkinlikler için kurallı ve moderasyonlu sosyal platform: SwiftUI ile iOS uygulaması, Fastify API, medya işleme servisi ve moderasyon konsolu."
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "SaaS ekipleri için gerçek zamanlı analitik paneli. Karmaşık veriyi saniyeler içinde okunur hâle getirir."
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "Apple Watch entegrasyonlu antrenman takip uygulaması; HealthKit ile tam senkronizasyon."

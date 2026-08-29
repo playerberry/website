@@ -11,18 +11,20 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import UIkit from "uikit";
-import { LOCALE_QUERY_PARAM, activateLocale, saveLocaleChoice } from "../i18n";
+import { saveLocaleChoice } from "../i18n";
 import {
-  DEFAULT_LOCALE,
   LOCALE_NAMES,
   SUPPORTED_LOCALES,
   isSupportedLocale,
   type Locale,
 } from "../assets/js/locales";
+import { localePath, stripLocale } from "../assets/js/seo";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const { locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const lp = useLocalePath();
 
 /** DOM id of the off-canvas drawer. */
 const MENU_ID = "sidenav";
@@ -50,38 +52,31 @@ onUnmounted(() => {
 });
 
 /**
- * Language switches queue up so that, when the visitor changes the selection
- * several times before a catalogue has finished loading, they are applied in
- * the order chosen and the last choice wins.
- */
-let switching: Promise<void> = Promise.resolve();
-
-/**
- * Switch the active UI language (loading its catalogue on first use),
- * persist the choice — a manual choice overrides the country-based detection
- * on later visits — and mirror it into the URL's `?lang=` parameter so the
- * address bar matches the page's canonical, shareable language URL.
+ * Switch the UI language by navigating to the current page's URL in that
+ * language (`/tr/projects`): the router's locale guard loads the catalogue
+ * and activates it, and the address bar ends up on the page's canonical,
+ * shareable URL. The choice is persisted so it overrides the country-based
+ * detection on later visits. The router serialises navigations, so rapid
+ * successive changes settle on the last one.
  *
- * A failed catalogue download leaves the current language in place and
- * resets the `<select>` to it, so the control never shows a language the
- * page is not actually in.
+ * If the catalogue cannot be fetched the guard keeps the current language;
+ * the `<select>` is then reset to it so the control never shows a language
+ * the page is not actually in.
  *
  * @param value - The locale to activate.
  * @param select - The `<select>` that requested the change.
  */
-const setLocale = (value: Locale, select: HTMLSelectElement): void => {
-  switching = switching
-    .then(async () => {
-      await activateLocale(value);
-      saveLocaleChoice(value);
-      const query = { ...route.query };
-      if (value === DEFAULT_LOCALE) delete query[LOCALE_QUERY_PARAM];
-      else query[LOCALE_QUERY_PARAM] = value;
-      await router.replace({ path: route.path, query, hash: route.hash });
-    })
-    .catch(() => {
-      select.value = locale.value;
-    });
+const setLocale = async (
+  value: Locale,
+  select: HTMLSelectElement,
+): Promise<void> => {
+  saveLocaleChoice(value);
+  await router.replace({
+    path: localePath(stripLocale(route.path), value),
+    query: route.query,
+    hash: route.hash,
+  });
+  select.value = locale.value;
 };
 
 /**
@@ -91,7 +86,7 @@ const setLocale = (value: Locale, select: HTMLSelectElement): void => {
  */
 const onLocaleChange = (event: Event) => {
   const select = event.target as HTMLSelectElement;
-  if (isSupportedLocale(select.value)) setLocale(select.value, select);
+  if (isSupportedLocale(select.value)) void setLocale(select.value, select);
 };
 </script>
 
@@ -100,7 +95,7 @@ const onLocaleChange = (event: Event) => {
     <div class="uk-container uk-container-large">
       <nav uk-navbar>
         <div class="uk-navbar-left">
-          <RouterLink to="/" class="uk-navbar-item uk-logo pb-logo">
+          <RouterLink :to="lp('/')" class="uk-navbar-item uk-logo pb-logo">
             player<span class="pb-logo-berry">berry</span
             ><span class="pb-logo-cursor">_</span>
           </RouterLink>
@@ -108,13 +103,13 @@ const onLocaleChange = (event: Event) => {
         <div class="uk-navbar-right">
           <ul class="uk-navbar-nav uk-visible@m">
             <li>
-              <RouterLink to="/projects">{{ $t("menu.projects") }}</RouterLink>
+              <RouterLink :to="lp('/projects')">{{ $t("menu.projects") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/blog">{{ $t("menu.blog") }}</RouterLink>
+              <RouterLink :to="lp('/blog')">{{ $t("menu.blog") }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/store">{{ $t("menu.store") }}</RouterLink>
+              <RouterLink :to="lp('/store')">{{ $t("menu.store") }}</RouterLink>
             </li>
           </ul>
           <div class="pb-lang uk-navbar-item uk-visible@m">
@@ -136,7 +131,7 @@ const onLocaleChange = (event: Event) => {
           </div>
           <div class="uk-navbar-item uk-visible@m">
             <RouterLink
-              to="/contact"
+              :to="lp('/contact')"
               class="uk-button uk-button-primary uk-button-small"
               >{{ $t("menu.contact") }}</RouterLink
             >
@@ -164,27 +159,27 @@ const onLocaleChange = (event: Event) => {
       ></button>
       <ul class="uk-nav uk-margin-large-top">
         <li>
-          <RouterLink to="/" @click="closeMenu">{{
+          <RouterLink :to="lp('/')" @click="closeMenu">{{
             $t("menu.home")
           }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/projects" @click="closeMenu">{{
+          <RouterLink :to="lp('/projects')" @click="closeMenu">{{
             $t("menu.projects")
           }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/blog" @click="closeMenu">{{
+          <RouterLink :to="lp('/blog')" @click="closeMenu">{{
             $t("menu.blog")
           }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/store" @click="closeMenu">{{
+          <RouterLink :to="lp('/store')" @click="closeMenu">{{
             $t("menu.store")
           }}</RouterLink>
         </li>
         <li>
-          <RouterLink to="/contact" @click="closeMenu">{{
+          <RouterLink :to="lp('/contact')" @click="closeMenu">{{
             $t("menu.contact")
           }}</RouterLink>
         </li>

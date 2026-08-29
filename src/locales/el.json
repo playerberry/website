@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "Κοινωνική πλατφόρμα με κανόνες και εποπτεία για εκδηλώσεις διά ζώσης: εφαρμογή iOS σε SwiftUI, Fastify API, media worker και κονσόλα εποπτείας."
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "Πίνακας αναλυτικών σε πραγματικό χρόνο για ομάδες SaaS. Κάνει τα σύνθετα δεδομένα ευανάγνωστα σε δευτερόλεπτα."
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "Εφαρμογή παρακολούθησης προπονήσεων με ενσωμάτωση Apple Watch και πλήρη συγχρονισμό με το HealthKit."

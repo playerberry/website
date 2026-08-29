@@ -18,6 +18,7 @@ import { useI18n } from "vue-i18n";
 import type { Post } from "../data/posts";
 import { usePostContent } from "../composables/usePostContent";
 import { formatPostDate } from "../assets/js/dates.ts";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const props = defineProps<{ post: Post }>();
 
@@ -36,6 +37,9 @@ const contentLang = computed(() =>
     ? content.value.lang
     : undefined,
 );
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -47,7 +51,7 @@ const contentLang = computed(() =>
     </div>
     <div :lang="contentLang">
       <h3 class="uk-card-title pb-post-title">
-        <RouterLink :to="`/blog/${post.slug}`">{{ content?.title }}</RouterLink>
+        <RouterLink :to="lp(`/blog/${post.slug}`)">{{ content?.title }}</RouterLink>
       </h3>
       <p>{{ content?.excerpt }}</p>
     </div>

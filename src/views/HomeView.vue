@@ -13,6 +13,7 @@ import { projects } from "../data/projects";
 import { posts } from "../data/posts";
 import ProjectCard from "../components/ProjectCard.vue";
 import PostCard from "../components/PostCard.vue";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const { t } = useI18n();
 
@@ -51,6 +52,9 @@ const steps = ["discover", "design", "build", "launch"];
 
 /** i18n key suffixes for the hero statistic tiles. */
 const stats = ["years", "projects", "clients", "uptime"];
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -64,12 +68,12 @@ const stats = ["years", "projects", "clients", "uptime"];
       <p class="pb-hero-lead">{{ t("hero.description") }}</p>
       <div class="pb-hero-actions">
         <RouterLink
-          to="/projects"
+          :to="lp('/projects')"
           class="uk-button uk-button-primary uk-button-large"
           >{{ t("hero.ctaPrimary") }}</RouterLink
         >
         <RouterLink
-          to="/contact"
+          :to="lp('/contact')"
           class="uk-button uk-button-default uk-button-large"
           >{{ t("hero.ctaSecondary") }}</RouterLink
         >
@@ -158,7 +162,7 @@ const stats = ["years", "projects", "clients", "uptime"];
           <h2>{{ t("home.work.title") }}</h2>
           <p class="pb-section-lead">{{ t("home.work.lead") }}</p>
         </div>
-        <RouterLink to="/projects" class="pb-link-arrow"
+        <RouterLink :to="lp('/projects')" class="pb-link-arrow"
           >{{ t("home.work.viewAll") }}
           <Icon name="arrow-right" /></RouterLink>
       </div>
@@ -183,7 +187,7 @@ const stats = ["years", "projects", "clients", "uptime"];
           <h2>{{ t("home.journal.title") }}</h2>
           <p class="pb-section-lead">{{ t("home.journal.lead") }}</p>
         </div>
-        <RouterLink to="/blog" class="pb-link-arrow"
+        <RouterLink :to="lp('/blog')" class="pb-link-arrow"
           >{{ t("home.journal.viewAll") }}
           <Icon name="arrow-right" /></RouterLink>
       </div>
@@ -206,7 +210,7 @@ const stats = ["years", "projects", "clients", "uptime"];
         <h2>{{ t("home.cta.title") }}</h2>
         <p>{{ t("home.cta.description") }}</p>
         <RouterLink
-          to="/contact"
+          :to="lp('/contact')"
           class="uk-button uk-button-primary uk-button-large"
           >{{ t("home.cta.button") }}</RouterLink
         >

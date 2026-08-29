@@ -13,6 +13,7 @@ import PostCard from "../components/PostCard.vue";
 import { usePostContent } from "../composables/usePostContent";
 import { formatPostDate } from "../assets/js/dates.ts";
 import { feedPathFor } from "../assets/js/locales";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const { t, locale } = useI18n();
 const { getPost } = usePostContent();
@@ -35,6 +36,9 @@ const featuredLang = computed(() =>
 
 /** The RSS feed matching the active locale. */
 const feedHref = computed(() => feedPathFor(locale.value));
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -77,7 +81,7 @@ const feedHref = computed(() => feedPathFor(locale.value));
               </div>
               <div :lang="featuredLang">
                 <h2 class="uk-card-title pb-post-title">
-                  <RouterLink :to="`/blog/${featured.slug}`">{{
+                  <RouterLink :to="lp(`/blog/${featured.slug}`)">{{
                     featuredContent?.title
                   }}</RouterLink>
                 </h2>

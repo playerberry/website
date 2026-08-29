@@ -3,9 +3,12 @@ import {
   ARTICLE_LOCALES,
   SITE,
   buildHead,
+  localeOfPath,
+  localePath,
   localizedUrl,
   normalizePath,
   renderHead,
+  stripLocale,
 } from "./seo";
 import { SUPPORTED_LOCALES, feedPathFor } from "./locales";
 
@@ -21,14 +24,39 @@ describe("normalizePath", () => {
   });
 });
 
-describe("localizedUrl", () => {
-  it("uses the clean URL for the default locale", () => {
-    expect(localizedUrl("/projects", "en")).toBe(`${SITE}/projects`);
-    expect(localizedUrl("/", "en")).toBe(`${SITE}/`);
+describe("localePath", () => {
+  it("uses the clean path for the default locale", () => {
+    expect(localePath("/projects", "en")).toBe("/projects");
+    expect(localePath("/", "en")).toBe("/");
+    expect(localePath("/tr/projects", "en")).toBe("/projects");
   });
 
-  it("adds ?lang= for other locales", () => {
-    expect(localizedUrl("/projects/", "tr")).toBe(`${SITE}/projects?lang=tr`);
+  it("prefixes other locales and keeps the home as a directory", () => {
+    expect(localePath("/projects/", "tr")).toBe("/tr/projects");
+    expect(localePath("/", "tr")).toBe("/tr/");
+    expect(localePath("/de/blog/x", "tr")).toBe("/tr/blog/x");
+  });
+});
+
+describe("localeOfPath / stripLocale", () => {
+  it("detects and strips a supported prefix only", () => {
+    expect(localeOfPath("/tr/projects")).toBe("tr");
+    expect(localeOfPath("/tr")).toBe("tr");
+    expect(localeOfPath("/training")).toBeNull();
+    expect(localeOfPath("/projects")).toBeNull();
+    expect(stripLocale("/tr/projects")).toBe("/projects");
+    expect(stripLocale("/tr/")).toBe("/");
+    expect(stripLocale("/tr")).toBe("/");
+    expect(stripLocale("/training")).toBe("/training");
+  });
+});
+
+describe("localizedUrl", () => {
+  it("builds absolute language URLs", () => {
+    expect(localizedUrl("/projects", "en")).toBe(`${SITE}/projects`);
+    expect(localizedUrl("/", "en")).toBe(`${SITE}/`);
+    expect(localizedUrl("/projects/", "tr")).toBe(`${SITE}/tr/projects`);
+    expect(localizedUrl("/", "tr")).toBe(`${SITE}/tr/`);
   });
 });
 
@@ -45,7 +73,7 @@ describe("buildHead", () => {
 
   it("lists every locale plus x-default and makes the page self-canonical", () => {
     const head = buildHead({ path: "/store", locale: "tr" });
-    expect(head.canonical).toBe(`${SITE}/store?lang=tr`);
+    expect(head.canonical).toBe(`${SITE}/tr/store`);
     expect(head.alternates).toHaveLength(SUPPORTED_LOCALES.length + 1);
     expect(head.alternates[head.alternates.length - 1]).toEqual({
       hreflang: "x-default",
@@ -80,12 +108,12 @@ describe("buildHead", () => {
       locale: "de",
       contentLocales: ["tr"],
     });
-    expect(head.canonical).toBe(`${SITE}/privacy-policy?lang=tr`);
+    expect(head.canonical).toBe(`${SITE}/tr/privacy-policy`);
     expect(head.ogLocale).toBe("tr_TR");
     expect(head.ogLocaleAlternates).toEqual([]);
     expect(head.alternates).toEqual([
-      { hreflang: "tr", href: `${SITE}/privacy-policy?lang=tr` },
-      { hreflang: "x-default", href: `${SITE}/privacy-policy?lang=tr` },
+      { hreflang: "tr", href: `${SITE}/tr/privacy-policy` },
+      { hreflang: "x-default", href: `${SITE}/tr/privacy-policy` },
     ]);
   });
 
@@ -120,8 +148,8 @@ describe("buildHead", () => {
     expect(crumbs["@type"]).toBe("BreadcrumbList");
     const items = crumbs.itemListElement as Array<Record<string, unknown>>;
     expect(items).toHaveLength(3);
-    expect(items[0].item).toBe(`${SITE}/?lang=tr`);
-    expect(items[2].item).toBe(`${SITE}/blog/post?lang=tr`);
+    expect(items[0].item).toBe(`${SITE}/tr/`);
+    expect(items[2].item).toBe(`${SITE}/tr/blog/post`);
     expect(post["@type"]).toBe("BlogPosting");
     expect(post.headline).toBe("Başlık");
     expect(post.datePublished).toBe("2026-07-14");

@@ -6,6 +6,10 @@
  * only component dependency is `RouterLink` for the in-site links.
  */
 import { RouterLink } from "vue-router";
+import { useLocalePath } from "../composables/useLocalePath";
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -101,7 +105,7 @@ import { RouterLink } from "vue-router";
           <p>
             <strong>Web Sitesi</strong>, PlayerBerry'yi ifade eder ve şu
             adresten erişilebilir:
-            <RouterLink to="/">https://playerberry.com</RouterLink>.
+            <RouterLink :to="lp('/')">https://playerberry.com</RouterLink>.
           </p>
         </li>
         <li>
@@ -334,7 +338,7 @@ import { RouterLink } from "vue-router";
       <ul>
         <li>
           Web sitemizdeki
-          <RouterLink to="/contact">iletişim sayfamızı</RouterLink> ziyaret
+          <RouterLink :to="lp('/contact')">iletişim sayfamızı</RouterLink> ziyaret
           ederek.
         </li>
       </ul>

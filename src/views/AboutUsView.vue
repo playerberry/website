@@ -9,6 +9,7 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const { t, locale, getLocaleMessage } = useI18n();
 
@@ -33,6 +34,9 @@ const values = [
 
 /** i18n key suffixes for the reused statistic tiles (`hero.stats.*`). */
 const stats = ["years", "projects", "clients", "uptime"];
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
@@ -77,7 +81,7 @@ const stats = ["years", "projects", "clients", "uptime"];
         <h2>{{ t("about.cta.title") }}</h2>
         <p>{{ t("about.cta.description") }}</p>
         <RouterLink
-          to="/contact"
+          :to="lp('/contact')"
           class="uk-button uk-button-primary uk-button-large"
           >{{ t("about.cta.button") }}</RouterLink
         >

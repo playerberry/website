@@ -119,12 +119,15 @@ bulunduğunu doğrular; yeni bir öğe eklerken tüm katalogları güncelleyin.
 
 Dil tarayıcı diline göre değil, ziyaretçinin **ülkesine** göre seçilir:
 
-1. Adresteki `?lang=<kod>` parametresi (arama motorlarının dizinlediği dil
+1. Adresteki dil öneki (`/tr/projects`; arama motorlarının dizinlediği dil
    sürümü URL'leri, bkz. "SEO") o ziyaret için her şeyin önündedir; kalıcı
-   olarak saklanmaz.
+   olarak saklanmaz. Eski `?lang=<kod>` adresleri önekli biçime yönlendirilir.
 2. Üst menüden elle seçilmiş bir dil (`localStorage` → `pb:locale`) sonraki
-   ziyaretlerde ülke tespitinin önüne geçer. Dil değiştirildiğinde adres
-   çubuğu da `?lang=` ile güncellenir (İngilizce için parametre kaldırılır).
+   ziyaretlerde ülke tespitinin önüne geçer. Dil değiştirmek aynı sayfanın o
+   dildeki adresine gider (`/tr/projects`); router'daki dil koruyucusu
+   (`localeGuard`) kataloğu yükleyip dili etkinleştirir. Öneksiz bir adres,
+   etkin dil İngilizce değilse o dilin önekine yönlendirilir; şablonlardaki
+   bağlantılar `useLocalePath()` ile zaten önekli üretilir.
 3. Aksi hâlde Cloudflare'ın aynı kaynaktaki `/cdn-cgi/trace` uç noktasından
    `loc=XX` satırı okunur ve `COUNTRY_LOCALES` ile dile çevrilir. Sonuç oturum
    boyunca `sessionStorage` (`pb:geo-locale`) içinde saklanır.
@@ -137,8 +140,9 @@ Dil tarayıcı diline göre değil, ziyaretçinin **ülkesine** göre seçilir:
 Site tek sayfalık bir uygulama olsa da arama motorları ve sosyal medya
 önizleyicileri için sayfa başına doğru meta veriyle sunulur:
 
-- **Dil sürümü URL'leri.** Varsayılan dil (İngilizce) temiz adreste, diğer
-  diller aynı adresin `?lang=<kod>` sürümünde yaşar. Her sayfa kendi dil
+- **Dil sürümü URL'leri.** Varsayılan dil (İngilizce) temiz adreste
+  (`/projects`), diğer diller kendi öneklerinde (`/tr/projects`, ana sayfa
+  `/tr/`) yaşar. Her sayfa kendi dil
   sürümünü `canonical` olarak gösterir ve tüm sürümleri `hreflang`
   (`x-default` = temiz adres) ile listeler; blog yazıları yalnızca çevirisi
   bulunan dilleri (`ARTICLE_LOCALES`) listeler, diğer dillerde İngilizce
@@ -150,13 +154,15 @@ Site tek sayfalık bir uygulama olsa da arama motorları ve sosyal medya
   Çalışma zamanında `src/assets/js/meta.ts` bunu DOM'a uygular (router her
   gezinmede ve dil değişiminde çağırır; blog yazısı kendi verisini geçer).
 - **Önceden üretilmiş kabuklar.** `plugins/prerender.ts`, derlemeden sonra
-  her dizinlenebilir rota için `dist/<rota>.html` (ör. `projects.html`,
-  `blog/<slug>.html`) yazar: `index.html`'in `<!-- seo:start -->` /
-  `<!-- seo:end -->` işaretleri arasındaki bloğu o sayfanın İngilizce meta
-  verisiyle değiştirir. GitHub Pages `/projects` isteğini `projects.html`
-  ile karşıladığından tarayıcılar `404.html` yönlendirmesi yerine doğrudan
-  `200` ve doğru meta veri alır; JavaScript çalıştırmayan sosyal medya
-  önizleyicileri de sayfaya özgü başlık/açıklama görür.
+  her dizinlenebilir rota ve her dil için bir kabuk yazar: `dist/projects.html`,
+  `dist/tr/projects.html`, `dist/tr/index.html`, `dist/blog/<slug>.html` …
+  Her kabuk `index.html`'in `<!-- seo:start -->` / `<!-- seo:end -->`
+  işaretleri arasındaki bloğunu o sayfanın o dildeki meta verisiyle
+  değiştirir ve `<html lang>` değerini ayarlar. GitHub Pages `/tr/projects`
+  isteğini `tr/projects.html` ile karşıladığından tarayıcılar `404.html`
+  yönlendirmesi yerine doğrudan `200` ve doğru meta veri alır; JavaScript
+  çalıştırmayan sosyal medya önizleyicileri de her dilde sayfaya özgü
+  başlık/açıklama görür.
 - **Site geneli veri.** `index.html` içinde Organization/WebSite JSON-LD ve
   paylaşım görseli sabittir. `plugins/sitemap.ts` her sayfayı her dil
   sürümüyle (`xhtml:link` alternatifleriyle) listeler; `robots.txt` sitemap'i

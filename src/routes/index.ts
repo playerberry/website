@@ -1,6 +1,13 @@
 /**
  * Application router.
  *
+ * Every page lives under an optional language prefix — `/projects` is the
+ * default language (English), `/tr/projects` Turkish, `/tr/` the Turkish
+ * home page — so each language version has its own indexable URL (see
+ * `assets/js/seo.ts`). The prefix is the source of truth for the active
+ * language: the {@link localeGuard} activates it, sends a bare path to the
+ * active language's prefix, and redirects the legacy `?lang=` addressing.
+ *
  * Declares every page route, the `/link/*` social-redirect shorteners and a
  * catch-all 404. The home page and the tiny `/link` redirect views are
  * imported eagerly (they are almost empty, so splitting them would only add
@@ -15,12 +22,21 @@
  */
 import { watch } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
-import type { RouteLocationNormalizedLoaded } from "vue-router";
+import type {
+  RouteLocationNormalizedLoaded,
+  RouteLocationRaw,
+  RouteRecordRaw,
+} from "vue-router";
 
-import i18n, { LOCALE_QUERY_PARAM } from "../i18n";
+import i18n, { LOCALE_QUERY_PARAM, activateLocale } from "../i18n";
 import { applyPageMeta } from "../assets/js/meta";
-import { DEFAULT_LOCALE, type Locale } from "../assets/js/locales";
-import { LEGAL_LOCALES } from "../assets/js/seo";
+import {
+  DEFAULT_LOCALE,
+  SUPPORTED_LOCALES,
+  isSupportedLocale,
+  type Locale,
+} from "../assets/js/locales";
+import { LEGAL_LOCALES, localePath, stripLocale } from "../assets/js/seo";
 
 import HomeView from "../views/HomeView.vue";
 import LinkView from "../views/LinkView.vue";
@@ -96,41 +112,42 @@ const linkChildren = [
 }));
 
 /**
- * Route table. `meta.titleKey` / `meta.descriptionKey` are i18n keys resolved
- * into the document metadata by {@link applyMeta}; `meta.ownMeta` marks routes
- * (the blog article) that manage their own title/description once content
- * resolves; `meta.noindex` keeps utility routes out of search indexes.
+ * Page routes, relative to the optional language prefix. `meta.titleKey` /
+ * `meta.descriptionKey` are i18n keys resolved into the document metadata by
+ * {@link applyMeta}; `meta.ownMeta` marks routes (the blog article) that
+ * manage their own title/description once content resolves; `meta.noindex`
+ * keeps utility routes out of search indexes.
  */
-const routes = [
+const pages: RouteRecordRaw[] = [
   {
-    path: "/",
+    path: "",
     component: HomeView,
     meta: { titleKey: "meta.titles.home", brand: false, descriptionKey: "meta.home" },
   },
   {
-    path: "/projects",
+    path: "projects",
     component: () => import("../views/ProjectsView.vue"),
     meta: { titleKey: "meta.titles.projects", descriptionKey: "meta.projects" },
   },
   {
-    path: "/blog",
+    path: "blog",
     component: () => import("../views/BlogView.vue"),
     meta: { titleKey: "meta.titles.blog", descriptionKey: "meta.blog" },
   },
   {
     // The per-post title/description are refined inside BlogPostView.
-    path: "/blog/:slug",
+    path: "blog/:slug",
     component: () => import("../views/BlogPostView.vue"),
     meta: { titleKey: "menu.blog", descriptionKey: "meta.blog", ownMeta: true },
   },
   {
-    path: "/store",
+    path: "store",
     component: () => import("../views/StoreView.vue"),
     meta: { titleKey: "meta.titles.store", descriptionKey: "meta.store" },
   },
   {
     // The bare `/link` has nothing to show; only its children redirect.
-    path: "/link",
+    path: "link",
     component: LinkView,
     redirect: "/",
     meta: { noindex: true, titleKey: "menu.home", descriptionKey: "meta.home" },
@@ -138,11 +155,11 @@ const routes = [
   },
   {
     // Common misspelling of the shortener prefix.
-    path: "/links",
+    path: "links",
     redirect: "/",
   },
   {
-    path: "/terms-and-conditions",
+    path: "terms-and-conditions",
     component: () => import("../views/TosView.vue"),
     meta: {
       titleKey: "footer.terms",
@@ -151,7 +168,7 @@ const routes = [
     },
   },
   {
-    path: "/cookies-policy",
+    path: "cookies-policy",
     component: () => import("../views/CookiesView.vue"),
     meta: {
       titleKey: "footer.cookies",
@@ -160,7 +177,7 @@ const routes = [
     },
   },
   {
-    path: "/privacy-policy",
+    path: "privacy-policy",
     component: () => import("../views/PrivacyView.vue"),
     meta: {
       titleKey: "footer.privacy",
@@ -169,17 +186,17 @@ const routes = [
     },
   },
   {
-    path: "/contact",
+    path: "contact",
     component: () => import("../views/ContactView.vue"),
     meta: { titleKey: "meta.titles.contact", descriptionKey: "meta.contact" },
   },
   {
-    path: "/about-us",
+    path: "about-us",
     component: () => import("../views/AboutUsView.vue"),
     meta: { titleKey: "meta.titles.about", descriptionKey: "meta.about" },
   },
   {
-    path: "/:pathMatch(.*)*",
+    path: ":pathMatch(.*)*",
     component: () => import("../views/NotFoundView.vue"),
     meta: {
       titleKey: "notFound.title",
@@ -189,20 +206,90 @@ const routes = [
   },
 ];
 
+/**
+ * Route table: every page once, under an optional `/<locale>` prefix limited
+ * to the supported codes so `/training` still reaches the 404 route rather
+ * than being read as a language.
+ */
+const routes: RouteRecordRaw[] = [
+  {
+    path: `/:locale(${SUPPORTED_LOCALES.join("|")})?`,
+    children: pages,
+  },
+];
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
   /**
    * Restore the previous scroll position on back/forward navigation, keep
-   * the position when only the query or hash changes on the same page (the
-   * `?lang=` update on a language switch), and otherwise scroll to the top.
+   * the position when the page stays the same (a language switch, a query or
+   * hash change), and otherwise scroll to the top.
    */
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition;
-    if (to.path === from.path) return false;
+    if (stripLocale(to.path) === stripLocale(from.path)) return false;
     return { top: 0 };
   },
 });
+
+/**
+ * Resolve the language from the URL before every navigation.
+ *
+ * - `?lang=<code>` (the former addressing) is redirected to the prefix form.
+ * - An explicit default-language prefix (`/en/...`) is redirected to the
+ *   clean path so the default language has exactly one URL.
+ * - A supported prefix activates that language (loading its catalogue on
+ *   first use); the URL wins over any saved preference for this visit.
+ * - A bare path while a non-default language is active (the country-based
+ *   choice on first load, a saved choice, or a stray language-neutral link)
+ *   is sent to that language's prefix, so the address bar always shows the
+ *   page's canonical, shareable URL.
+ *
+ * @param to - The target route.
+ * @returns `true` to proceed, or the location to redirect to.
+ */
+const localeGuard = async (
+  to: RouteLocationNormalizedLoaded,
+): Promise<boolean | RouteLocationRaw> => {
+  const active = i18n.global.locale.value as Locale;
+  const clean = stripLocale(to.path);
+
+  const legacy = to.query[LOCALE_QUERY_PARAM];
+  if (typeof legacy === "string" && isSupportedLocale(legacy)) {
+    const query = { ...to.query };
+    delete query[LOCALE_QUERY_PARAM];
+    return { path: localePath(clean, legacy), query, hash: to.hash, replace: true };
+  }
+
+  const prefix = to.params.locale;
+  if (typeof prefix === "string" && prefix) {
+    if (prefix === DEFAULT_LOCALE) {
+      return { path: clean, query: to.query, hash: to.hash, replace: true };
+    }
+    if (isSupportedLocale(prefix) && prefix !== active) {
+      try {
+        await activateLocale(prefix);
+      } catch {
+        // The catalogue could not be fetched; stay in the current language.
+        return { path: localePath(clean, active), query: to.query, hash: to.hash };
+      }
+    }
+    return true;
+  }
+
+  if (active !== DEFAULT_LOCALE) {
+    return {
+      path: localePath(clean, active),
+      query: to.query,
+      hash: to.hash,
+      replace: true,
+    };
+  }
+  return true;
+};
+
+router.beforeEach(localeGuard);
 
 /**
  * Apply localised document metadata (title, description, canonical, hreflang
@@ -218,34 +305,21 @@ const applyMeta = (to: RouteLocationNormalizedLoaded): void => {
   if (to.meta.ownMeta) return;
 
   const { t } = i18n.global;
+  const path = stripLocale(to.path);
   const title = to.meta.titleKey ? t(to.meta.titleKey) : undefined;
   const noindex = to.matched.some((record) => record.meta.noindex);
 
   applyPageMeta({
-    path: to.path,
+    path,
     title,
     brand: to.meta.brand,
     description: to.meta.descriptionKey ? t(to.meta.descriptionKey) : undefined,
     noindex,
     contentLocales: to.meta.contentLocales,
     breadcrumb:
-      title && to.path !== "/" && !noindex
-        ? [{ name: title, path: to.path }]
-        : undefined,
+      title && path !== "/" && !noindex ? [{ name: title, path }] : undefined,
   });
 };
-
-// Carry the active language into every in-app URL: a visitor reading the
-// site in a non-default language keeps `?lang=` on each page they navigate
-// to, so the address bar always matches the page's canonical, shareable URL
-// (see `assets/js/seo.ts`). The default language uses the clean URL.
-router.beforeEach((to) => {
-  const active = i18n.global.locale.value;
-  if (active === DEFAULT_LOCALE || to.query[LOCALE_QUERY_PARAM] !== undefined) {
-    return true;
-  }
-  return { ...to, query: { ...to.query, [LOCALE_QUERY_PARAM]: active } };
-});
 
 // Keep metadata in step with navigation…
 router.afterEach((to) => applyMeta(to));

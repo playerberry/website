@@ -6,13 +6,17 @@
  * first time its locale is activated, keeping the main bundle small.
  *
  * The initial locale is resolved in this order:
- * 1. a `?lang=<code>` query parameter — the language-specific URLs that
- *    search engines index (see `assets/js/seo.ts`); it applies to this visit
- *    only and is not persisted,
+ * 1. the language prefix of the page URL (`/tr/...`, the language-specific
+ *    URLs search engines index — see `assets/js/seo.ts`) or the legacy
+ *    `?lang=<code>` parameter; it applies to this visit only and is not
+ *    persisted,
  * 2. the choice saved from the header switch (`pb:locale` in `localStorage`),
  * 3. the visitor's country (resolved at the Cloudflare edge via
  *    `/cdn-cgi/trace`) through {@link localeForCountry},
  * 4. English, for unmapped countries or failed detection.
+ *
+ * The router then keeps the URL and the language in step (see the locale
+ * guard in `routes/index.ts`).
  *
  * Catalogues without a `blog.posts` section fall back to the English
  * articles per post. See `assets/js/locales.ts` for the country → locale map
@@ -27,6 +31,7 @@ import {
   parseTraceCountry,
   type Locale,
 } from "./assets/js/locales";
+import { localeOfPath } from "./assets/js/seo";
 
 /** `localStorage` key holding the language chosen from the header switch. */
 export const LOCALE_STORAGE_KEY = "pb:locale";
@@ -34,7 +39,10 @@ export const LOCALE_STORAGE_KEY = "pb:locale";
 /** `sessionStorage` key caching the geo-detected locale for this visit. */
 const GEO_CACHE_KEY = "pb:geo-locale";
 
-/** Query parameter selecting a language version of a page. */
+/**
+ * Legacy query parameter that used to select a language version of a page;
+ * still honoured and redirected to the prefix form by the router.
+ */
 export const LOCALE_QUERY_PARAM = "lang";
 
 /** How long to wait for the geolocation lookup before falling back (ms). */
@@ -165,11 +173,14 @@ const detectGeoLocale = async (): Promise<Locale> => {
 };
 
 /**
- * The locale requested by the page URL's `?lang=` parameter, if valid.
+ * The locale requested by the page URL — its language prefix, or the legacy
+ * `?lang=` parameter — if valid.
  *
  * @returns The requested locale, or `null`.
  */
 const localeFromUrl = (): Locale | null => {
+  const prefix = localeOfPath(window.location.pathname);
+  if (prefix) return prefix;
   const value = new URLSearchParams(window.location.search).get(
     LOCALE_QUERY_PARAM,
   );
@@ -179,9 +190,9 @@ const localeFromUrl = (): Locale | null => {
 /**
  * Resolve and activate the initial locale before the app mounts.
  *
- * Preference order: the `?lang=` URL parameter, the choice saved from the
- * language switch, the country-based detection, then English. Never rejects
- * — English is bundled and always activates.
+ * Preference order: the URL's language, the choice saved from the language
+ * switch, the country-based detection, then English. Never rejects — English
+ * is bundled and always activates.
  */
 export const initLocale = async (): Promise<void> => {
   try {

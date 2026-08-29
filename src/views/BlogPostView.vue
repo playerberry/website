@@ -24,6 +24,7 @@ import type { Locale } from "../assets/js/locales";
 import { parseBlocks, type Block } from "../assets/js/postBlocks";
 import CodeBlock from "../components/CodeBlock.vue";
 import NotFoundView from "./NotFoundView.vue";
+import { useLocalePath } from "../composables/useLocalePath";
 
 const route = useRoute();
 const { t, locale } = useI18n();
@@ -89,12 +90,15 @@ watchEffect(() => {
     });
   }
 });
+
+/** Maps language-neutral paths to the active language's URL. */
+const lp = useLocalePath();
 </script>
 
 <template>
   <section v-if="post" class="pb-section">
     <div class="uk-container">
-      <RouterLink to="/blog" class="pb-link-arrow"
+      <RouterLink :to="lp('/blog')" class="pb-link-arrow"
         ><Icon name="arrow-left" />
         {{ t("blog.back") }}</RouterLink
       >

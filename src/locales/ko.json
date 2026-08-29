@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "오프라인 이벤트를 위한 규칙 기반 관리형 소셜 플랫폼: SwiftUI iOS 앱, Fastify API, 미디어 워커, 모더레이션 콘솔."
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "SaaS 팀을 위한 실시간 분석 대시보드. 복잡한 데이터를 몇 초 만에 읽기 쉽게 바꿉니다."
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "Apple Watch 연동과 HealthKit 완전 동기화를 갖춘 운동 기록 앱."

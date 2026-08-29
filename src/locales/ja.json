@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "対面イベントのためのルールとモデレーションを備えたソーシャルプラットフォーム。SwiftUI製iOSアプリ、Fastify API、メディアワーカー、モデレーションコンソールで構成。"
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "SaaSチーム向けのリアルタイム分析ダッシュボード。複雑なデータを数秒で読める形に変えます。"
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "Apple Watch連携とHealthKit完全同期を備えたトレーニング記録アプリ。"

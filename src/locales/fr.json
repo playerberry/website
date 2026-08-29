@@ -136,10 +136,6 @@
         "title": "Neredesin Co",
         "description": "Plateforme sociale encadrée et modérée pour les événements en personne : app iOS en SwiftUI, API Fastify, worker média et console de modération."
       },
-      "nova": {
-        "title": "Nova Analytics",
-        "description": "Tableau de bord analytique en temps réel pour les équipes SaaS. Transforme des données complexes en informations lisibles en quelques secondes."
-      },
       "pulse": {
         "title": "Pulse Fit",
         "description": "Application de suivi d'entraînement avec intégration Apple Watch et synchronisation complète avec HealthKit."
