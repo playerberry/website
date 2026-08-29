@@ -42,14 +42,19 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <section class="pb-section">
-    <div class="uk-container uk-container-large">
-      <div class="pb-section-head">
-        <p class="pb-eyebrow">{{ t("blog.eyebrow") }}</p>
-        <h1>{{ t("blog.title") }}</h1>
-        <p class="pb-section-lead">{{ t("blog.lead") }}</p>
+  <section class="section">
+    <div class="container-pb">
+      <!-- Page heading with the feed link on the right -->
+      <div
+        class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
+      >
+        <div>
+          <p class="eyebrow">{{ t("blog.eyebrow") }}</p>
+          <h1 class="section-title mt-3">{{ t("blog.title") }}</h1>
+          <p class="lead mt-4">{{ t("blog.lead") }}</p>
+        </div>
         <a
-          class="pb-rss-link"
+          class="link-arrow shrink-0 self-start sm:self-auto"
           :href="feedHref"
           target="_blank"
           rel="alternate noopener"
@@ -58,54 +63,68 @@ const lp = useLocalePath();
         </a>
       </div>
 
-      <!-- Featured (latest) post -->
-      <div
+      <!-- Featured (latest) post: cover on the left, copy on the right. The
+           title link stretches over the whole card via its ::after. -->
+      <article
         v-spotlight
-        class="uk-card uk-card-default uk-card-hover uk-margin-medium-bottom"
+        v-reveal
+        class="card mt-12 grid gap-4 p-3 md:grid-cols-2 md:gap-6"
       >
-        <div class="uk-grid uk-grid-collapse uk-child-width-1-2@m" uk-grid>
-          <div>
-            <div
-              class="pb-post-cover"
-              :style="{ backgroundImage: featured.gradient }"
-            ></div>
+        <div
+          class="relative aspect-[16/10] overflow-hidden rounded-tile md:aspect-auto md:min-h-[320px]"
+          :style="{ backgroundImage: featured.gradient }"
+          aria-hidden="true"
+        >
+          <!-- Dotted texture over the gradient -->
+          <div
+            class="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.35)_1px,transparent_1.2px)] bg-[size:14px_14px] opacity-40"
+          ></div>
+          <!-- Soft vignette so the cover reads as a surface, not a swatch -->
+          <div
+            class="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-white/5"
+          ></div>
+        </div>
+
+        <div
+          class="flex flex-col justify-center px-2 pt-2 pb-4 sm:px-4 sm:pb-5 md:px-6 md:py-8"
+        >
+          <div class="meta-row">
+            <span>{{ formatPostDate(featured.date, locale) }}</span>
+            <span aria-hidden="true">·</span>
+            <span>{{
+              t("blog.readingTime", { minutes: featuredContent?.minutes })
+            }}</span>
           </div>
-          <div>
-            <div class="uk-card-body">
-              <div class="pb-post-meta">
-                <span>{{ formatPostDate(featured.date, locale) }}</span>
-                <span>·</span>
-                <span>{{
-                  t("blog.readingTime", { minutes: featuredContent?.minutes })
-                }}</span>
-              </div>
-              <div :lang="featuredLang">
-                <h2 class="uk-card-title pb-post-title">
-                  <RouterLink :to="lp(`/blog/${featured.slug}`)">{{
-                    featuredContent?.title
-                  }}</RouterLink>
-                </h2>
-                <p>{{ featuredContent?.excerpt }}</p>
-              </div>
-              <div class="pb-chip-row">
-                <span
-                  v-for="tag in featured.tags"
-                  :key="tag"
-                  class="pb-chip"
-                  >{{ tag }}</span
-                >
-              </div>
-            </div>
+          <div :lang="featuredLang" class="mt-4">
+            <h2
+              class="text-2xl leading-[1.15] sm:text-3xl lg:text-[2.25rem]"
+            >
+              <RouterLink
+                :to="lp(`/blog/${featured.slug}`)"
+                class="text-ink-strong transition-colors duration-200 after:absolute after:inset-0 after:rounded-card hover:text-berry"
+                >{{ featuredContent?.title }}</RouterLink
+              >
+            </h2>
+            <p class="mt-4 text-base sm:text-lg">
+              {{ featuredContent?.excerpt }}
+            </p>
+          </div>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span v-for="tag in featured.tags" :key="tag" class="chip">{{
+              tag
+            }}</span>
           </div>
         </div>
-      </div>
+      </article>
 
       <!-- Remaining posts -->
-      <div
-        class="uk-grid uk-grid-match uk-child-width-1-2@s uk-child-width-1-3@m"
-        uk-grid
-      >
-        <div v-for="post in rest" :key="post.slug">
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          v-for="(post, i) in rest"
+          :key="post.slug"
+          v-reveal="i * 80"
+          class="grid"
+        >
           <PostCard :post="post" />
         </div>
       </div>

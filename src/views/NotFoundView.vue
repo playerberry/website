@@ -13,14 +13,20 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <section class="pb-section uk-text-center">
-    <div class="uk-container">
-      <h1 class="pb-404 super-text">404</h1>
-      <h2>{{ $t("notFound.title") }}</h2>
-      <p class="pb-muted">{{ $t("notFound.description") }}</p>
-      <RouterLink :to="lp('/')" class="uk-button uk-button-primary uk-margin-top">{{
-        $t("notFound.button")
-      }}</RouterLink>
+  <section class="section relative flex min-h-[60vh] items-center">
+    <div class="grid-bg absolute inset-0 -z-10" aria-hidden="true"></div>
+    <div class="container-pb text-center">
+      <h1
+        class="gradient-text font-display text-[clamp(6rem,22vw,11rem)] leading-none font-bold tracking-tighter"
+      >
+        404
+      </h1>
+      <h2 class="section-title mt-2">{{ $t("notFound.title") }}</h2>
+      <p class="lead mx-auto mt-4">{{ $t("notFound.description") }}</p>
+      <RouterLink :to="lp('/')" class="btn btn-primary mt-10">
+        <Icon name="arrow-left" />
+        {{ $t("notFound.button") }}
+      </RouterLink>
     </div>
   </section>
 </template>

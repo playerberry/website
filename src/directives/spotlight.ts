@@ -40,7 +40,7 @@ interface SpotlightElement extends HTMLElement {
  *
  * @example
  * ```vue
- * <div class="uk-card uk-card-default uk-card-hover" v-spotlight>…</div>
+ * <div class="card" v-spotlight>…</div>
  * ```
  */
 const spotlight: Directive<SpotlightElement> = {

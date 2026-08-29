@@ -13,7 +13,7 @@ ziyaretçinin ülkesine göre otomatik seçilir.
 | UI | Vue 3 (`<script setup>`, Composition API), vue-router 5 |
 | Dil / derleme | TypeScript, Vite 8 (`vue-tsc` ile tip denetimi) |
 | Çok dillilik | vue-i18n 11 — İngilizce paketle gelir, diğer kataloglar tembel yüklenir |
-| Stil | UIkit 3 (yalnızca kullanılan bileşenler Less üzerinden içe aktarılır) + özel Less teması (`src/assets/less/`) |
+| Stil | Tailwind CSS v4 (`@tailwindcss/vite`); tasarım tokenları ve paylaşılan bileşen sınıfları `src/assets/css/main.css`, uzun metin/kod tipografisi `prose.css`; fontlar self-host (`@fontsource-variable`) |
 | İçerik | Blog kod blokları için highlight.js; RSS ve sitemap üretimi için `plugins/` altındaki yerel Vite eklentileri |
 | Kalite | ESLint (flat config, Vue + TypeScript), Prettier biçimi, Vitest |
 | Yayın | GitHub Pages — GitHub Actions ile otomatik, `gh-pages` paketiyle isteğe bağlı elle |
@@ -49,7 +49,7 @@ ve site İngilizce açılır; diğer dilleri üst menüdeki dil seçiciden deney
 plugins/            Vite eklentileri: rss.ts (rss*.xml), sitemap.ts (sitemap.xml), prerender.ts (dist/<rota>.html kabukları)
 public/             Olduğu gibi kopyalanan dosyalar: CNAME, 404.html (SPA geri dönüşü), ikonlar, robots.txt
 src/
-  main.ts           Uygulama girişi (UIkit, router, i18n, tema, global Icon bileşeni)
+  main.ts           Uygulama girişi (router, i18n, Tailwind stili, global Icon bileşeni, v-spotlight/v-reveal)
   i18n.ts           vue-i18n kurulumu, katalogların tembel yüklenmesi, ülkeye göre dil seçimi
   routes/           Rota tablosu, /link/* yönlendirmeleri ve sayfa meta (title/description/OG) yönetimi
   views/            Sayfalar (Home, Projects, Blog, BlogPost, Store, AboutUs, Contact, yasal sayfalar, 404)
@@ -58,7 +58,8 @@ src/
   data/             İçerik meta verisi: projects.ts, products.ts, posts.ts
   locales/          Dil katalogları: tr, en, es, fr, de, ru, ko, it, el, ja, zh (.json)
   assets/js/        Vue'dan bağımsız yardımcılar: locales.ts, dates.ts, seo.ts (buildHead), meta.ts, postBlocks.ts, random.ts
-  assets/less/      Tema; _main.less UIkit'in seçili bileşenlerini ve site bloklarını içe aktarır
+  assets/css/       main.css (Tailwind @theme tokenları + bileşen sınıfları), prose.css (blog/yasal tipografi, kod teması)
+  directives/       v-spotlight (işaretçi ışığı), v-reveal (kaydırınca görünme animasyonu)
 ```
 
 ## İçerik yönetimi
@@ -190,6 +191,39 @@ Akış (`.github/workflows/deploy.yml`):
 yalnızca `stage` dalı seçildiğinde yapılır, başka bir dal seçilirse sadece
 denetimler koşar. Acil bir durumda yerelden `pnpm release` ile de yayın
 yapılabilir; bu komut önce derleme alır, sonra `gh-pages` dalına push eder.
+
+## Tasarım sistemi
+
+Tek tema (koyu). Renk, font, yarıçap, easing ve animasyon tokenları
+`src/assets/css/main.css` içindeki `@theme` bloğunda tanımlıdır ve Tailwind
+utility'leri olarak kullanılır (`bg-surface`, `text-berry`, `font-display`,
+`ease-out-expo`, `animate-marquee` …). Tekrarlanan desenler bileşen sınıfı
+olarak aynı dosyadadır: `.container-pb`, `.section`, `.eyebrow`,
+`.section-title`, `.lead`, `.btn` (+ `.btn-primary/.btn-secondary/.btn-ghost`,
+`.btn-lg/.btn-sm`), `.card` (+ `.card-static`, `.card-title`), `.chip`,
+`.icon-tile`, `.badge`, `.link-arrow`, `.glass`, `.marquee`, `.aurora`,
+`.noise`, `.reveal`. Sayfaya özgü stil şablonlarda utility olarak kalır.
+
+Hareket: yalnızca `transform`/`opacity`; `v-reveal` direktifi
+(IntersectionObserver) öğeleri görünüme girince kademeli gösterir,
+`v-spotlight` kartlarda işaretçiyi izleyen ışık üretir. Tüm animasyonlar
+`prefers-reduced-motion` altında kapanır.
+
+## Performans
+
+- Çalışma zamanı bağımlılığı olarak yalnızca Vue, vue-router ve vue-i18n var;
+  ana paket ~150 kB (gzip ~55 kB). highlight.js yalnızca blog yazılarında ve
+  sayfa boyandıktan sonra (boşta) yüklenir.
+- Fontlar self-host ve `@fontsource-variable` ile alt kümelere bölünmüş; her
+  dilin kabuğu yalnızca o dilin ihtiyaç duyduğu alt kümeleri (`latin`,
+  Türkçe için `latin-ext`, Rusça için `cyrillic` …) `preload` eder.
+- `plugins/prerender.ts` her kabuğa o rotanın tembel görünüm chunk'ı ve dil
+  kataloğu için `modulepreload` ekler (Vite manifest'inden); böylece SPA
+  açılış zinciri bir tur kısalır. Uygulama, ilk gezinme çözülene kadar monte
+  edilmez ve `<main>` en az bir viewport yüksekliğindedir — yerleşim kayması
+  (CLS) sıfır.
+- Ölçüm: `pnpm build && pnpm preview` sonrası
+  `pnpm dlx lighthouse http://localhost:8086/ --preset=desktop`.
 
 ## Kod standartları
 

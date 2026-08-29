@@ -8,5 +8,7 @@
 </script>
 
 <template>
-  <h1>{{ $t("redirect.facebook") }}</h1>
+  <h1 class="font-display text-xl font-semibold text-ink-strong sm:text-2xl">
+    {{ $t("redirect.facebook") }}
+  </h1>
 </template>

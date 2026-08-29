@@ -1,5 +1,12 @@
 import type { Plugin, ResolvedConfig } from "vite";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { posts } from "../src/data/posts.ts";
 import en from "../src/locales/en.json" with { type: "json" };
@@ -52,7 +59,33 @@ const catalogues: Record<Locale, Catalogue> = {
 /** A shell to write: the head input plus its output file. */
 interface Shell extends HeadInput {
   file: string;
+  /** Source module of the lazily loaded view rendering this route. */
+  view?: string;
 }
+
+/** One entry of Vite's build manifest (the subset used here). */
+interface ManifestChunk {
+  file: string;
+  imports?: string[];
+}
+
+/** Vite's build manifest: source module → emitted chunk. */
+type Manifest = Record<string, ManifestChunk>;
+
+/** Lazily loaded views per route path (the home view is in the main chunk). */
+const VIEWS: Record<string, string> = {
+  "/projects": "src/views/ProjectsView.vue",
+  "/blog": "src/views/BlogView.vue",
+  "/store": "src/views/StoreView.vue",
+  "/about-us": "src/views/AboutUsView.vue",
+  "/contact": "src/views/ContactView.vue",
+  "/privacy-policy": "src/views/PrivacyView.vue",
+  "/cookies-policy": "src/views/CookiesView.vue",
+  "/terms-and-conditions": "src/views/TosView.vue",
+};
+
+/** Source module of the blog article view. */
+const ARTICLE_VIEW = "src/views/BlogPostView.vue";
 
 /**
  * Head inputs for every indexable route in one language — what a crawler
@@ -78,7 +111,7 @@ const pagesFor = (locale: Locale): Shell[] => {
     path: string,
     title: string,
     description: string,
-    extra: Partial<HeadInput> = {},
+    extra: Partial<Shell> = {},
   ): Shell => ({
     path,
     locale,
@@ -88,6 +121,7 @@ const pagesFor = (locale: Locale): Shell[] => {
     imageAlt: t.meta.ogAlt,
     breadcrumb: path === "/" ? undefined : [{ name: title, path }],
     file: fileFor(path),
+    view: VIEWS[path],
     ...extra,
   });
 
@@ -97,6 +131,7 @@ const pagesFor = (locale: Locale): Shell[] => {
     const content = catalogues[articleLocale].blog.posts[slug];
     const path = `/blog/${post.slug}`;
     return page(path, content.title, content.excerpt, {
+      view: ARTICLE_VIEW,
       contentLocales: ARTICLE_LOCALES,
       breadcrumb: [
         { name: t.menu.blog, path: "/blog" },
@@ -127,28 +162,134 @@ const pagesFor = (locale: Locale): Shell[] => {
 };
 
 /**
+ * Emitted files a source module needs at runtime: its own chunk plus every
+ * chunk it statically imports, transitively (in load order, deduplicated).
+ *
+ * @param manifest - Vite's build manifest.
+ * @param source - Source module path (a manifest key).
+ * @returns Chunk paths relative to the output directory.
+ */
+const chunksFor = (manifest: Manifest, source: string): string[] => {
+  const files: string[] = [];
+  const visit = (key: string): void => {
+    const entry = manifest[key];
+    if (!entry || files.includes(entry.file)) return;
+    for (const dep of entry.imports ?? []) visit(dep);
+    files.push(entry.file);
+  };
+  visit(source);
+  return files;
+};
+
+/**
+ * `<link>` hints that shorten a page's critical request chain: the route's
+ * lazy view chunk and the language catalogue chunk (both otherwise
+ * discovered only after the main bundle runs) plus the font files the
+ * language's text needs for its first paint. The main bundle's own imports are already preloaded by
+ * Vite's `modulepreload` tags in `index.html`.
+ *
+ * @param manifest - Vite's build manifest.
+ * @param fonts - Font files (relative to the output directory) to preload.
+ * @param shell - The page.
+ * @returns The `<link>` tags, one per line.
+ */
+const preloadTags = (
+  manifest: Manifest,
+  fonts: string[],
+  shell: Shell,
+): string => {
+  // Chunks the entry already loads (and Vite already preloads) are skipped.
+  const entry = new Set(chunksFor(manifest, "index.html"));
+  const modules = new Set<string>();
+  const add = (source: string): void => {
+    for (const file of chunksFor(manifest, source)) {
+      if (!entry.has(file)) modules.add(file);
+    }
+  };
+  if (shell.view) add(shell.view);
+  if (shell.locale !== DEFAULT_LOCALE) add(`src/locales/${shell.locale}.json`);
+  return [
+    ...fonts.map(
+      (font) =>
+        `<link rel="preload" as="font" type="font/woff2" href="/${font}" crossorigin />`,
+    ),
+    ...[...modules].map(
+      (file) => `<link rel="modulepreload" href="/${file}" />`,
+    ),
+  ].join("\n");
+};
+
+/**
  * Swap the marked head block of the built `index.html` for a page's own tags
- * and set `<html lang>` to the page's language.
+ * (SEO metadata followed by the page's preload hints) and set `<html lang>`
+ * to the page's language.
  *
  * @param template - The built `index.html`.
- * @param input - The page's head input.
+ * @param shell - The page.
+ * @param preloads - Preload `<link>` tags for the page.
  * @returns The page shell HTML.
  */
-const renderShell = (template: string, input: HeadInput): string => {
+const renderShell = (
+  template: string,
+  shell: Shell,
+  preloads: string,
+): string => {
   const start = template.indexOf(START);
   const end = template.indexOf(END);
   if (start < 0 || end < 0) {
     throw new Error(`index.html is missing the ${START} / ${END} markers`);
   }
-  const head = renderHead(buildHead(input))
+  const head = [renderHead(buildHead(shell)), preloads]
+    .filter(Boolean)
+    .join("\n")
     .split("\n")
     .map((line) => `    ${line}`)
     .join("\n");
   return `${template.slice(0, start + START.length)}\n${head}\n    ${template.slice(end)}`.replace(
     /<html lang="[^"]*"/,
-    `<html lang="${input.locale}"`,
+    `<html lang="${shell.locale}"`,
   );
 };
+
+/** The three self-hosted faces (file-name prefixes). */
+const FONT_FAMILIES = ["inter", "space-grotesk", "jetbrains-mono"];
+
+/**
+ * Unicode subsets a language's text is set in — the font files worth
+ * preloading for that language's shells. Every language uses the latin
+ * files (Latin script, digits, punctuation); Turkish needs the extended
+ * Latin block for ş/ğ/ı, Russian and Greek their own scripts. CJK glyphs
+ * come from system fonts, so those locales preload only the latin files.
+ */
+const FONT_SUBSETS: Record<Locale, string[]> = {
+  en: ["latin"],
+  tr: ["latin", "latin-ext"],
+  es: ["latin"],
+  fr: ["latin"],
+  de: ["latin"],
+  it: ["latin"],
+  ru: ["latin", "cyrillic"],
+  el: ["latin", "greek"],
+  ja: ["latin"],
+  ko: ["latin"],
+  zh: ["latin"],
+};
+
+/**
+ * Font files a language's pages should preload, from the emitted assets.
+ *
+ * @param assets - File names in the `assets/` output directory.
+ * @param locale - The shells' language.
+ * @returns Paths relative to the output directory.
+ */
+const fontsFor = (assets: string[], locale: Locale): string[] =>
+  FONT_SUBSETS[locale].flatMap((subset) =>
+    FONT_FAMILIES.flatMap((family) =>
+      assets
+        .filter((f) => f.startsWith(`${family}-${subset}-wght-normal`))
+        .map((f) => `assets/${f}`),
+    ),
+  );
 
 /**
  * Vite plugin that emits one static HTML shell per indexable route and
@@ -177,6 +318,12 @@ export function prerender(): Plugin {
       if (error) return;
       const outDir = resolve(config.root, config.build.outDir);
       const template = readFileSync(join(outDir, "index.html"), "utf8");
+      const manifestPath = join(outDir, ".vite", "manifest.json");
+      const manifest: Manifest = existsSync(manifestPath)
+        ? JSON.parse(readFileSync(manifestPath, "utf8"))
+        : {};
+      const assetsDir = join(outDir, "assets");
+      const assets = existsSync(assetsDir) ? readdirSync(assetsDir) : [];
       let count = 0;
       // English last: its home shell overwrites index.html itself, so the
       // template must be read before any language writes.
@@ -185,13 +332,19 @@ export function prerender(): Plugin {
         DEFAULT_LOCALE,
       ];
       for (const locale of order) {
-        for (const { file, ...input } of pagesFor(locale)) {
-          const target = join(outDir, file);
+        const fonts = fontsFor(assets, locale);
+        for (const shell of pagesFor(locale)) {
+          const target = join(outDir, shell.file);
           mkdirSync(dirname(target), { recursive: true });
-          writeFileSync(target, renderShell(template, input));
+          writeFileSync(
+            target,
+            renderShell(template, shell, preloadTags(manifest, fonts, shell)),
+          );
           count += 1;
         }
       }
+      // The manifest only served this step; keep it out of the deploy.
+      rmSync(join(outDir, ".vite"), { recursive: true, force: true });
       config.logger.info(
         `prerender: wrote ${count} page shells in ${order.length} languages`,
       );

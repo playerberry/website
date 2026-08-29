@@ -10,7 +10,8 @@
  *
  * Article content is read raw (see {@link usePostContent}) so it may contain
  * arbitrary code. The body is parsed into typed blocks by the pure helpers in
- * {@link module:postBlocks} — see that module for the inline convention.
+ * {@link module:postBlocks} — see that module for the inline convention. The
+ * body's typography comes from `.prose-pb` (see `assets/css/prose.css`).
  */
 import { computed, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
@@ -96,58 +97,73 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <section v-if="post" class="pb-section">
-    <div class="uk-container">
-      <RouterLink :to="lp('/blog')" class="pb-link-arrow"
-        ><Icon name="arrow-left" />
-        {{ t("blog.back") }}</RouterLink
-      >
-      <div class="pb-post-meta uk-margin-medium-top">
-        <span>{{ formatPostDate(post.date, locale) }}</span>
-        <span>·</span>
-        <span>{{ t("blog.readingTime", { minutes: content?.minutes }) }}</span>
-      </div>
-      <!-- Title, body and tags share the content's language; the meta row
-           above stays in the active locale, so it sits outside. -->
-      <article :lang="contentLang">
-        <h1 class="uk-margin-small-top">{{ content?.title }}</h1>
-        <div class="pb-post-divider"></div>
-        <div class="pb-post-body">
-          <template v-for="(block, i) in blocks" :key="i">
-            <CodeBlock
-              v-if="block.kind === 'code'"
-              :code="block.code"
-              :lang="block.lang"
-            />
-            <h2 v-else-if="block.kind === 'h2'" class="pb-post-h2">
-              <template v-for="(s, j) in block.spans" :key="j"
-                ><code v-if="s.code" class="pb-code-inline">{{ s.text }}</code
-                ><template v-else>{{ s.text }}</template></template
-              >
-            </h2>
-            <blockquote
-              v-else-if="block.kind === 'quote'"
-              class="pb-post-quote"
-            >
-              <template v-for="(s, j) in block.spans" :key="j"
-                ><code v-if="s.code" class="pb-code-inline">{{ s.text }}</code
-                ><template v-else>{{ s.text }}</template></template
-              >
-            </blockquote>
-            <p v-else>
-              <template v-for="(s, j) in block.spans" :key="j"
-                ><code v-if="s.code" class="pb-code-inline">{{ s.text }}</code
-                ><template v-else>{{ s.text }}</template></template
-              >
-            </p>
-          </template>
-        </div>
-        <div class="pb-chip-row">
-          <span v-for="tag in post.tags" :key="tag" class="pb-chip">{{
-            tag
+  <section v-if="post" class="section">
+    <div class="container-pb">
+      <div class="mx-auto max-w-3xl">
+        <RouterLink :to="lp('/blog')" class="link-arrow is-back"
+          ><Icon name="arrow-left" />
+          {{ t("blog.back") }}</RouterLink
+        >
+
+        <!-- Post accent: a short bar in the post's cover gradient -->
+        <div
+          class="mt-10 h-1 w-16 rounded-full"
+          :style="{ backgroundImage: post.gradient }"
+          aria-hidden="true"
+        ></div>
+        <div class="meta-row mt-6">
+          <span>{{ formatPostDate(post.date, locale) }}</span>
+          <span aria-hidden="true">·</span>
+          <span>{{
+            t("blog.readingTime", { minutes: content?.minutes })
           }}</span>
         </div>
-      </article>
+
+        <!-- Title, body and tags share the content's language; the meta row
+             above stays in the active locale, so it sits outside. -->
+        <article :lang="contentLang">
+          <h1
+            class="mt-4 text-3xl leading-[1.08] break-words sm:text-4xl md:text-5xl"
+          >
+            {{ content?.title }}
+          </h1>
+          <div class="divider-glow my-10" aria-hidden="true"></div>
+
+          <div class="prose-pb">
+            <template v-for="(block, i) in blocks" :key="i">
+              <CodeBlock
+                v-if="block.kind === 'code'"
+                :code="block.code"
+                :lang="block.lang"
+              />
+              <h2 v-else-if="block.kind === 'h2'">
+                <template v-for="(s, j) in block.spans" :key="j"
+                  ><code v-if="s.code">{{ s.text }}</code
+                  ><template v-else>{{ s.text }}</template></template
+                >
+              </h2>
+              <blockquote v-else-if="block.kind === 'quote'">
+                <template v-for="(s, j) in block.spans" :key="j"
+                  ><code v-if="s.code">{{ s.text }}</code
+                  ><template v-else>{{ s.text }}</template></template
+                >
+              </blockquote>
+              <p v-else>
+                <template v-for="(s, j) in block.spans" :key="j"
+                  ><code v-if="s.code">{{ s.text }}</code
+                  ><template v-else>{{ s.text }}</template></template
+                >
+              </p>
+            </template>
+          </div>
+
+          <div class="mt-12 flex flex-wrap gap-2 border-t border-line pt-8">
+            <span v-for="tag in post.tags" :key="tag" class="chip">{{
+              tag
+            }}</span>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
   <NotFoundView v-else />

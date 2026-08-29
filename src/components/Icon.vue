@@ -2,7 +2,7 @@
 /**
  * Icon
  *
- * Renders one of the site's icons as inline SVG. Only the ~25 icons the site
+ * Renders one of the site's icons as inline SVG. Only the ~33 icons the site
  * actually uses are bundled (imported as raw strings and inlined by Vite),
  * replacing the full Font Awesome CSS + webfonts (~350 KB) with a few KB.
  *
@@ -28,10 +28,15 @@ import copy from "@fortawesome/fontawesome-free/svgs/regular/copy.svg?raw";
 import arrowLeft from "@fortawesome/fontawesome-free/svgs/solid/arrow-left.svg?raw";
 import arrowRight from "@fortawesome/fontawesome-free/svgs/solid/arrow-right.svg?raw";
 import arrowUpRightFromSquare from "@fortawesome/fontawesome-free/svgs/solid/arrow-up-right-from-square.svg?raw";
+import bars from "@fortawesome/fontawesome-free/svgs/solid/bars.svg?raw";
+import calendar from "@fortawesome/fontawesome-free/svgs/solid/calendar.svg?raw";
 import check from "@fortawesome/fontawesome-free/svgs/solid/check.svg?raw";
+import chevronDown from "@fortawesome/fontawesome-free/svgs/solid/chevron-down.svg?raw";
+import clock from "@fortawesome/fontawesome-free/svgs/solid/clock.svg?raw";
 import cloud from "@fortawesome/fontawesome-free/svgs/solid/cloud.svg?raw";
 import code from "@fortawesome/fontawesome-free/svgs/solid/code.svg?raw";
 import cubes from "@fortawesome/fontawesome-free/svgs/solid/cubes.svg?raw";
+import envelope from "@fortawesome/fontawesome-free/svgs/solid/envelope.svg?raw";
 import eye from "@fortawesome/fontawesome-free/svgs/solid/eye.svg?raw";
 import gem from "@fortawesome/fontawesome-free/svgs/solid/gem.svg?raw";
 import handshake from "@fortawesome/fontawesome-free/svgs/solid/handshake.svg?raw";
@@ -40,10 +45,13 @@ import layerGroup from "@fortawesome/fontawesome-free/svgs/solid/layer-group.svg
 import locationDot from "@fortawesome/fontawesome-free/svgs/solid/location-dot.svg?raw";
 import mobileScreen from "@fortawesome/fontawesome-free/svgs/solid/mobile-screen.svg?raw";
 import palette from "@fortawesome/fontawesome-free/svgs/solid/palette.svg?raw";
+import quoteLeft from "@fortawesome/fontawesome-free/svgs/solid/quote-left.svg?raw";
 import rocket from "@fortawesome/fontawesome-free/svgs/solid/rocket.svg?raw";
 import rss from "@fortawesome/fontawesome-free/svgs/solid/rss.svg?raw";
 import seedling from "@fortawesome/fontawesome-free/svgs/solid/seedling.svg?raw";
 import server from "@fortawesome/fontawesome-free/svgs/solid/server.svg?raw";
+import tag from "@fortawesome/fontawesome-free/svgs/solid/tag.svg?raw";
+import xmark from "@fortawesome/fontawesome-free/svgs/solid/xmark.svg?raw";
 
 /** Icon name → raw SVG markup. */
 const svgs: Record<string, string> = {
@@ -56,10 +64,15 @@ const svgs: Record<string, string> = {
   "arrow-left": arrowLeft,
   "arrow-right": arrowRight,
   "arrow-up-right-from-square": arrowUpRightFromSquare,
+  bars,
+  calendar,
   check,
+  "chevron-down": chevronDown,
+  clock,
   cloud,
   code,
   cubes,
+  envelope,
   eye,
   gem,
   handshake,
@@ -68,10 +81,13 @@ const svgs: Record<string, string> = {
   "location-dot": locationDot,
   "mobile-screen": mobileScreen,
   palette,
+  "quote-left": quoteLeft,
   rocket,
   rss,
   seedling,
   server,
+  tag,
+  xmark,
 };
 
 const props = defineProps<{

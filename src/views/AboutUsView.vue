@@ -3,8 +3,9 @@
  * AboutUsView (`/about-us`)
  *
  * The studio story: intro, a short multi-paragraph narrative, the values grid,
- * the shared statistic tiles and a closing call-to-action. All copy is
- * localised under the `about.*` (and reused `hero.stats.*`) i18n keys.
+ * the shared statistic tiles and a closing call-to-action framed by a
+ * brand-gradient border. All copy is localised under the `about.*` (and
+ * reused `hero.stats.*`) i18n keys.
  */
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
@@ -40,51 +41,76 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <section class="pb-section">
-    <div class="uk-container uk-container-large">
-      <div class="pb-section-head">
-        <p class="pb-eyebrow">{{ t("about.eyebrow") }}</p>
-        <h1>{{ t("about.title") }}</h1>
-        <p class="pb-section-lead">{{ t("about.lead") }}</p>
-      </div>
-
-      <div class="pb-post-body uk-margin-medium-bottom">
-        <p v-for="(para, i) in story" :key="i">{{ para }}</p>
+  <section class="section">
+    <div class="container-pb">
+      <div v-reveal>
+        <p class="eyebrow">{{ t("about.eyebrow") }}</p>
+        <h1 class="section-title mt-3">{{ t("about.title") }}</h1>
+        <p class="lead mt-4">{{ t("about.lead") }}</p>
       </div>
 
       <div
-        class="uk-grid uk-grid-match uk-child-width-1-2@s uk-child-width-1-4@m"
-        uk-grid
-        uk-scrollspy="cls: uk-animation-slide-bottom-small; target: > div; delay: 100"
+        v-reveal="120"
+        class="mt-12 max-w-3xl space-y-5 text-lg leading-relaxed text-ink/90"
       >
-        <div v-for="value in values" :key="value.key">
-          <div v-spotlight class="uk-card uk-card-default uk-card-hover uk-card-body">
-            <div class="pb-icon-tile" :class="value.tone">
+        <p v-for="(para, i) in story" :key="i" class="first:text-xl">
+          {{ para }}
+        </p>
+      </div>
+
+      <div class="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          v-for="(value, i) in values"
+          :key="value.key"
+          v-reveal="i * 90"
+          class="grid"
+        >
+          <article v-spotlight class="card h-full">
+            <div class="icon-tile" :class="value.tone">
               <Icon :name="value.icon" />
             </div>
-            <h3 class="uk-card-title">
+            <h2 class="card-title mt-5">
               {{ t(`about.values.${value.key}.title`) }}
-            </h3>
-            <p>{{ t(`about.values.${value.key}.description`) }}</p>
+            </h2>
+            <p class="mt-2">{{ t(`about.values.${value.key}.description`) }}</p>
+          </article>
+        </div>
+      </div>
+
+      <div v-reveal class="mt-20">
+        <div class="divider-glow" aria-hidden="true"></div>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-10 py-12 md:grid-cols-4">
+          <div v-for="stat in stats" :key="stat" class="text-center">
+            <div class="gradient-text font-display text-4xl font-semibold">
+              {{ t(`hero.stats.${stat}.value`) }}
+            </div>
+            <div
+              class="mt-2 font-mono text-xs tracking-[0.08em] text-muted uppercase"
+            >
+              {{ t(`hero.stats.${stat}.label`) }}
+            </div>
           </div>
         </div>
+        <div class="divider-glow" aria-hidden="true"></div>
       </div>
 
-      <div class="pb-hero-stats uk-margin-large-top">
-        <div v-for="stat in stats" :key="stat" class="pb-stat">
-          <div class="pb-stat-value">{{ t(`hero.stats.${stat}.value`) }}</div>
-          <div class="pb-stat-label">{{ t(`hero.stats.${stat}.label`) }}</div>
-        </div>
-      </div>
-
-      <div class="pb-cta uk-margin-large-top">
-        <h2>{{ t("about.cta.title") }}</h2>
-        <p>{{ t("about.cta.description") }}</p>
-        <RouterLink
-          :to="lp('/contact')"
-          class="uk-button uk-button-primary uk-button-large"
-          >{{ t("about.cta.button") }}</RouterLink
+      <div
+        v-reveal
+        class="mt-20 rounded-card bg-gradient-to-r from-berry via-violet to-cyan p-px shadow-glow"
+      >
+        <div
+          class="rounded-[calc(var(--radius-card)-1px)] bg-bg px-6 py-12 text-center sm:py-16"
         >
+          <h2 class="text-2xl sm:text-3xl md:text-4xl">
+            {{ t("about.cta.title") }}
+          </h2>
+          <p class="lead mx-auto mt-4">{{ t("about.cta.description") }}</p>
+          <RouterLink
+            :to="lp('/contact')"
+            class="btn btn-primary btn-lg mt-8"
+            >{{ t("about.cta.button") }}</RouterLink
+          >
+        </div>
       </div>
     </div>
   </section>

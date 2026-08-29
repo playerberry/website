@@ -63,10 +63,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="pb-scroll-progress" aria-hidden="true">
-    <div
-      class="pb-scroll-progress-bar"
-      :style="{ transform: `scaleX(${progress})` }"
-    ></div>
-  </div>
+  <div
+    class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-linear-to-r from-berry via-violet to-cyan will-change-transform"
+    :style="{ transform: `scaleX(${progress})` }"
+    aria-hidden="true"
+  ></div>
 </template>

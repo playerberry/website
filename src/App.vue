@@ -3,8 +3,10 @@
  * Root application shell.
  *
  * Provides the persistent chrome shared by every page — a keyboard-only
- * "skip to content" link, the scroll-progress bar, the site header and footer
- * — and renders the active route in between via `<RouterView>`.
+ * "skip to content" link, the ambient aurora and film-grain layers, the
+ * scroll-progress bar, the site header and footer — and renders the active
+ * route in between via `<RouterView>`, cross-fading pages with a short
+ * fade-and-rise transition.
  *
  * After each client-side navigation the `<main>` landmark receives focus so
  * keyboard and screen-reader users land on the new page's content instead of
@@ -43,11 +45,40 @@ watch(
 </script>
 
 <template>
-  <a class="pb-skip-link" href="#main">{{ $t("a11y.skipToContent") }}</a>
+  <a
+    class="pb-skip-link sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:inline-flex focus:h-11 focus:items-center focus:rounded-full focus:bg-berry focus:px-5 focus:text-sm focus:font-medium focus:text-white focus:shadow-glow"
+    href="#main"
+    >{{ $t("a11y.skipToContent") }}</a
+  >
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
   <ScrollProgress />
   <Header />
-  <main id="main" ref="main" tabindex="-1">
-    <RouterView />
+  <!-- At least a viewport tall, so the footer never sits in the first paint
+       while a lazily loaded view is still on its way (no layout shift). -->
+  <main id="main" ref="main" tabindex="-1" class="relative min-h-dvh outline-none">
+    <RouterView v-slot="{ Component }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
   </main>
   <Footer />
 </template>
+
+<style>
+/* Page transition: a brief fade with a 4px rise on enter, fade only on leave. */
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 220ms ease,
+    transform 220ms var(--ease-out-expo);
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.page-leave-to {
+  opacity: 0;
+}
+</style>

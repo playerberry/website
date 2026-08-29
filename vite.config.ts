@@ -1,13 +1,19 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import tailwindcss from "@tailwindcss/vite";
 import { rss } from "./plugins/rss.ts";
 import { sitemap } from "./plugins/sitemap.ts";
 import { prerender } from "./plugins/prerender.ts";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), rss(), sitemap(), prerender()],
+  plugins: [vue(), tailwindcss(), rss(), sitemap(), prerender()],
   base: "/",
+  build: {
+    // Read by plugins/prerender.ts to add per-page module/font preloads to
+    // the static shells; the file itself is removed from the output again.
+    manifest: true,
+  },
   // Pin the dev server (and preview) to a fixed port; fail rather than
   // silently fall back to another port if 8086 is already taken.
   server: {

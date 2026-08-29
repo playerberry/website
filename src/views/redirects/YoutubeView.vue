@@ -8,5 +8,7 @@
 </script>
 
 <template>
-  <h1>{{ $t("redirect.youtube") }}</h1>
+  <h1 class="font-display text-xl font-semibold text-ink-strong sm:text-2xl">
+    {{ $t("redirect.youtube") }}
+  </h1>
 </template>
