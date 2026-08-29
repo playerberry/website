@@ -6,7 +6,7 @@
     <atom:link href="https://playerberry.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Swift, Vue ve TypeScript üzerine mimari kararlar, tasarım notları ve sahada öğrendiklerimiz.</description>
     <language>tr</language>
-    <lastBuildDate>Sat, 29 Aug 2026 08:55:19 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 29 Aug 2026 11:29:59 GMT</lastBuildDate>
     <item>
       <title>Swift Concurrency: async/await ile Callback Cehennemine Veda</title>
       <link>https://playerberry.com/tr/blog/swift-concurrency</link>
