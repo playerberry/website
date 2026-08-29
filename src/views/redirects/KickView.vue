@@ -8,7 +8,9 @@
 </script>
 
 <template>
-  <h1 class="font-display text-xl font-semibold text-ink-strong sm:text-2xl">
+  <h1
+    class="font-display text-2xl font-semibold tracking-tight text-balance text-ink-strong sm:text-3xl md:text-4xl"
+  >
     {{ $t("redirect.kick") }}
   </h1>
 </template>

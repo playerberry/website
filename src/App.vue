@@ -3,10 +3,9 @@
  * Root application shell.
  *
  * Provides the persistent chrome shared by every page — a keyboard-only
- * "skip to content" link, the ambient aurora and film-grain layers, the
- * scroll-progress bar, the site header and footer — and renders the active
- * route in between via `<RouterView>`, cross-fading pages with a short
- * fade-and-rise transition.
+ * "skip to content" link, the scroll-progress bar, the site header and footer — and renders the active
+ * route in between via `<RouterView>`, wiping new pages in with a short
+ * rise-and-reveal transition.
  *
  * After each client-side navigation the `<main>` landmark receives focus so
  * keyboard and screen-reader users land on the new page's content instead of
@@ -50,8 +49,6 @@ watch(
     href="#main"
     >{{ $t("a11y.skipToContent") }}</a
   >
-  <div class="aurora" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
   <ScrollProgress />
   <Header />
   <!-- At least a viewport tall, so the footer never sits in the first paint
@@ -67,16 +64,23 @@ watch(
 </template>
 
 <style>
-/* Page transition: a brief fade with a 4px rise on enter, fade only on leave. */
-.page-enter-active,
-.page-leave-active {
+/*
+ * Page transition: the new page wipes in from the bottom while rising
+ * slightly; the old one fades out. Transform/opacity/clip-path only.
+ */
+.page-enter-active {
   transition:
-    opacity 220ms ease,
-    transform 220ms var(--ease-out-expo);
+    opacity 0.45s ease,
+    transform 0.6s var(--ease-out-expo),
+    clip-path 0.6s var(--ease-out-expo);
+}
+.page-leave-active {
+  transition: opacity 0.18s ease;
 }
 .page-enter-from {
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(18px);
+  clip-path: inset(6% 0 0 0);
 }
 .page-leave-to {
   opacity: 0;

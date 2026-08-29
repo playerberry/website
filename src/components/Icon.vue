@@ -2,7 +2,7 @@
 /**
  * Icon
  *
- * Renders one of the site's icons as inline SVG. Only the ~33 icons the site
+ * Renders one of the site's icons as inline SVG. Only the ~36 icons the site
  * actually uses are bundled (imported as raw strings and inlined by Vite),
  * replacing the full Font Awesome CSS + webfonts (~350 KB) with a few KB.
  *
@@ -17,8 +17,10 @@
 import { computed } from "vue";
 
 // Brands
+import discord from "@fortawesome/fontawesome-free/svgs/brands/discord.svg?raw";
 import facebook from "@fortawesome/fontawesome-free/svgs/brands/facebook.svg?raw";
 import instagram from "@fortawesome/fontawesome-free/svgs/brands/instagram.svg?raw";
+import tiktok from "@fortawesome/fontawesome-free/svgs/brands/tiktok.svg?raw";
 import twitch from "@fortawesome/fontawesome-free/svgs/brands/twitch.svg?raw";
 import twitter from "@fortawesome/fontawesome-free/svgs/brands/x-twitter.svg?raw";
 import youtube from "@fortawesome/fontawesome-free/svgs/brands/youtube.svg?raw";
@@ -39,6 +41,7 @@ import cubes from "@fortawesome/fontawesome-free/svgs/solid/cubes.svg?raw";
 import envelope from "@fortawesome/fontawesome-free/svgs/solid/envelope.svg?raw";
 import eye from "@fortawesome/fontawesome-free/svgs/solid/eye.svg?raw";
 import gem from "@fortawesome/fontawesome-free/svgs/solid/gem.svg?raw";
+import globe from "@fortawesome/fontawesome-free/svgs/solid/globe.svg?raw";
 import handshake from "@fortawesome/fontawesome-free/svgs/solid/handshake.svg?raw";
 import icons from "@fortawesome/fontawesome-free/svgs/solid/icons.svg?raw";
 import layerGroup from "@fortawesome/fontawesome-free/svgs/solid/layer-group.svg?raw";
@@ -55,8 +58,10 @@ import xmark from "@fortawesome/fontawesome-free/svgs/solid/xmark.svg?raw";
 
 /** Icon name → raw SVG markup. */
 const svgs: Record<string, string> = {
+  discord,
   facebook,
   instagram,
+  tiktok,
   twitch,
   twitter,
   youtube,
@@ -75,6 +80,7 @@ const svgs: Record<string, string> = {
   envelope,
   eye,
   gem,
+  globe,
   handshake,
   icons,
   "layer-group": layerGroup,

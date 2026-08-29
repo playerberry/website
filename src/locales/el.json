@@ -44,6 +44,9 @@
     "titleTop": "Όχι συνηθισμένο λογισμικό —",
     "titleHighlight": "επικές εμπειρίες.",
     "description": "Είμαστε ένα ανεξάρτητο στούντιο λογισμικού που κατασκευάζει εφαρμογές web, εφαρμογές iOS και υποδομή cloud. Μετατρέπουμε την ιδέα σας σε προϊόν μαζί σας, το λανσάρουμε και συνεχίζουμε να το μεγαλώνουμε.",
+    "rotating": ["εφαρμογές web", "εφαρμογές iOS", "υποδομή cloud", "συστήματα σχεδίασης"],
+    "scroll": "Κύλιση",
+    "languages": "{count} γλώσσες",
     "ctaPrimary": "Δείτε τη Δουλειά μας",
     "ctaSecondary": "Επικοινωνήστε",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Κοινωνική πλατφόρμα με κανόνες και εποπτεία για εκδηλώσεις διά ζώσης: εφαρμογή iOS σε SwiftUI, Fastify API, media worker και κονσόλα εποπτείας."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Εφαρμογή παρακολούθησης προπονήσεων με ενσωμάτωση Apple Watch και πλήρη συγχρονισμό με το HealthKit."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "Πλατφόρμα e-commerce υψηλής επισκεψιμότητας με πληρωμές Stripe και προηγμένη διαχείριση καταλόγου."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Υποδομή ανταλλαγής μηνυμάτων σε πραγματικό χρόνο με καθυστέρηση χιλιοστών του δευτερολέπτου· WebSocket και fan-out με Redis."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Ελαφρύς, self-hosted ενορχηστρωτής CI/CD με απομονωμένα builds βασισμένα σε containers."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Κλιμακούμενο σύστημα σχεδιασμού βασισμένο σε design tokens για μια οικογένεια προϊόντων πολλών επωνυμιών."
       }
     }
   },

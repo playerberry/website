@@ -17,17 +17,23 @@ const lp = useLocalePath();
   <!-- The legal documents are published in Turkish only, so the root carries
        an explicit `lang` regardless of the active UI locale. -->
   <div lang="tr">
-    <section class="section">
+    <section class="section relative grid-lines">
       <div class="container-pb">
         <div class="mx-auto max-w-3xl">
-          <p class="eyebrow">Yasal</p>
-          <h1 class="section-title mt-3">Çerez Politikası</h1>
-          <p class="meta-row mt-5">
+          <p class="section-head">
+            <span class="index">//</span>
+            <span>Yasal</span>
+          </p>
+          <h1 class="display-md mt-8">Çerez Politikası</h1>
+          <p class="meta-row mt-6">
             <span>Son güncelleme</span>
             <span aria-hidden="true">·</span>
             <span>29 Ağustos 2026</span>
           </p>
-          <div class="divider-glow my-10" aria-hidden="true"></div>
+          <div
+            class="my-10 h-px bg-linear-to-r from-berry/60 via-violet/50 to-transparent"
+            aria-hidden="true"
+          ></div>
           <div class="prose-pb">
             <p>
               Bu Çerez Politikası, çerezlerin ne olduğunu, Web Sitesinin çerez

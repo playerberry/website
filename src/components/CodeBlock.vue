@@ -17,7 +17,6 @@ import { computed, onUnmounted, ref, watchEffect } from "vue";
 import { escapeHtml } from "../assets/js/seo";
 import { useI18n } from "vue-i18n";
 
-
 const props = defineProps<{
   /** The raw source code to display. */
   code: string;
@@ -185,17 +184,26 @@ onUnmounted(() => window.clearTimeout(feedbackTimer));
 
 <template>
   <div
-    class="my-8 overflow-hidden rounded-tile border border-line bg-[#0b0b14]"
+    class="my-8 overflow-hidden rounded-tile border border-white/10 bg-[#0b0b14] text-[#f2f2f7]"
   >
-    <!-- Header strip: language label + copy button -->
+    <!-- Header strip: terminal dots + language label, copy button (≥ 40px) -->
     <div
-      class="flex items-center justify-between gap-3 border-b border-line bg-white/[0.02] py-2 pr-2 pl-4"
+      class="flex min-h-12 items-center justify-between gap-3 border-b border-white/10 bg-white/[0.03] py-1.5 pr-1.5 pl-4"
     >
-      <span class="font-mono text-xs tracking-[0.08em] text-muted uppercase">{{
-        label || "code"
-      }}</span>
+      <span class="flex min-w-0 items-center gap-3">
+        <span class="flex shrink-0 gap-1.5" aria-hidden="true">
+          <span class="size-2 rounded-full bg-berry/70"></span>
+          <span class="size-2 rounded-full bg-amber/70"></span>
+          <span class="size-2 rounded-full bg-cyan/70"></span>
+        </span>
+        <span
+          class="truncate font-mono text-xs tracking-[0.12em] text-[#9a9aab] uppercase"
+          ><span class="text-berry/80" aria-hidden="true">// </span
+          >{{ label || "code" }}</span
+        >
+      </span>
       <button
-        class="btn btn-secondary btn-sm h-8 px-3 text-xs"
+        class="btn h-10 shrink-0 border border-white/15 px-4 font-mono text-xs text-white/85 hover:bg-white/10 hover:text-white"
         :class="{ 'border-cyan/40 text-cyan': status === 'copied' }"
         type="button"
         @click="copy"

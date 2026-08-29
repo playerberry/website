@@ -44,6 +44,9 @@
     "titleTop": "평범한 소프트웨어가 아닌,",
     "titleHighlight": "특별한 경험을.",
     "description": "웹 애플리케이션, iOS 모바일 앱, 클라우드 인프라를 개발하는 독립 소프트웨어 스튜디오입니다. 아이디어를 함께 제품으로 만들고, 출시하고, 계속 성장시킵니다.",
+    "rotating": ["웹 앱", "iOS 앱", "클라우드 인프라", "디자인 시스템"],
+    "scroll": "스크롤",
+    "languages": "{count}개 언어",
     "ctaPrimary": "작업 살펴보기",
     "ctaSecondary": "문의하기",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "오프라인 이벤트를 위한 규칙 기반 관리형 소셜 플랫폼: SwiftUI iOS 앱, Fastify API, 미디어 워커, 모더레이션 콘솔."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Apple Watch 연동과 HealthKit 완전 동기화를 갖춘 운동 기록 앱."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "Stripe 결제와 고급 카탈로그 관리를 갖춘 대용량 트래픽 이커머스 플랫폼."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "밀리초 지연의 실시간 메시징 인프라; WebSocket과 Redis 팬아웃."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "컨테이너 기반 격리 빌드를 갖춘 가벼운 셀프호스팅 CI/CD 오케스트레이터."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "멀티 브랜드 제품군을 위한 디자인 토큰 기반의 확장 가능한 디자인 시스템."
       }
     }
   },

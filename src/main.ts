@@ -9,8 +9,9 @@
  * - the Tailwind stylesheet (design tokens, component classes, self-hosted
  *   fonts) and the global `Icon` component (inline SVGs — the site ships no
  *   icon webfonts),
- * - the custom `v-spotlight` (pointer-reactive card glow) and `v-reveal`
- *   (scroll-in animation) directives.
+ * - the custom `v-spotlight` (pointer-reactive card glow), `v-reveal`
+ *   (scroll-in animation), `v-tilt` (3D card tilt) and `v-magnetic`
+ *   (buttons leaning towards the pointer) directives.
  *
  * The assembled app is mounted onto the `#app` element in `index.html`.
  */
@@ -19,6 +20,8 @@ import i18n, { initLocale } from "./i18n";
 import router from "./routes";
 import spotlight from "./directives/spotlight";
 import reveal from "./directives/reveal";
+import tilt from "./directives/tilt";
+import magnetic from "./directives/magnetic";
 import Icon from "./components/Icon.vue";
 import "./assets/css/main.css";
 import App from "./App.vue";
@@ -28,7 +31,9 @@ const app = createApp(App)
   .use(i18n)
   .component("Icon", Icon)
   .directive("spotlight", spotlight)
-  .directive("reveal", reveal);
+  .directive("reveal", reveal)
+  .directive("tilt", tilt)
+  .directive("magnetic", magnetic);
 
 // Resolve the visitor's language (URL, saved choice or country lookup) and
 // let the initial navigation settle — including the lazily loaded view — before

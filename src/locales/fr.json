@@ -44,6 +44,9 @@
     "titleTop": "Pas des logiciels ordinaires :",
     "titleHighlight": "des expériences épiques.",
     "description": "Nous sommes un studio logiciel indépendant qui développe des applications web, des apps mobiles iOS et des infrastructures cloud. Nous transformons votre idée en produit avec vous, nous le lançons et nous le faisons grandir.",
+    "rotating": ["apps web", "apps iOS", "infrastructure cloud", "design systems"],
+    "scroll": "Défiler",
+    "languages": "{count} langues",
     "ctaPrimary": "Découvrir nos projets",
     "ctaSecondary": "Nous contacter",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Plateforme sociale encadrée et modérée pour les événements en personne : app iOS en SwiftUI, API Fastify, worker média et console de modération."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Application de suivi d'entraînement avec intégration Apple Watch et synchronisation complète avec HealthKit."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "Plateforme e-commerce à fort trafic avec paiements Stripe et gestion avancée du catalogue."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Infrastructure de messagerie en temps réel à latence milliseconde ; WebSocket et fan-out Redis."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Orchestrateur CI/CD léger et auto-hébergé avec des builds isolés basés sur des conteneurs."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Système de design évolutif basé sur les design tokens pour une famille de produits multi-marques."
       }
     }
   },

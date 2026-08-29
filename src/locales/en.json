@@ -44,6 +44,9 @@
     "titleTop": "Not ordinary software —",
     "titleHighlight": "epic experiences.",
     "description": "We are an independent software studio building web applications, iOS mobile apps and cloud infrastructure. Together we turn your idea into a product, ship it and keep growing it.",
+    "rotating": ["web apps", "iOS apps", "cloud infrastructure", "design systems"],
+    "scroll": "Scroll",
+    "languages": "{count} languages",
     "ctaPrimary": "Explore Our Work",
     "ctaSecondary": "Get in Touch",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Rule-based, moderated social platform for in-person events: a SwiftUI iOS app, Fastify API, media worker and moderation console."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Workout tracking app with Apple Watch integration and full HealthKit synchronization."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "High-traffic e-commerce platform with Stripe payments and advanced catalog management."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Real-time messaging infrastructure with millisecond latency; WebSocket and Redis fan-out."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Lightweight self-hosted CI/CD orchestrator with container-based isolated builds."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Scalable, design-token driven design system for a multi-brand product family."
       }
     }
   },

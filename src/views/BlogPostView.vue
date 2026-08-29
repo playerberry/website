@@ -12,6 +12,10 @@
  * arbitrary code. The body is parsed into typed blocks by the pure helpers in
  * {@link module:postBlocks} — see that module for the inline convention. The
  * body's typography comes from `.prose-pb` (see `assets/css/prose.css`).
+ *
+ * Layout: a twelve-column grid — a sticky meta rail (back link, date, reading
+ * time, tags) in the first two columns, the article in the middle eight, and
+ * the last two left empty for rhythm. Collapses to a single column below `lg`.
  */
 import { computed, watchEffect } from "vue";
 import { useRoute, RouterLink } from "vue-router";
@@ -97,37 +101,55 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <section v-if="post" class="section">
+  <section v-if="post" class="section relative grid-lines">
     <div class="container-pb">
-      <div class="mx-auto max-w-3xl">
-        <RouterLink :to="lp('/blog')" class="link-arrow is-back"
-          ><Icon name="arrow-left" />
-          {{ t("blog.back") }}</RouterLink
-        >
-
-        <!-- Post accent: a short bar in the post's cover gradient -->
-        <div
-          class="mt-10 h-1 w-16 rounded-full"
-          :style="{ backgroundImage: post.gradient }"
-          aria-hidden="true"
-        ></div>
-        <div class="meta-row mt-6">
-          <span>{{ formatPostDate(post.date, locale) }}</span>
-          <span aria-hidden="true">·</span>
-          <span>{{
-            t("blog.readingTime", { minutes: content?.minutes })
-          }}</span>
-        </div>
-
-        <!-- Title, body and tags share the content's language; the meta row
-             above stays in the active locale, so it sits outside. -->
-        <article :lang="contentLang">
-          <h1
-            class="mt-4 text-3xl leading-[1.08] break-words sm:text-4xl md:text-5xl"
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-x-8">
+        <!-- Meta rail: sticks beside the article on wide screens -->
+        <aside class="min-w-0 lg:sticky lg:top-28 lg:col-span-2 lg:self-start">
+          <RouterLink :to="lp('/blog')" class="link-arrow is-back h-11"
+            ><Icon name="arrow-left" />
+            {{ t("blog.back") }}</RouterLink
           >
+          <!-- Inline on small screens, stacked vertically in the rail on lg+ -->
+          <p class="meta-row mt-6 lg:mt-10 lg:flex-col lg:items-start lg:gap-y-3">
+            <span class="inline-flex items-center gap-2">
+              <Icon name="calendar" class="text-berry" />
+              <span>{{ formatPostDate(post.date, locale) }}</span>
+            </span>
+            <span aria-hidden="true" class="lg:hidden">·</span>
+            <span class="inline-flex items-center gap-2">
+              <Icon name="clock" class="text-berry" />
+              <span>{{
+                t("blog.readingTime", { minutes: content?.minutes })
+              }}</span>
+            </span>
+          </p>
+          <div
+            :lang="contentLang"
+            class="mt-5 flex flex-wrap gap-2 lg:mt-8 lg:border-t lg:border-line lg:pt-6"
+          >
+            <span v-for="tag in post.tags" :key="tag" class="chip">{{
+              tag
+            }}</span>
+          </div>
+        </aside>
+
+        <!-- Title, body and tags share the content's language; the meta rail
+             stays in the active locale, so it sits outside. -->
+        <article :lang="contentLang" class="min-w-0 lg:col-span-8">
+          <!-- Post accent: a short bar in the post's cover gradient -->
+          <div
+            class="h-1 w-16 rounded-full"
+            :style="{ backgroundImage: post.gradient }"
+            aria-hidden="true"
+          ></div>
+          <h1 class="display-md mt-6 break-words">
             {{ content?.title }}
           </h1>
-          <div class="divider-glow my-10" aria-hidden="true"></div>
+          <div
+            class="my-10 h-px bg-linear-to-r from-berry/60 via-violet/50 to-transparent"
+            aria-hidden="true"
+          ></div>
 
           <div class="prose-pb">
             <template v-for="(block, i) in blocks" :key="i">
@@ -157,12 +179,15 @@ const lp = useLocalePath();
             </template>
           </div>
 
-          <div class="mt-12 flex flex-wrap gap-2 border-t border-line pt-8">
-            <span v-for="tag in post.tags" :key="tag" class="chip">{{
-              tag
-            }}</span>
-          </div>
+          <!-- End of article: hairline + way back -->
+          <footer class="mt-14 border-t border-line pt-8">
+            <RouterLink :to="lp('/blog')" class="link-arrow is-back h-11"
+              ><Icon name="arrow-left" />
+              {{ t("blog.back") }}</RouterLink
+            >
+          </footer>
         </article>
+        <!-- Columns 11–12 stay empty on purpose (breathing room). -->
       </div>
     </div>
   </section>

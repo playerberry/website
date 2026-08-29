@@ -2,13 +2,16 @@
 /**
  * Site header.
  *
- * A sticky, glassy navigation bar with the PlayerBerry wordmark, the primary
- * menu, a language dropdown (built from the supported-locale list, showing
- * each language's native name) and a contact call-to-action. The bar turns
- * slightly more opaque once the page is scrolled. On narrow screens the menu
- * collapses behind a hamburger button that opens a full-screen panel; while
- * it is open the document cannot scroll, and it closes on Escape, on a
- * navigation, or when the viewport grows to the desktop layout.
+ * A thin, glassy bar with a gradient hairline along its top edge that
+ * brightens once the page is scrolled. Left: the `playerberry_` wordmark;
+ * centre (desktop): the indexed, monospace primary menu with an underline
+ * that draws in under the active page; right: the language pill (built from
+ * the supported-locale list, showing each language's native name) and the
+ * contact call-to-action. On narrow screens the menu collapses behind a
+ * hamburger that opens a full-screen panel of oversized links, the language
+ * pill, the social profiles and the contact button; while it is open the
+ * document cannot scroll, and it closes on Escape, on a navigation, or when
+ * the viewport grows to the desktop layout.
  */
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
@@ -30,6 +33,15 @@ const lp = useLocalePath();
 
 /** DOM id of the mobile menu panel (target of `aria-controls`). */
 const MENU_ID = "sidenav";
+
+/** Social profiles listed at the foot of the mobile menu. */
+const socials = [
+  { name: "Instagram", icon: "instagram", href: "https://instagram.com/playerberry" },
+  { name: "Twitch", icon: "twitch", href: "https://twitch.tv/playerberry" },
+  { name: "YouTube", icon: "youtube", href: "https://youtube.com/@playerberry" },
+  { name: "X", icon: "twitter", href: "https://x.com/playerberry" },
+  { name: "Facebook", icon: "facebook", href: "https://facebook.com/playerberry" },
+];
 
 /** Whether the mobile menu panel is open. */
 const menuOpen = ref(false);
@@ -124,11 +136,13 @@ const onLocaleChange = (event: Event) => {
 
 <template>
   <header
-    class="glass sticky top-0 z-50 border-b transition-[background-color,border-color] duration-500 ease-out-soft"
-    :class="scrolled ? 'border-line-strong bg-bg/90' : 'border-line'"
+    class="site-header glass sticky top-0 z-50 border-b transition-[border-color] duration-500 ease-out-soft"
+    :class="scrolled ? 'is-scrolled border-line-strong' : 'border-line'"
   >
     <div class="container-pb">
-      <nav class="flex h-16 items-center justify-between gap-4">
+      <nav
+        class="flex h-16 items-center justify-between gap-4 md:grid md:h-[4.5rem] md:grid-cols-[1fr_auto_1fr]"
+      >
         <RouterLink
           :to="lp('/')"
           class="wordmark inline-flex h-11 items-center font-display text-xl font-bold tracking-tight text-ink-strong"
@@ -137,28 +151,35 @@ const onLocaleChange = (event: Event) => {
           ><span class="animate-blink text-berry" aria-hidden="true">_</span>
         </RouterLink>
 
-        <div class="hidden items-center gap-1 md:flex">
-          <ul class="flex items-center gap-1">
-            <li>
-              <RouterLink :to="lp('/projects')" class="nav-link">{{
-                $t("menu.projects")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/blog')" class="nav-link">{{
-                $t("menu.blog")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/store')" class="nav-link">{{
-                $t("menu.store")
-              }}</RouterLink>
-            </li>
-          </ul>
+        <ul class="hidden items-center gap-6 md:flex lg:gap-10">
+          <li>
+            <RouterLink :to="lp('/projects')" class="nav-link">
+              <span class="nav-index hidden lg:inline" aria-hidden="true">01</span>
+              <span class="link-line nav-label">{{ $t("menu.projects") }}</span>
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="lp('/blog')" class="nav-link">
+              <span class="nav-index hidden lg:inline" aria-hidden="true">02</span>
+              <span class="link-line nav-label">{{ $t("menu.blog") }}</span>
+            </RouterLink>
+          </li>
+          <li>
+            <RouterLink :to="lp('/store')" class="nav-link">
+              <span class="nav-index hidden lg:inline" aria-hidden="true">03</span>
+              <span class="link-line nav-label">{{ $t("menu.store") }}</span>
+            </RouterLink>
+          </li>
+        </ul>
 
-          <div class="relative ml-3">
+        <div class="hidden items-center justify-end gap-3 md:flex">
+          <div class="relative">
+            <Icon
+              name="globe"
+              class="pointer-events-none absolute top-1/2 left-3.5 hidden -translate-y-1/2 text-[0.7rem] text-muted lg:block"
+            />
             <select
-              class="lang-select h-9 appearance-none rounded-full border border-line bg-white/[0.03] pr-8 pl-4 font-mono text-xs text-ink transition-colors duration-200 hover:border-berry/50 hover:text-ink-strong"
+              class="lang-select h-10 appearance-none rounded-full border border-line bg-surface pr-8 pl-4 font-mono text-xs tracking-[0.04em] text-ink transition-colors duration-200 hover:border-berry/50 hover:text-ink-strong lg:pl-8"
               :aria-label="$t('a11y.language')"
               :value="locale"
               @change="onLocaleChange"
@@ -178,9 +199,14 @@ const onLocaleChange = (event: Event) => {
             />
           </div>
 
-          <RouterLink :to="lp('/contact')" class="btn btn-primary btn-sm ml-3">{{
-            $t("menu.contact")
-          }}</RouterLink>
+          <RouterLink
+            v-magnetic
+            :to="lp('/contact')"
+            class="btn btn-primary btn-sm"
+          >
+            {{ $t("menu.contact") }}
+            <Icon name="arrow-right" class="hidden text-[0.8em] lg:inline-block" />
+          </RouterLink>
         </div>
 
         <button
@@ -200,13 +226,15 @@ const onLocaleChange = (event: Event) => {
     </div>
   </header>
 
-  <Transition name="menu" :duration="{ enter: 800, leave: 260 }">
+  <Transition name="menu" :duration="{ enter: 1000, leave: 300 }">
     <div
       v-if="menuOpen"
       :id="MENU_ID"
-      class="menu-panel fixed inset-0 z-[55] flex flex-col overflow-y-auto bg-bg md:hidden"
+      class="menu-panel grid-lines fixed inset-0 z-[55] flex flex-col overflow-y-auto bg-bg md:hidden"
     >
-      <div class="container-pb flex h-16 shrink-0 items-center justify-between">
+      <div
+        class="container-pb relative flex h-16 shrink-0 items-center justify-between"
+      >
         <RouterLink
           :to="lp('/')"
           class="inline-flex h-11 items-center font-display text-xl font-bold tracking-tight text-ink-strong"
@@ -216,7 +244,8 @@ const onLocaleChange = (event: Event) => {
           ><span class="animate-blink text-berry" aria-hidden="true">_</span>
         </RouterLink>
         <button
-          class="-mr-2 grid size-11 place-items-center rounded-full border border-line text-ink-strong transition-colors duration-200 hover:border-berry/50 hover:text-berry"
+          class="menu-item -mr-2 grid size-11 place-items-center rounded-full border border-line text-ink-strong transition-colors duration-200 hover:border-berry/50 hover:text-berry"
+          style="--i: 0"
           type="button"
           :aria-label="$t('a11y.close')"
           @click="closeMenu"
@@ -225,106 +254,154 @@ const onLocaleChange = (event: Event) => {
         </button>
       </div>
 
-      <nav class="container-pb flex flex-1 flex-col justify-center py-10">
-        <ul class="flex flex-col gap-2">
-          <li class="menu-item" style="--i: 0">
-            <RouterLink :to="lp('/')" class="menu-link" @click="closeMenu">
-              <span class="menu-index">01</span>{{ $t("menu.home") }}
-            </RouterLink>
-          </li>
+      <nav class="container-pb relative flex flex-1 flex-col justify-center py-8">
+        <ul class="flex flex-col">
           <li class="menu-item" style="--i: 1">
-            <RouterLink :to="lp('/projects')" class="menu-link" @click="closeMenu">
-              <span class="menu-index">02</span>{{ $t("menu.projects") }}
+            <RouterLink :to="lp('/')" class="menu-link" @click="closeMenu">
+              <span class="menu-index" aria-hidden="true">01</span>
+              <span class="menu-word">{{ $t("menu.home") }}</span>
             </RouterLink>
           </li>
           <li class="menu-item" style="--i: 2">
-            <RouterLink :to="lp('/blog')" class="menu-link" @click="closeMenu">
-              <span class="menu-index">03</span>{{ $t("menu.blog") }}
+            <RouterLink :to="lp('/projects')" class="menu-link" @click="closeMenu">
+              <span class="menu-index" aria-hidden="true">02</span>
+              <span class="menu-word">{{ $t("menu.projects") }}</span>
             </RouterLink>
           </li>
           <li class="menu-item" style="--i: 3">
-            <RouterLink :to="lp('/store')" class="menu-link" @click="closeMenu">
-              <span class="menu-index">04</span>{{ $t("menu.store") }}
+            <RouterLink :to="lp('/blog')" class="menu-link" @click="closeMenu">
+              <span class="menu-index" aria-hidden="true">03</span>
+              <span class="menu-word">{{ $t("menu.blog") }}</span>
             </RouterLink>
           </li>
           <li class="menu-item" style="--i: 4">
+            <RouterLink :to="lp('/store')" class="menu-link" @click="closeMenu">
+              <span class="menu-index" aria-hidden="true">04</span>
+              <span class="menu-word">{{ $t("menu.store") }}</span>
+            </RouterLink>
+          </li>
+          <li class="menu-item" style="--i: 5">
             <RouterLink :to="lp('/contact')" class="menu-link" @click="closeMenu">
-              <span class="menu-index">05</span>{{ $t("menu.contact") }}
+              <span class="menu-index" aria-hidden="true">05</span>
+              <span class="menu-word">{{ $t("menu.contact") }}</span>
             </RouterLink>
           </li>
         </ul>
       </nav>
 
       <div
-        class="menu-item container-pb flex shrink-0 items-center justify-between gap-4 border-t border-line py-6"
-        style="--i: 5"
+        class="menu-item container-pb relative shrink-0 border-t border-line py-6"
+        style="--i: 6"
       >
-        <div class="relative">
-          <select
-            class="lang-select h-11 appearance-none rounded-full border border-line bg-white/[0.03] pr-9 pl-4 font-mono text-xs text-ink transition-colors duration-200 hover:border-berry/50"
-            :aria-label="$t('a11y.language')"
-            :value="locale"
-            @change="onLocaleChange"
-          >
-            <option
-              v-for="code in SUPPORTED_LOCALES"
-              :key="code"
-              :value="code"
-              :lang="code"
+        <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-5">
+          <ul class="flex items-center gap-2" :aria-label="$t('footer.follow')">
+            <li v-for="social in socials" :key="social.icon">
+              <a
+                :href="social.href"
+                target="_blank"
+                rel="noopener"
+                :aria-label="social.name"
+                class="social grid size-11 place-items-center rounded-full border border-line text-ink transition-colors duration-200 hover:border-berry/60 hover:text-berry"
+                ><Icon :name="social.icon"
+              /></a>
+            </li>
+          </ul>
+
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <Icon
+                name="globe"
+                class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[0.7rem] text-muted"
+              />
+              <select
+                class="lang-select h-11 appearance-none rounded-full border border-line bg-surface pr-9 pl-8 font-mono text-xs tracking-[0.04em] text-ink transition-colors duration-200 hover:border-berry/50"
+                :aria-label="$t('a11y.language')"
+                :value="locale"
+                @change="onLocaleChange"
+              >
+                <option
+                  v-for="code in SUPPORTED_LOCALES"
+                  :key="code"
+                  :value="code"
+                  :lang="code"
+                >
+                  {{ LOCALE_NAMES[code] }}
+                </option>
+              </select>
+              <Icon
+                name="chevron-down"
+                class="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-[0.6rem] text-muted"
+              />
+            </div>
+            <RouterLink
+              :to="lp('/contact')"
+              class="btn btn-primary h-11 px-6"
+              @click="closeMenu"
             >
-              {{ LOCALE_NAMES[code] }}
-            </option>
-          </select>
-          <Icon
-            name="chevron-down"
-            class="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-[0.6rem] text-muted"
-          />
+              {{ $t("menu.contact") }}
+              <Icon name="arrow-right" class="text-[0.8em]" />
+            </RouterLink>
+          </div>
         </div>
-        <RouterLink :to="lp('/contact')" class="btn btn-primary" @click="closeMenu">{{
-          $t("menu.contact")
-        }}</RouterLink>
       </div>
     </div>
   </Transition>
 </template>
 
 <style scoped>
-/* ── Desktop nav links: a berry dot slides in under the active page. ──── */
-.nav-link {
-  position: relative;
-  display: inline-flex;
-  height: 2.5rem;
-  align-items: center;
-  padding: 0 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-ink);
-  transition: color 0.2s ease;
-}
-.nav-link::after {
+/* ── Bar: a gradient hairline along the top edge brightens on scroll. ── */
+.site-header::before {
   content: "";
   position: absolute;
-  left: 50%;
-  bottom: 0.25rem;
-  width: 0.3rem;
-  height: 0.3rem;
-  border-radius: 999px;
-  background: var(--color-berry);
-  opacity: 0;
-  transform: translate(-50%, 4px);
-  transition:
-    opacity 0.3s ease,
-    transform 0.4s var(--ease-out-expo);
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--color-berry),
+    var(--color-violet),
+    var(--color-cyan)
+  );
+  opacity: 0.35;
+  transition: opacity 0.6s ease;
 }
-.nav-link:hover {
-  color: var(--color-ink-strong);
+.site-header.is-scrolled::before {
+  opacity: 1;
 }
+
+/* ── Desktop nav: indexed mono labels, underline draws under the active page. */
+.nav-link {
+  display: inline-flex;
+  height: 2.75rem;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color 0.2s ease;
+}
+.nav-index {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: rgba(0, 0, 0, 0.35);
+  transition: color 0.2s ease;
+}
+.nav-label {
+  color: inherit;
+  padding-bottom: 0.15em;
+}
+.nav-link:hover,
 .nav-link.router-link-active {
   color: var(--color-ink-strong);
 }
-.nav-link.router-link-active::after {
-  opacity: 1;
-  transform: translate(-50%, 0);
+.nav-link:hover .nav-index,
+.nav-link.router-link-active .nav-index {
+  color: var(--color-berry);
+}
+.nav-link:hover .nav-label,
+.nav-link.router-link-active .nav-label {
+  background-size: 100% 1px;
 }
 
 /* The native option list keeps the dark surface. */
@@ -361,53 +438,77 @@ const onLocaleChange = (event: Event) => {
   transform: rotate(-45deg);
 }
 
-/* ── Mobile panel ─────────────────────────────────────────────────────── */
+/* ── Full-screen panel ───────────────────────────────────────────────── */
+.menu-panel::before {
+  position: fixed;
+  opacity: 0.3;
+}
 .menu-link {
   display: flex;
   align-items: baseline;
   gap: 1rem;
-  padding: 0.5rem 0;
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-  transition: color 0.2s ease;
-}
-.menu-link:hover,
-.menu-link.router-link-active {
+  padding: 0.45rem 0;
   color: var(--color-ink-strong);
 }
+.menu-index {
+  flex: none;
+  width: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
+  transition: color 0.2s ease;
+}
+.menu-word {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 11.5vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  transition: transform 0.5s var(--ease-out-expo);
+}
+.menu-link:hover .menu-word {
+  transform: translateX(0.35rem);
+  background: linear-gradient(
+    -45deg,
+    var(--color-amber),
+    var(--color-berry),
+    var(--color-violet),
+    var(--color-blue),
+    var(--color-cyan)
+  );
+  background-size: 420% 420%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: var(--animate-gradient-shift);
+}
+.menu-link:hover .menu-index,
 .menu-link.router-link-active .menu-index {
   color: var(--color-berry);
 }
-.menu-index {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  color: var(--color-muted);
-}
 
-/* Panel fades in; the items rise in a staggered cascade behind it. */
+/* Panel wipes down; rows rise in a staggered cascade behind it. */
 .menu-enter-active,
 .menu-leave-active {
   transition:
     opacity 0.3s ease,
-    transform 0.5s var(--ease-out-expo);
+    clip-path 0.8s var(--ease-out-expo);
 }
-.menu-enter-from,
+.menu-enter-from {
+  clip-path: inset(0 0 100% 0);
+}
 .menu-leave-to {
   opacity: 0;
-  transform: translateY(-12px);
 }
 .menu-enter-active .menu-item {
   transition:
     opacity 0.5s ease,
-    transform 0.7s var(--ease-out-expo);
-  transition-delay: calc(80ms + var(--i, 0) * 55ms);
+    transform 0.8s var(--ease-out-expo);
+  transition-delay: calc(140ms + var(--i, 0) * 60ms);
 }
 .menu-enter-from .menu-item {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(28px);
 }
 </style>

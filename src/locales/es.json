@@ -44,6 +44,9 @@
     "titleTop": "No un software cualquiera:",
     "titleHighlight": "experiencias épicas.",
     "description": "Somos un estudio de software independiente que desarrolla aplicaciones web, apps móviles iOS e infraestructura cloud. Convertimos tu idea en producto contigo, lo lanzamos y seguimos haciéndolo crecer.",
+    "rotating": ["apps web", "apps iOS", "infraestructura cloud", "sistemas de diseño"],
+    "scroll": "Desplázate",
+    "languages": "{count} idiomas",
     "ctaPrimary": "Ver nuestro trabajo",
     "ctaSecondary": "Contáctanos",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Plataforma social con reglas y moderación para eventos presenciales: app iOS en SwiftUI, API en Fastify, worker de medios y consola de moderación."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "App de seguimiento de entrenamientos con integración de Apple Watch y sincronización completa con HealthKit."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "Plataforma de e-commerce de alto tráfico con pagos de Stripe y gestión avanzada de catálogo."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Infraestructura de mensajería en tiempo real con latencia de milisegundos; WebSocket y fan-out con Redis."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Orquestador CI/CD ligero y autoalojado con builds aislados basados en contenedores."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Sistema de diseño escalable basado en design tokens para una familia de productos multimarca."
       }
     }
   },

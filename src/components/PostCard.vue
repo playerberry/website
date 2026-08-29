@@ -2,12 +2,13 @@
 /**
  * PostCard
  *
- * Compact blog card showing a post's date, reading time, localised title
- * (linking to the article) and excerpt, plus topic chips. The title link is
- * stretched over the whole card with a pseudo-element, so the entire surface
- * is clickable while the accessible name stays the title. Self-contained: it
- * fills the height of whatever grid cell it is dropped into. The
- * `v-spotlight` directive adds a pointer-following glow on hover.
+ * Compact blog card for the blog index grid: a 2px gradient bar down the
+ * left edge (the post's colour), date and reading time in mono, the
+ * localised title (linking to the article) and a three-line excerpt, plus
+ * topic chips. The title link is stretched over the whole card with a
+ * pseudo-element, so the entire surface is clickable while the accessible
+ * name stays the title. Self-contained: it fills the height of whatever grid
+ * cell it is dropped into. `v-spotlight` adds the pointer-following glow.
  *
  * The reading time is derived from the localised body (see
  * {@link usePostContent}). When the article falls back to English under
@@ -46,10 +47,10 @@ const lp = useLocalePath();
 </script>
 
 <template>
-  <article v-spotlight class="card group flex h-full flex-col">
-    <!-- Per-post colour accent (decorative). -->
+  <article v-spotlight class="card group flex h-full flex-col pl-8 sm:pl-10">
+    <!-- Per-post colour accent down the left edge (decorative). -->
     <span
-      class="mb-5 block h-1 w-10 rounded-full"
+      class="absolute top-7 bottom-7 left-0 w-0.5 rounded-full transition-transform duration-500 ease-out-expo group-hover:scale-y-110"
       :style="{ backgroundImage: post.gradient }"
       aria-hidden="true"
     ></span>
@@ -60,7 +61,7 @@ const lp = useLocalePath();
       <span>{{ t("blog.readingTime", { minutes: content?.minutes }) }}</span>
     </div>
 
-    <div :lang="contentLang" class="mt-3 flex flex-1 flex-col">
+    <div :lang="contentLang" class="mt-4 flex flex-1 flex-col">
       <h3 class="card-title text-xl leading-snug">
         <RouterLink
           :to="lp(`/blog/${post.slug}`)"
@@ -68,10 +69,12 @@ const lp = useLocalePath();
           >{{ content?.title }}</RouterLink
         >
       </h3>
-      <p class="mt-2 flex-1 text-[0.95rem]">{{ content?.excerpt }}</p>
+      <p class="mt-3 line-clamp-3 flex-1 text-[0.95rem]">
+        {{ content?.excerpt }}
+      </p>
     </div>
 
-    <div class="mt-5 flex flex-wrap gap-2">
+    <div class="mt-6 flex flex-wrap gap-2">
       <span v-for="tag in post.tags" :key="tag" class="chip">{{ tag }}</span>
     </div>
   </article>

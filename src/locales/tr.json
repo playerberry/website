@@ -44,6 +44,9 @@
     "titleTop": "Sıradan yazılım değil,",
     "titleHighlight": "epik deneyimler.",
     "description": "Web uygulamaları, iOS mobil uygulamalar ve bulut altyapısı geliştiren bağımsız bir yazılım stüdyosuyuz. Fikrinizi birlikte ürüne dönüştürür, yayına alır, büyütmeye devam ederiz.",
+    "rotating": ["web uygulamaları", "iOS uygulamaları", "bulut altyapısı", "tasarım sistemleri"],
+    "scroll": "Kaydır",
+    "languages": "{count} dil",
     "ctaPrimary": "Projelerimizi İnceleyin",
     "ctaSecondary": "Bize Ulaşın",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Yüz yüze etkinlikler için kurallı ve moderasyonlu sosyal platform: SwiftUI ile iOS uygulaması, Fastify API, medya işleme servisi ve moderasyon konsolu."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Apple Watch entegrasyonlu antrenman takip uygulaması; HealthKit ile tam senkronizasyon."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "Yüksek trafikli e-ticaret platformu; Stripe ödemeleri ve gelişmiş katalog yönetimi."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Milisaniye gecikmeli gerçek zamanlı mesajlaşma altyapısı; WebSocket ve Redis fan-out."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Kendi sunucunuzda çalışan hafif CI/CD orkestratörü; container tabanlı izole build'ler."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Çok markalı ürün ailesi için design token temelli, ölçeklenebilir tasarım sistemi."
       }
     }
   },

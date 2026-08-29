@@ -2,9 +2,12 @@
 /**
  * Site footer.
  *
- * Holds the wordmark and tagline, social links, grouped navigation and legal
- * links, plus a tongue-in-cheek "no ___ was harmed" line whose subject is a
- * random phrase (linked to a web search) picked fresh on each render.
+ * Opens with a full-width, hollow `playerberry_` wordmark that fills in on
+ * hover, followed by four columns — the studio tagline with the social
+ * profiles, the site map, the legal pages and the contact links — each under
+ * a numbered monospace heading. The closing hairline carries the copyright
+ * and a tongue-in-cheek "no ___ was harmed" line whose subject is a random
+ * phrase (linked to a web search) picked fresh on each render.
  */
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
@@ -26,136 +29,154 @@ const feedHref = computed(() => feedPathFor(locale.value));
 
 /** Maps language-neutral paths to the active language's URL. */
 const lp = useLocalePath();
+
+/** Social profiles rendered as round icon buttons. */
+const socials = [
+  { name: "Instagram", icon: "instagram", href: "https://instagram.com/playerberry" },
+  { name: "Twitch", icon: "twitch", href: "https://twitch.tv/playerberry" },
+  { name: "YouTube", icon: "youtube", href: "https://youtube.com/@playerberry" },
+  { name: "X", icon: "twitter", href: "https://x.com/playerberry" },
+  { name: "Facebook", icon: "facebook", href: "https://facebook.com/playerberry" },
+];
 </script>
 
 <template>
-  <footer class="relative mt-20 md:mt-28">
-    <div class="divider-glow" aria-hidden="true"></div>
-    <div class="container-pb py-16 md:py-20">
-      <div class="grid gap-10 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
-        <div class="max-w-sm">
-          <div
-            class="font-display text-2xl font-bold tracking-tight text-ink-strong"
-          >
-            player<span class="text-berry">berry</span
-            ><span class="animate-blink text-berry" aria-hidden="true">_</span>
-          </div>
-          <p class="mt-4 text-sm leading-relaxed text-muted">
+  <footer class="relative mt-24 border-t border-line bg-surface md:mt-32">
+    <!-- Giant hollow wordmark; sized from the container so it never wraps
+         or overflows, and clipped as a last resort. -->
+    <div class="overflow-hidden" aria-hidden="true">
+      <div class="container-pb @container pt-14 md:pt-20">
+        <div
+          class="footer-mark outline-text display-xl leading-none whitespace-nowrap select-none"
+        >
+          playerberry_
+        </div>
+      </div>
+    </div>
+
+    <div class="container-pb pt-14 pb-8 md:pt-20">
+      <div class="grid gap-12 md:grid-cols-12 md:gap-8">
+        <div class="md:col-span-5 lg:col-span-4">
+          <p class="max-w-sm text-base leading-relaxed text-muted">
             {{ $t("footer.tagline") }}
           </p>
-          <h2 class="footer-heading mt-8">{{ $t("footer.follow") }}</h2>
-          <div class="mt-4 flex flex-wrap gap-2.5">
-            <a
-              href="https://instagram.com/playerberry"
-              target="_blank"
-              rel="noopener"
-              aria-label="Instagram"
-              class="social"
-              ><Icon name="instagram"
-            /></a>
-            <a
-              href="https://twitch.tv/playerberry"
-              target="_blank"
-              rel="noopener"
-              aria-label="Twitch"
-              class="social"
-              ><Icon name="twitch"
-            /></a>
-            <a
-              href="https://youtube.com/@playerberry"
-              target="_blank"
-              rel="noopener"
-              aria-label="YouTube"
-              class="social"
-              ><Icon name="youtube"
-            /></a>
-            <a
-              href="https://x.com/playerberry"
-              target="_blank"
-              rel="noopener"
-              aria-label="X"
-              class="social"
-              ><Icon name="twitter"
-            /></a>
-            <a
-              href="https://facebook.com/playerberry"
-              target="_blank"
-              rel="noopener"
-              aria-label="Facebook"
-              class="social"
-              ><Icon name="facebook"
-            /></a>
+          <h2 class="section-head mt-10">
+            <span class="index">//</span>{{ $t("footer.follow") }}
+          </h2>
+          <ul class="mt-5 flex flex-wrap gap-2.5">
+            <li v-for="social in socials" :key="social.icon">
+              <a
+                :href="social.href"
+                target="_blank"
+                rel="noopener"
+                :aria-label="social.name"
+                class="social grid size-11 place-items-center rounded-full border border-line text-ink"
+                ><Icon :name="social.icon"
+              /></a>
+            </li>
+          </ul>
+        </div>
+
+        <div
+          class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:col-span-7 md:col-start-6"
+        >
+          <div>
+            <h2 class="section-head">
+              <span class="index">01</span>{{ $t("footer.nav") }}
+            </h2>
+            <ul class="footer-links">
+              <li>
+                <RouterLink :to="lp('/')"
+                  ><span class="link-line">{{ $t("menu.home") }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/projects')"
+                  ><span class="link-line">{{
+                    $t("menu.projects")
+                  }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/blog')"
+                  ><span class="link-line">{{ $t("menu.blog") }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/store')"
+                  ><span class="link-line">{{
+                    $t("menu.store")
+                  }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <a :href="feedHref" target="_blank" rel="alternate noopener"
+                  ><Icon name="rss" class="mr-2 text-[0.8em] text-amber" /><span
+                    class="link-line"
+                    >{{ $t("footer.rss") }}</span
+                  ></a
+                >
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <div>
-          <h2 class="footer-heading">{{ $t("footer.nav") }}</h2>
-          <ul class="footer-links">
-            <li>
-              <RouterLink :to="lp('/')">{{ $t("menu.home") }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/projects')">{{
-                $t("menu.projects")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/blog')">{{ $t("menu.blog") }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/store')">{{ $t("menu.store") }}</RouterLink>
-            </li>
-            <li>
-              <a :href="feedHref" target="_blank" rel="alternate noopener"
-                ><Icon name="rss" class="mr-1.5 text-[0.8em] text-amber" />{{
-                  $t("footer.rss")
-                }}</a
-              >
-            </li>
-          </ul>
-        </div>
+          <div>
+            <h2 class="section-head">
+              <span class="index">02</span>{{ $t("footer.legal") }}
+            </h2>
+            <ul class="footer-links">
+              <li>
+                <RouterLink :to="lp('/privacy-policy')"
+                  ><span class="link-line">{{
+                    $t("footer.privacy")
+                  }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/cookies-policy')"
+                  ><span class="link-line">{{
+                    $t("footer.cookies")
+                  }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/terms-and-conditions')"
+                  ><span class="link-line">{{
+                    $t("footer.terms")
+                  }}</span></RouterLink
+                >
+              </li>
+            </ul>
+          </div>
 
-        <div>
-          <h2 class="footer-heading">{{ $t("footer.legal") }}</h2>
-          <ul class="footer-links">
-            <li>
-              <RouterLink :to="lp('/privacy-policy')">{{
-                $t("footer.privacy")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/cookies-policy')">{{
-                $t("footer.cookies")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/terms-and-conditions')">{{
-                $t("footer.terms")
-              }}</RouterLink>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="footer-heading">{{ $t("footer.contact") }}</h2>
-          <ul class="footer-links">
-            <li>
-              <RouterLink :to="lp('/about-us')">{{
-                $t("footer.about")
-              }}</RouterLink>
-            </li>
-            <li>
-              <RouterLink :to="lp('/contact')">{{
-                $t("footer.contact")
-              }}</RouterLink>
-            </li>
-          </ul>
+          <div>
+            <h2 class="section-head">
+              <span class="index">03</span>{{ $t("footer.contact") }}
+            </h2>
+            <ul class="footer-links">
+              <li>
+                <RouterLink :to="lp('/about-us')"
+                  ><span class="link-line">{{
+                    $t("footer.about")
+                  }}</span></RouterLink
+                >
+              </li>
+              <li>
+                <RouterLink :to="lp('/contact')"
+                  ><span class="link-line">{{
+                    $t("footer.contact")
+                  }}</span></RouterLink
+                >
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
       <div
-        class="mt-14 flex flex-col gap-3 border-t border-line pt-8 text-xs text-muted md:flex-row md:items-center md:justify-between"
+        class="mt-16 flex flex-col gap-3 border-t border-line pt-6 font-mono text-[0.72rem] tracking-[0.06em] text-muted md:flex-row md:items-center md:justify-between"
       >
+        <p>&copy; {{ year }} PlayerBerry &mdash; {{ $t("footer.rights") }}</p>
         <p>
           {{ $t("footer.randomized.part0")
           }}<a
@@ -169,55 +190,53 @@ const lp = useLocalePath();
             ><span class="sentence">{{ randomizedFunny }}</span></a
           >{{ $t("footer.randomized.part1") }}
         </p>
-        <p class="font-mono tracking-[0.06em] whitespace-nowrap">
-          {{ $t("footer.rights") }} &copy; {{ year }} PlayerBerry
-        </p>
       </div>
     </div>
   </footer>
 </template>
 
 <style scoped>
-.footer-heading {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+/*
+ * The wordmark's size follows the container's inline size (`cqi`) so the
+ * twelve glyphs always span the column: measured width ≈ 5.8× the font
+ * size, hence ~16.8cqi fills 97% of the width. Capped for very wide screens.
+ */
+.footer-mark {
+  font-size: clamp(3rem, 16.8cqi, 14rem);
 }
+
 .footer-links {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
   margin-top: 1rem;
 }
 .footer-links a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
-  font-size: 0.875rem;
+  min-height: 2.75rem;
+  font-size: 0.9rem;
   color: var(--color-ink);
   transition: color 0.2s ease;
 }
 .footer-links a:hover {
-  color: var(--color-berry);
+  color: var(--color-ink-strong);
 }
+.footer-links .link-line {
+  color: inherit;
+  padding-bottom: 0.1em;
+}
+.footer-links a:hover .link-line {
+  background-size: 100% 1px;
+}
+
 .social {
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-line);
-  color: var(--color-ink);
   transition:
     border-color 0.25s ease,
     color 0.25s ease,
     transform 0.4s var(--ease-out-expo);
 }
 .social:hover {
-  border-color: color-mix(in oklab, var(--color-berry) 50%, transparent);
+  border-color: color-mix(in oklab, var(--color-berry) 60%, transparent);
   color: var(--color-berry);
   transform: translateY(-2px);
 }

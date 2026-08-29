@@ -6,7 +6,7 @@
 export interface Product {
   /** Stable identifier; also the i18n key suffix. */
   id: string;
-  /** Price in US dollars; `0` renders the localised "free" label. */
+  /** Price in US dollars; `0` shows no price (the product links out instead). */
   price: number;
   /** Icon name (see Icon.vue) shown on the product tile. */
   icon: string;

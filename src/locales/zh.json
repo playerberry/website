@@ -44,6 +44,9 @@
     "titleTop": "不是平庸的软件，",
     "titleHighlight": "而是非凡的体验。",
     "description": "我们是一家构建 Web 应用、iOS 移动应用和云基础设施的独立软件工作室。与你一起把想法变成产品，上线发布，并持续让它成长。",
+    "rotating": ["Web 应用", "iOS 应用", "云基础设施", "设计系统"],
+    "scroll": "向下滚动",
+    "languages": "{count} 种语言",
     "ctaPrimary": "查看我们的作品",
     "ctaSecondary": "联系我们",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "面向线下活动、基于规则并有审核机制的社交平台：SwiftUI iOS 应用、Fastify API、媒体处理服务与审核控制台。"
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "集成 Apple Watch、与 HealthKit 完全同步的训练记录应用。"
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "支持高并发流量的电商平台，内置 Stripe 支付和高级目录管理。"
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "毫秒级延迟的实时消息基础设施；WebSocket 与 Redis 扇出。"
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "轻量级自托管 CI/CD 编排器，基于容器的隔离构建。"
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "面向多品牌产品家族、基于设计令牌的可扩展设计系统。"
       }
     }
   },

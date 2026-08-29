@@ -44,6 +44,9 @@
     "titleTop": "Keine gewöhnliche Software —",
     "titleHighlight": "epische Erlebnisse.",
     "description": "Wir sind ein unabhängiges Software-Studio, das Web-Anwendungen, iOS-Apps und Cloud-Infrastruktur entwickelt. Wir machen aus deiner Idee gemeinsam ein Produkt, bringen es live und lassen es weiter wachsen.",
+    "rotating": ["Web-Apps", "iOS-Apps", "Cloud-Infrastruktur", "Designsysteme"],
+    "scroll": "Scrollen",
+    "languages": "{count} Sprachen",
     "ctaPrimary": "Unsere Arbeiten ansehen",
     "ctaSecondary": "Kontakt aufnehmen",
     "stats": {
@@ -135,26 +138,6 @@
       "neredesinco": {
         "title": "Neredesin Co",
         "description": "Regelbasierte, moderierte Social-Plattform für Events vor Ort: iOS-App in SwiftUI, Fastify-API, Media-Worker und Moderationskonsole."
-      },
-      "pulse": {
-        "title": "Pulse Fit",
-        "description": "Trainings-Tracking-App mit Apple-Watch-Integration und voller HealthKit-Synchronisierung."
-      },
-      "atlas": {
-        "title": "Atlas Commerce",
-        "description": "E-Commerce-Plattform für hohen Traffic mit Stripe-Zahlungen und fortgeschrittener Katalogverwaltung."
-      },
-      "echo": {
-        "title": "Echo Chat",
-        "description": "Echtzeit-Messaging-Infrastruktur mit Millisekunden-Latenz; WebSocket und Redis-Fan-out."
-      },
-      "forge": {
-        "title": "Forge CI",
-        "description": "Leichter, selbst gehosteter CI/CD-Orchestrator mit containerbasierten, isolierten Builds."
-      },
-      "orbit": {
-        "title": "Orbit DS",
-        "description": "Skalierbares, auf Design-Tokens basierendes Designsystem für eine Produktfamilie mit mehreren Marken."
       }
     }
   },
